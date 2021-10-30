@@ -59,13 +59,13 @@ const SignUp = () => {
                 spacing={2}
                 divider={<Divider orientation="horizontal" flexItem />}
                 >
-                    <TextField id="outlined-basic" label="First Name" variant="outlined" name="FirstName" onChange={handleChange} />
-                    <TextField id="outlined-basic" label="Last Name" variant="outlined" name="LastName" onChange={handleChange}/>
-                    <TextField id="outlined-basic" label="User Name" variant="outlined" name='UserName' onChange={handleChange}/>
-                    <TextField id="outlined-basic" type="email" label="Email" variant="outlined" name='Email' onChange={handleChange}/>
-                    <TextField id="outlined-basic" type='number' label="Age" variant="outlined" name="Age" onChange={handleChange}/>
-                    <TextField id="outlined-basic" type='password'  label="Password" variant="outlined" name="Password" onChange={handleChange}/>
-                    <TextField id="outlined-basic" type='password'  label="Confirm Password" variant="outlined" onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
+                    <TextField  className="field" id="outlined-basic" label="First Name" variant='filled' name="FirstName" onChange={handleChange} />
+                    <TextField  className="field" id="outlined-basic" label="Last Name" variant="filled" name="LastName" onChange={handleChange}/>
+                    <TextField  className="field" id="outlined-basic" label="User Name" variant="filled" name='UserName' onChange={handleChange}/>
+                    <TextField  className="field" id="outlined-basic" type="email" label="Email" variant="filled" name='Email' onChange={handleChange}/>
+                    <TextField  className="field" id="outlined-basic" type='number' label="Age" variant="filled" name="Age" onChange={handleChange}/>
+                    <TextField  className="field" id="outlined-basic" type='password'  label="Password" variant="filled" name="Password" onChange={handleChange}/>
+                    <TextField  className="field" id="outlined-basic" type='password'  label="Confirm Password" variant="filled" onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
                     <Button color='primary' variant='outlined' onClick={register} >Signup</Button>
             </Stack>
            </Container>

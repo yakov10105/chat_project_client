@@ -2,7 +2,7 @@ import React, { useState} from 'react'
 import './Login.css'
 import { Container, Divider, Stack, TextField,Button } from '@mui/material'
 import axios from 'axios'
-import { Redirect } from 'react-router'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [userName , setUserName ] = useState("")
@@ -33,6 +33,7 @@ const Login = () => {
                     <TextField className="field" id="outlined-basic" label="User Name" variant='filled' onChange={(e)=>{setUserName(e.target.value)}} />
                     <TextField className="field" id="outlined-basic" type='password'  label="Password" variant="filled" onChange={(e)=>{setPassword(e.target.value)}}/>
                     <Button className='login-btn'  variant='outlined' onClick={sendDetails}>Login</Button>
+                    <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
             </Stack>
            </Container>
         </div>
