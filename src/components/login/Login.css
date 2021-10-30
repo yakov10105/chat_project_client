@@ -10,4 +10,16 @@
 .field{
     background-color: #fff ;
     color: var(--secondary-color);
+    border-radius: 10px;
+    outline: none;
+}
+.signup-link{
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+}
+.signup-link:hover{
+    text-decoration: underline;
+    opacity: 0.9;
 }
