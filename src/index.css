@@ -1,1 +1,10 @@
-
+:root{
+    --primary-color : #351432;
+    --secondary-color:#DC5362;
+    --third-color:#9D3558;
+    --fourth-color:#772A4F;
+}
+*{
+    margin: 0;
+    padding: 0;
+}

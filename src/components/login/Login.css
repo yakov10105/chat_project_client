@@ -1,3 +1,13 @@
+.Login{
+    height: 50vh;
+    width: 50%;
+}
 .container{
-    background-color: aliceblue;
+    background-color: var(--fourth-color);
+    padding: 20px;
+    border-radius: 15px;
+}
+.field{
+    background-color: #fff ;
+    color: var(--secondary-color);
 }

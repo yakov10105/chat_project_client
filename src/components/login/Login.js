@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import './Login.css'
-import Button from '@mui/material/Button'
-import { Container, Divider, Stack, TextField } from '@mui/material'
+import { Container, Divider, Stack, TextField,Button } from '@mui/material'
 import axios from 'axios'
+import { Redirect } from 'react-router'
 
 const Login = () => {
     const [userName , setUserName ] = useState("")
@@ -22,6 +22,7 @@ const Login = () => {
     }
 
 
+
     return (
         <div className="Login">
            <Container maxWidth="sm" fixed="true" className="container">
@@ -29,9 +30,9 @@ const Login = () => {
                 spacing={2}
                 divider={<Divider orientation="horizontal" flexItem />}
                 >
-                    <TextField id="outlined-basic" label="User Name" variant="outlined" onChange={(e)=>{setUserName(e.target.value)}} />
-                    <TextField id="outlined-basic" type='password'  label="Password" variant="outlined" onChange={(e)=>{setPassword(e.target.value)}}/>
-                    <Button color='primary' variant='outlined' onClick={sendDetails} >Login</Button>
+                    <TextField className="field" id="outlined-basic" label="User Name" variant='filled' onChange={(e)=>{setUserName(e.target.value)}} />
+                    <TextField className="field" id="outlined-basic" type='password'  label="Password" variant="filled" onChange={(e)=>{setPassword(e.target.value)}}/>
+                    <Button className='login-btn'  variant='outlined' onClick={sendDetails}>Login</Button>
             </Stack>
            </Container>
         </div>

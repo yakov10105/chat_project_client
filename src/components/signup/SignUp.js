@@ -18,6 +18,15 @@ const SignUp = () => {
             Password: userDetails.Password
         }).then((res)=>{
             localStorage.setItem("key",res.data.key)
+            axios.get("http://localhost:3495/api/auth/user",{
+                headers:{
+                    "Authorization": localStorage.getItem("key")
+                }
+            }).then((res)=>{
+                console.log(res)
+            }).catch((err)=>{
+                console.log(err)
+            })
         }).catch((err)=>{
             console.log(err)
         })
