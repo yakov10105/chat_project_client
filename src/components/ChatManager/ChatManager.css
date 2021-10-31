@@ -27,6 +27,16 @@ h4 {
 }
 .chat {
     display: grid;
+    padding: 10px; 
+    background: url("../../assets/background.png");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+
+.chat h1{
+    color: white;
+    align-self: center;
 }
 
 .leave-room {
@@ -48,10 +58,6 @@ h4 {
     overflow: auto;
     border-radius: 5px;
     margin-bottom: 2px;
-    background: url("../../assets/background.png");
-    background-repeat: no-repeat;
-    background-size:cover;
-    background-position: center;
 }
 
 .user-message {
@@ -65,7 +71,7 @@ h4 {
     margin: 0px auto 0px auto;
     padding: 5px;
     color:#182418;
-    background-color: #848C74;
+    background-color: #676b5d;
     border-radius: 20px;
     margin-top: 3px;
 }

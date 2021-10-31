@@ -3,11 +3,22 @@ import './Login.css'
 import { Container, Divider, Stack, TextField,Button } from '@mui/material'
 import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
+const schema = yup.object().shape({
+    userName:yup.string().required("* User Name is requierd"),
+    password: yup.string().required("* Password is requierd").min(5,"* Password must be at least 5 characters")
+});
 
 const Login = () => {
     const [userName , setUserName ] = useState("")
     const [password , setPassword ] = useState("")
     const [isLoggedin , setIsLoggedIn ] = useState(false)
+    const {register, handleSubmit, formState: { errors }} = useForm({
+        resolver:yupResolver(schema)
+    })
 
 
     const sendDetails = () =>{
@@ -29,15 +40,33 @@ const Login = () => {
         return (
             <div className="Login">
                <Container maxWidth="sm" fixed="true" className="container">
-                <Stack 
-                    spacing={2}
-                    divider={<Divider orientation="horizontal" flexItem />}
-                    >
-                        <TextField className="field" id="outlined-basic" label="User Name" variant='filled' onChange={(e)=>{setUserName(e.target.value)}} />
-                        <TextField className="field" id="outlined-basic" type='password'  label="Password" variant="filled" onChange={(e)=>{setPassword(e.target.value)}}/>
-                        <Button className='login-btn'  variant='outlined' onClick={sendDetails}>Login</Button>
-                        <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
-                </Stack>
+               <form onSubmit={handleSubmit(sendDetails)}>
+                    <Stack 
+                        spacing={2}
+                        divider={<Divider orientation="horizontal" flexItem />}>
+                            <TextField 
+                                name='userName'
+                                className="field" 
+                                id="outlined-basic" 
+                                label="User Name" 
+                                variant='filled'
+                                onChange={(e)=>{setUserName(e.target.value)}}
+                                {...register('userName')} />
+                            <p>{errors['userName']?.message}</p>
+                            <TextField 
+                                name='password'
+                                className="field" 
+                                id="outlined-basic" 
+                                type='password'  
+                                label="Password" 
+                                variant="filled"
+                                onChange={(e)=>{setPassword(e.target.value)}}
+                                {...register('password')}/>
+                            <p>{errors['password']?.message}</p>
+                            <Button className='login-btn'  variant='outlined' type='submit'>Login</Button>
+                            <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
+                    </Stack>
+               </form>
                </Container>
             </div>
         )
