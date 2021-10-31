@@ -11,19 +11,16 @@ const Login = () => {
 
 
     const sendDetails = () =>{
-        axios.post('http://localhost:8082/api/auth/login',{
-            UserName: userName,
-            Password: password
-        }).then((res)=>{
-            localStorage.setItem("key",res.data.key)
-            setIsLoggedIn(true);
-        }).catch((err)=>{
-            console.log(err)
-        })
-        
+            axios.post('http://localhost:8082/api/auth/login',{
+                UserName: userName,
+                Password: password
+            }).then((res)=>{
+                localStorage.setItem("key",res.data.key)
+                setIsLoggedIn(true);
+            }).catch((err)=>{
+                console.log(err)
+            })  
     }
-
-
 
     if (!isLoggedin) {
         return (
@@ -31,11 +28,10 @@ const Login = () => {
                <Container maxWidth="sm" fixed="true" className="container">
                 <Stack 
                     spacing={2}
-                    divider={<Divider orientation="horizontal" flexItem />}
-                    >
-                        <TextField className="field" id="outlined-basic" label="User Name" variant='filled' onChange={(e)=>{setUserName(e.target.value)}} />
-                        <TextField className="field" id="outlined-basic" type='password'  label="Password" variant="filled" onChange={(e)=>{setPassword(e.target.value)}}/>
-                        <Button className='login-btn'  variant='outlined' onClick={sendDetails}>Login</Button>
+                    divider={<Divider orientation="horizontal" flexItem />}>
+                            <TextField className="field" id="outlined-basic" label="User Name" variant='filled' onChange={(e)=>{setUserName(e.target.value)}} />
+                            <TextField   className="field" id="outlined-basic" type='password'  label="Password" variant="filled" onChange={(e)=>{setPassword(e.target.value)}}/>
+                            <Button className='login-btn' type='submit' onClick={sendDetails}  variant='outlined' >Login</Button>
                         <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
                 </Stack>
                </Container>
