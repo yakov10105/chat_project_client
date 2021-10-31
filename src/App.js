@@ -2,7 +2,7 @@ import { Switch ,Route,Redirect} from 'react-router';
 import './App.css';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp';
-import Chat from './components/chat/Chat';
+import ChatManager from './components/ChatManager/ChatManager';
 import Header from './layout/header/Header'
 import Footer from './layout/footer/Footer'
 
@@ -13,7 +13,7 @@ function App() {
       <Switch>
           <Route path='/login' component={Login}></Route>
           <Route path='/signup' component={SignUp}></Route>
-          <Route path='/chat' component={Chat}></Route>
+          <Route path='/chat' component={ChatManager}></Route>
           <Redirect to='/'/>
       </Switch>
       <Footer/>
