@@ -2,8 +2,11 @@
     height: 50vh;
     width: 50%;
 }
+.errorMsg{
+    color: red;
+}
 .container{
-    background-color: var(--fourth-color);
+    background-color:var(--fourth-color);
     padding: 20px;
     border-radius: 15px;
 }
