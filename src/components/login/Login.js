@@ -50,8 +50,8 @@ const Login = () => {
                                 id="outlined-basic" 
                                 label="User Name" 
                                 variant='filled'
-                                onChange={(e)=>{setUserName(e.target.value)}}
-                                {...register('userName')} />
+                                {...register('userName')} 
+                                onChange={(e)=>{setUserName(e.target.value)}}/>
                             <p>{errors['userName']?.message}</p>
                             <TextField 
                                 name='password'
@@ -60,8 +60,8 @@ const Login = () => {
                                 type='password'  
                                 label="Password" 
                                 variant="filled"
-                                onChange={(e)=>{setPassword(e.target.value)}}
-                                {...register('password')}/>
+                                {...register('password')}
+                                onChange={(e)=>{setPassword(e.target.value)}}/>
                             <p>{errors['password']?.message}</p>
                             <Button className='login-btn'  variant='outlined' type='submit'>Login</Button>
                             <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>

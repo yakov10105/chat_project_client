@@ -10,8 +10,8 @@ const schema = yup.object().shape({
     firstName: yup.string().required("* First Name is requierd"),
     lastName:yup.string().required("* Last Name is requierd"),
     userName:yup.string().required("* User Name is requierd"),
-    email:yup.string().email("* Email nust be valid").required("* Email is requierd"),
-    age:yup.number().required("* Age is required"),
+    userEmail:yup.string().email("* Email nust be valid").required("* Email is requierd"),
+    userAge:yup.number().required("* Age is required"),
     password: yup.string().required("* Password is requierd").min(5, '* Password must be at least 5 characters'),
     confirmPassword: yup.string().required('* Confirm Password is required').oneOf([yup.ref('password')], '* Passwords must match')
 });
@@ -24,12 +24,12 @@ const SignUp = () => {
 
 
     const loginAfter = ()=>{
-        axios.post('http://localhost:3495/api/auth/login',{
+        axios.post('http://localhost:8082/api/auth/login',{
             UserName: userDetails.UserName,
             Password: userDetails.Password
         }).then((res)=>{
             localStorage.setItem("key",res.data.key)
-            axios.get("http://localhost:3495/api/auth/user",{
+            axios.get("http://localhost:8082/api/auth/user",{
                 headers:{
                     "Authorization": localStorage.getItem("key")
                 }
@@ -44,7 +44,7 @@ const SignUp = () => {
     }
 
     const registerUser=()=>{
-        axios.post('http://localhost:3495/api/auth/register',userDetails)
+        axios.post('http://localhost:8082/api/auth/register',userDetails)
         .then((res)=>{
             console.log(res.data)
             loginAfter();
@@ -75,8 +75,8 @@ const SignUp = () => {
                             label="First Name" 
                             variant='filled' 
                             name="FirstName" 
-                            onChange={handleChange}
-                            {...register('firstName')} />
+                            {...register('firstName')}
+                            onChange={handleChange} />
                          <p>{errors['firstName']?.message}</p>
                         <TextField  
                             className="field" 
@@ -84,17 +84,17 @@ const SignUp = () => {
                             label="Last Name" 
                             variant="filled" 
                             name="LastName" 
-                            onChange={handleChange}
-                            {...register('lastName')}/>
-                         <p>{errors['lserName']?.message}</p>
+                            {...register('lastName')}
+                            onChange={handleChange}/>
+                         <p>{errors['lastName']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
                             label="User Name" 
                             variant="filled" 
                             name='UserName' 
-                            onChange={handleChange}
-                            {...register('userName')}/>
+                            {...register('userName')}
+                            onChange={handleChange}/>
                          <p>{errors['userName']?.message}</p>
                         <TextField  
                             className="field" 
@@ -102,20 +102,20 @@ const SignUp = () => {
                             type="email" 
                             label="Email" 
                             variant="filled" 
-                            name='Email' 
-                            onChange={handleChange}
-                            {...register('email')}/>
-                         <p>{errors['email']?.message}</p>
+                            name='UserEmail' 
+                            {...register('userEmail')}
+                            onChange={handleChange}/>
+                         <p>{errors['userEmail']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
                             type='number' 
                             label="Age" 
                             variant="filled" 
-                            name="Age" 
-                            onChange={handleChange}
-                            {...register('age')}/>
-                         <p>{errors['age']?.message}</p>
+                            name="UserAge" 
+                            {...register('userAge')}
+                            onChange={handleChange}/>
+                         <p>{errors['userAge']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
@@ -123,8 +123,8 @@ const SignUp = () => {
                             label="Password" 
                             variant="filled" 
                             name="Password" 
-                            onChange={handleChange}
-                            {...register('password')}/>
+                            {...register('password')}
+                            onChange={handleChange}/>
                          <p>{errors['password']?.message}</p>
                         <TextField  
                             className="field" 
