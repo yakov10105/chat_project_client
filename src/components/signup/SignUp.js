@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { Redirect } from 'react-router'
 import './SignUp.css';
 
 const schema = yup.object().shape({
@@ -18,6 +19,8 @@ const schema = yup.object().shape({
 
 const SignUp = () => {
     const [userDetails,setUserDetails] = useState({})
+    const [isLoggedIn,setIsLoggedIn] = useState(false)
+    const [ loggedUser , setLoggedUser]=useState({})
     const {register, handleSubmit, formState: { errors }} = useForm({
         resolver:yupResolver(schema)
     })
@@ -29,15 +32,8 @@ const SignUp = () => {
             Password: userDetails.Password
         }).then((res)=>{
             localStorage.setItem("key",res.data.key)
-            axios.get("http://localhost:8082/api/auth/user",{
-                headers:{
-                    "Authorization": localStorage.getItem("key")
-                }
-            }).then((res)=>{
-                console.log(res)
-            }).catch((err)=>{
-                console.log(err)
-            })
+            setLoggedUser(res.data.user)
+            setIsLoggedIn(true)
         }).catch((err)=>{
             console.log(err)
         })
@@ -61,6 +57,7 @@ const SignUp = () => {
         }));
     };
 
+   if(!isLoggedIn){
     return (
         <div className="Signup">
             <Container maxWidth="sm" fixed="true" className="container">
@@ -141,6 +138,15 @@ const SignUp = () => {
            </Container>
         </div>
     )
+   }
+   else{
+        return (<Redirect
+            to={{
+            pathname: "/caht",
+            state: { user: loggedUser }
+          }}
+        />)
+   }
 }
 
 export default SignUp

@@ -5,14 +5,14 @@ import Chat from './Chat';
 import Lobby from './Lobby';
 
 
-const ChatManager = () => {
+const ChatManager = (props) => {
 
   const [connection, setConnection] = useState(); 
   const [messages, setMessages] = useState([]); 
   const [users, setUsers] = useState([]); 
   const [roomName, setroomName] = useState(''); 
 
-  const joinRoom = async (user, room) => {
+  const joinRoom = async (userName, room) => {
     try{
       const connection = new HubConnectionBuilder()
       .withUrl("http://localhost:8082/chat")
@@ -21,8 +21,8 @@ const ChatManager = () => {
 
       setroomName(room);
 
-      connection.on("ReceiveMessage", (user, message) => {
-        setMessages(messages => [...messages, {user , message}]);
+      connection.on("ReceiveMessage", (userName, message) => {
+        setMessages(messages => [...messages, {userName , message}]);
       });
 
       
@@ -37,7 +37,7 @@ const ChatManager = () => {
       })
 
       await connection.start();
-      await connection.invoke("JoinRoomAsync", {user, room});
+      await connection.invoke("JoinRoomAsync", {userName, room});
 
       setConnection(connection);
 
@@ -65,7 +65,7 @@ const ChatManager = () => {
 
   return <div className='app'>
     {!connection
-    ?<Lobby joinRoom={joinRoom} />
+    ?<Lobby joinRoom={joinRoom} user={props.user}/>
     : <Chat sendMessage={sendMessage} messages={messages}
         users={users} roomName={roomName} closeConnection={closeConnection} />}
   </div>

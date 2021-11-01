@@ -2,20 +2,18 @@ import { useState } from "react"
 import { Form, Button } from "react-bootstrap"
 
 
-const Lobby = ({joinRoom}) => {
-    
-    const [user, setUser] = useState('idan');
+const Lobby = (props) => {
     const [room, setRoom] = useState();
 
     return  <Form className="lobby"
         onSubmit={e => {
             e.preventDefault();
-            joinRoom(user, room);
+            props.joinRoom(props.user.userName, room);
     }}>
         <Form.Group>
             <Form.Control placeholder='room' onChange={e => setRoom(e.target.value)}/>
         </Form.Group>
-        <Button variant='success' type='submit' disabled={!user || !room} > Join </Button>
+        <Button variant='success' type='submit' disabled={!props.user || !room} > Join </Button>
     </Form>
 }
 
