@@ -8,7 +8,7 @@ const Lobby = (props) => {
     return  <Form className="lobby"
         onSubmit={e => {
             e.preventDefault();
-            props.joinRoom(props.user.userName, room);
+            props.joinRoom(props.user, room);
     }}>
         <Form.Group>
             <Form.Control placeholder='room' onChange={e => setRoom(e.target.value)}/>

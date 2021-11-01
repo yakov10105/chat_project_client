@@ -76,7 +76,7 @@ const Login = () => {
     else{
         return (<Redirect
             to={{
-            pathname: "/caht",
+            pathname: "/chat",
             state: { user: user }
           }}
         />)

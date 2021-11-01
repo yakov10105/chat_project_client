@@ -37,7 +37,7 @@ const ChatManager = (props) => {
       })
 
       await connection.start();
-      await connection.invoke("JoinRoomAsync", {userName, room});
+      await connection.invoke("JoinRoomAsync", { user:userName,room:room});
 
       setConnection(connection);
 
@@ -65,7 +65,7 @@ const ChatManager = (props) => {
 
   return <div className='app'>
     {!connection
-    ?<Lobby joinRoom={joinRoom} user={props.user}/>
+    ?<Lobby joinRoom={joinRoom} user={props.location.state.user.userName}/>
     : <Chat sendMessage={sendMessage} messages={messages}
         users={users} roomName={roomName} closeConnection={closeConnection} />}
   </div>
