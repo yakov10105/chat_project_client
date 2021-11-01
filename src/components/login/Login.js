@@ -27,9 +27,14 @@ const Login = () => {
             UserName: userName,
             Password: password
         }).then((res)=>{
-            localStorage.setItem("key",res.data.key)
-            setUser(res.data.user)
-            setIsLoggedIn(true);
+            if(!res.data.errors){
+                localStorage.setItem("key",res.data.key)
+                setUser(res.data.user)
+                setIsLoggedIn(true);
+            }
+            else{
+                alert(errors)
+            }
         }).catch((err)=>{
             console.log(err)
         })
