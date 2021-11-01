@@ -16,6 +16,7 @@ const Login = () => {
     const [userName , setUserName ] = useState("")
     const [password , setPassword ] = useState("")
     const [isLoggedin , setIsLoggedIn ] = useState(false)
+    const [user,setUser] = useState({})
     const {register, handleSubmit, formState: { errors }} = useForm({
         resolver:yupResolver(schema)
     })
@@ -27,6 +28,7 @@ const Login = () => {
             Password: password
         }).then((res)=>{
             localStorage.setItem("key",res.data.key)
+            setUser(res.data.user)
             setIsLoggedIn(true);
         }).catch((err)=>{
             console.log(err)
@@ -72,7 +74,12 @@ const Login = () => {
         )
     }
     else{
-        return (<Redirect to="/chat"/>)
+        return (<Redirect
+            to={{
+            pathname: "/caht",
+            state: { user: user }
+          }}
+        />)
     }
 }
 
