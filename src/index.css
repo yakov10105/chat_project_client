@@ -2,7 +2,8 @@
     --primary-color : #351432;
     --secondary-color:#DC5362;
     --third-color:#9D3558;
-    --fourth-color:#772A4F;
+    --fourth-color:#004f04;
+    --hover-primary-color: #ffa000;
 }
 *{
     margin: 0;
