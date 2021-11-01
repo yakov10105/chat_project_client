@@ -22,7 +22,7 @@ const ChatManager = (props) => {
       setroomName(room);
 
       connection.on("ReceiveMessage", (userName, message) => {
-        setMessages(messages => [...messages, {userName , message}]);
+        setMessages(messages => [...messages, {user:userName ,message: message}]);
       });
 
       
