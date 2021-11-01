@@ -1,17 +1,20 @@
 .Login{
     height: 50vh;
-    width: 50%;
+    width: 100%;
 }
 .container{
     background-color: var(--fourth-color);
+    border-color: white;
+    border-style: solid;
+    border-width: thick;
+    box-shadow: inset 0px 0px 3px 3px black;
     padding: 20px;
     border-radius: 15px;
+    margin-bottom: 350px;
+    font-size: 20px;
 }
 .field{
-    background-color: #fff ;
-    color: var(--secondary-color);
-    border-radius: 10px;
-    outline: none;
+    background-color: transparent ;
 }
 .signup-link{
     color: black;
@@ -21,5 +24,17 @@
 }
 .signup-link:hover{
     text-decoration: underline;
-    opacity: 0.9;
+    color: var(--hover-primary-color);
+    opacity: 0.8;
+}
+p{
+    color: red;
+}
+
+.typography_header{
+    color: white;
+}
+.typography_content{
+    color: white;
+    padding: 10px;
 }
