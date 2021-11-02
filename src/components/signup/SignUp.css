@@ -10,3 +10,6 @@
     background-color: #ffff ;
     color: var(--secondary-color);
 }
+.stack{
+    padding: 10px;
+}

@@ -22,21 +22,21 @@ const Login = () => {
     })
 
 
-    const sendDetails = () =>{
+    const sendRequest = () =>{
         axios.post('http://localhost:8082/api/auth/login',{
             UserName: userName,
             Password: password
         }).then((res)=>{
-            if(!res.data.errors){
-                localStorage.setItem("key",res.data.key)
-                setUser(res.data.user)
-                setIsLoggedIn(true);
+            localStorage.setItem("key",res.data.key)
+            setUser(res.data.user)
+            setIsLoggedIn(true);
+        }).catch((err)=>{
+            if(err.response.data.error){
+                alert(err.response.data.error)
             }
             else{
-                alert(errors)
+                console.log(err)
             }
-        }).catch((err)=>{
-            console.log(err)
         })
         
     }
@@ -47,7 +47,7 @@ const Login = () => {
         return (
             <div className="Login">
                <Container maxWidth="sm" fixed="true" className="container">
-               <form onSubmit={handleSubmit(sendDetails)}>
+               <form onSubmit={handleSubmit(sendRequest)}>
                     <Stack 
                         spacing={2}
                         divider={<Divider orientation="horizontal" flexItem />}>

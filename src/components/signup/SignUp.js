@@ -1,5 +1,5 @@
 import React , {useState}from 'react'
-import { Container,Stack,Divider,TextField,Button } from '@mui/material'
+import { Container,Stack,TextField,Button } from '@mui/material'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
@@ -18,6 +18,8 @@ const schema = yup.object().shape({
 });
 
 const SignUp = () => {
+
+    const [error,setError] = useState({})
     const [userDetails,setUserDetails] = useState({})
     const [isLoggedIn,setIsLoggedIn] = useState(false)
     const [ loggedUser , setLoggedUser]=useState({})
@@ -26,7 +28,7 @@ const SignUp = () => {
     })
 
 
-    const loginAfter = ()=>{
+    const loginAfterRegistering = ()=>{
         axios.post('http://localhost:8082/api/auth/login',{
             UserName: userDetails.UserName,
             Password: userDetails.Password
@@ -39,15 +41,28 @@ const SignUp = () => {
         })
     }
 
+
     const registerUser=()=>{
         axios.post('http://localhost:8082/api/auth/register',userDetails)
         .then((res)=>{
             console.log(res.data)
-            loginAfter();
-        }).catch((err)=>{
-            console.log(err)
+            loginAfterRegistering();
+        })
+        .catch((err)=>{
+           if(err.response){
+                if(err.response.data.userNameError){
+                    setError({userNameError:err.response.data.userNameError})
+                }
+                if(err.response.data.emailError){
+                    setError({emailError:err.response.data.emailError})
+                }
+           }
+           else{
+               console.log(err)
+           }
         })
     }
+
 
     const handleChange =(e)=>{
         const {name , value} = e.target;
@@ -64,7 +79,7 @@ const SignUp = () => {
            <form onSubmit={handleSubmit(registerUser)}>
                 <Stack 
                     spacing={2}
-                    divider={<Divider orientation="horizontal" flexItem />}
+                    className="stack"
                     >
                         <TextField  
                             className="field" 
@@ -93,6 +108,7 @@ const SignUp = () => {
                             {...register('userName')}
                             onChange={handleChange}/>
                          <p>{errors['userName']?.message}</p>
+                         {error.userNameError &&  <p>{error.userNameError}</p>}
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
@@ -103,6 +119,7 @@ const SignUp = () => {
                             {...register('userEmail')}
                             onChange={handleChange}/>
                          <p>{errors['userEmail']?.message}</p>
+                         {error.emailError &&  <p>{error.emailError}</p>}
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
