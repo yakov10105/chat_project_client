@@ -15,7 +15,7 @@ const ChatManager = (props) => {
   const joinRoom = async (userName, room) => {
     try{
       const connection = new HubConnectionBuilder()
-      .withUrl("http://localhost:8082/chat")
+      .withUrl("http://localhost:8082/chat",{accessTokenFactory: ()=> localStorage.getItem('key')})
       .configureLogging(LogLevel.Information)
       .build();
 
