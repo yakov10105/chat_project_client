@@ -17,11 +17,17 @@ const Login = () => {
     const [password , setPassword ] = useState("")
     const [isLoggedin , setIsLoggedIn ] = useState(false)
     const [user,setUser] = useState({})
-    const {register, handleSubmit, formState: { errors }} = useForm({
-        resolver:yupResolver(schema)
-    })
+    const [serverError , setServerError] = useState("")
+    const {register, handleSubmit,setValue,formState, formState: { errors }} = useForm({resolver:yupResolver(schema)})
 
-
+    const handleAutoFill = (e)=>{
+        e.preventDefault();
+        if(!formState.isDirty){
+           setValue('userName',userName);
+           setValue('password',password);
+        }
+        handleSubmit(sendRequest)();
+    }
     const sendRequest = () =>{
         axios.post('http://localhost:8082/api/auth/login',{
             UserName: userName,
@@ -32,7 +38,7 @@ const Login = () => {
             setIsLoggedIn(true);
         }).catch((err)=>{
             if(err.response.data.error){
-                alert(err.response.data.error)
+                setServerError(err.response.data.error)
             }
             else{
                 console.log(err)
@@ -47,10 +53,9 @@ const Login = () => {
         return (
             <div className="Login">
                <Container maxWidth="sm" fixed="true" className="container">
-               <form onSubmit={handleSubmit(sendRequest)}>
+               <form onSubmit={handleAutoFill}>
                     <Stack 
-                        spacing={2}
-                        divider={<Divider orientation="horizontal" flexItem />}>
+                        spacing={2}>
                             <TextField 
                                 name='userName'
                                 className="field" 
@@ -70,6 +75,7 @@ const Login = () => {
                                 {...register('password')}
                                 onChange={(e)=>{setPassword(e.target.value)}}/>
                             <p>{errors['password']?.message}</p>
+                            {serverError && <p>{serverError}</p>}
                             <Button className='login-btn'  variant='outlined' type='submit'>Login</Button>
                             <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
                     </Stack>
