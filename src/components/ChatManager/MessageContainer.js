@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import useStyles from "./hooks/useStyles";
 
-const MessageContainer = ({ messages }) => {
+const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
     const classes = useStyles();
 
@@ -15,6 +15,13 @@ const MessageContainer = ({ messages }) => {
             messageRef.current.scrollTo({ left: 0, top: scrollHeight - clientHeight, behavior: 'smooth' });
         }
     }, [messages]);
+
+    const messageIsFromUser = (username) => {
+        if(username == user){
+            return "right"
+        }
+        return "left"
+    }
 
 
     return (
@@ -26,8 +33,22 @@ const MessageContainer = ({ messages }) => {
         //         </div>
         //     )}
         // </div>
-        <List className={classes.messageArea}>
-            <ListItem key="1">
+        <List className={classes.messageArea} ref={messageRef}>
+            {messages.map((m, index) => 
+                 <div key={index} className="user-message">
+                     <ListItem key={index}>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <ListItemText align={messageIsFromUser(m.user)} primary={m.message}></ListItemText>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ListItemText align={messageIsFromUser(m.user)} secondary={m.user}></ListItemText>
+                    </Grid>
+                </Grid>
+            </ListItem>
+                 </div>
+             )}
+            {/* <ListItem key="1">
                 <Grid container>
                     <Grid item xs={12}>
                         <ListItemText align="right" primary="Hey man, What's up ?"></ListItemText>
@@ -56,7 +77,7 @@ const MessageContainer = ({ messages }) => {
                         <ListItemText align="right" secondary="10:30"></ListItemText>
                     </Grid>
                 </Grid>
-            </ListItem>
+            </ListItem> */}
         </List>
     )
 }
