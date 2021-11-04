@@ -67,7 +67,7 @@ const ChatManager = (props) => {
     {!connection
     ?<Lobby joinRoom={joinRoom} user={props.location.state.user.userName}/>
     : <Chat sendMessage={sendMessage} messages={messages}
-        users={users} roomName={roomName} closeConnection={closeConnection} />}
+        users={users} roomName={roomName} closeConnection={closeConnection} user={props.location.state.user.userName} />}
   </div>
 }
 
