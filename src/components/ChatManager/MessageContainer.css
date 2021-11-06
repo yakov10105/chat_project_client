@@ -1,20 +1,19 @@
-.sender{
+/* .right{
     width: fit-content;
     border: 1px solid black;
     border-radius: 10px;
     background-color: lightgreen;
 }
-.reciever{
+.left{
     width: fit-content;
     border: 1px solid black;
     border-radius: 10px;
     background-color: azure;
+    margin-left: auto;
 }
-.bot{
+.center{
     width: fit-content;
     border: 1px solid black;
     border-radius: 10px;
     background-color: lightpink;
-}
-
-
+} */

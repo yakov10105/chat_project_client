@@ -1,10 +1,22 @@
 .App{
     background: url('./assets/background.jpg');
-    background-repeat: no-repeat;
-    background-size:cover;
-    background-position: center;
+    background-repeat: repeat;
+    overflow: scroll;
     height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.data_container{
+    background-color: var(--fourth-color);
+    border-color: white;
+    border-style: solid;
+    border-width: thick;
+    box-shadow: inset 0px 0px 5px 5px black;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 350px;
+    font-size: 20px;
 }

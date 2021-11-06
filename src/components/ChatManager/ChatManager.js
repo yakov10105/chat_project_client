@@ -56,6 +56,7 @@ const ChatManager = (props) => {
   }
 
   const closeConnection = async (userName) => {
+    //need to set the user offline - need to figure out how to do that
     try{
       await connection.stop();
       axios
@@ -71,7 +72,9 @@ const ChatManager = (props) => {
     }
 
   }
-  const openUserChat =(userName,user)=>{
+  const openChat = (currentUser , otherUser)=>{
+    //need to define this function => when user click on one of the users in the list 
+    //their chat window need to be open
 
   }
 
@@ -84,7 +87,7 @@ const ChatManager = (props) => {
             roomName={roomName} 
             closeConnection={closeConnection} 
             user={props.location.state.user.userName}
-            openUserChat={openUserChat} />}
+            openUserChat={openChat} />}
   </div>
 }
 

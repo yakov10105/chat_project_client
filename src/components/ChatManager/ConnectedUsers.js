@@ -1,18 +1,15 @@
 import React,{useState,useEffect} from "react";
 import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar, makeStyles} from '@material-ui/core'
 import axios from "axios";
+import useStyles from "./hooks/useStyles";
 
-const useStyles = makeStyles(theme =>({
-    borderRight500: {
-        width:'100vh',
-        borderRight: '1px solid #e0e0e0'
-    }
-  }));
-const ConnectedUsers = (props) => {
+
+const ConnectedUsers = ({ user,openChat}) => {
     const [users,setUsers] = useState([])
-    const [ searchResult , setSearchResult] = useState("")
     const classes = useStyles();
-    
+
+    //need to add search functionallity
+
     useEffect(()=>{
         axios.get('http://localhost:8082/api/users/all',{
             headers:{
@@ -20,21 +17,20 @@ const ConnectedUsers = (props) => {
             }
         }).then((res)=>{
             console.log(res.data)
-            setUsers(res.data.filter((user)=>user.userName !== props.user ))
+            setUsers(res.data.filter((u)=>u.userName !== user ))
         }).catch(err=>{
             console.log(err)
         })
     },[])
-
 
     return(
             <Grid item xs={3} className={classes.borderRight500}>
                 <List>
                     <ListItem button key="RemySharp">
                         <ListItemIcon>
-                        <Avatar alt={props.user} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                        <Avatar alt={user} src="https://material-ui.com/static/images/avatar/1.jpg" />
                         </ListItemIcon>
-                        <ListItemText primary={props.user}>{props.user}</ListItemText>
+                        <ListItemText primary={user}>{user}</ListItemText>
                     </ListItem>
                 </List>
                 <Divider />
@@ -44,8 +40,6 @@ const ConnectedUsers = (props) => {
                             label="Search" 
                             variant="outlined" 
                             name="term"
-                            value={searchResult}
-                            onChange={e=>setSearchResult(e.target.value)}
                             fullWidth />
                 </Grid>
                 <Divider />
@@ -53,7 +47,7 @@ const ConnectedUsers = (props) => {
                    {users &&
                         users.map((user,ix)=>{
                             return(
-                                <ListItem button key={ix} onClick={()=>props.openUserChat(props.user,user)}>
+                                <ListItem button key={ix} onClick={()=>openChat(user,user)}>
                                     <ListItemIcon>
                                         <Avatar alt={user.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>

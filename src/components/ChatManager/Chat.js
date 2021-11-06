@@ -5,21 +5,14 @@ import Paper from '@material-ui/core/Paper';
 import {Button} from '@mui/material';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
-import { makeStyles } from "@material-ui/core";
+import useStyles from "./hooks/useStyles";
 
-const useStyles = makeStyles(theme =>({
-  chatSection: {
-    width: '100%',
-    height:'100%'
-  }
-}));
-
-const Chat = (props) =>{
+const Chat = ({messages, sendMessage, roomName,openChat,  closeConnection,user}) =>{
   const classes = useStyles();
   return (
     <div>
       <div className="leave-room">
-            <Button variant="contained" onClick={() => props.closeConnection(props.user)}>Leave Room</Button>
+            <Button variant="contained" onClick={() => closeConnection(user)}>Leave Room</Button>
       </div>
       <Grid container>
             <Grid item xs={12} >
@@ -27,10 +20,10 @@ const Chat = (props) =>{
             </Grid>
       </Grid>
       <Grid container component={Paper} className={classes.chatSection}>
-          <ConnectedUsers user={props.user} openUserChat={props.openUserChat}/>
+          <ConnectedUsers user={user} openChat={openChat}/>
           <Grid item xs={9}>
-            <MessageContainer messages = {props.messages}  user={props.user}/>
-            <SendMessageForm sendMessage={props.sendMessage} />
+            <MessageContainer messages = {messages} user={user} />
+            <SendMessageForm sendMessage={sendMessage} />
           </Grid>
       </Grid>
   </div>
