@@ -52,7 +52,7 @@ const Login = () => {
     if (!isLoggedin) {
         return (
             <div className="Login">
-               <Container maxWidth="sm" fixed="true" className="container">
+               <Container maxWidth="sm" fixed="true" className="data_container">
                <form onSubmit={handleAutoFill}>
                     <Stack 
                         spacing={2}>
@@ -62,10 +62,10 @@ const Login = () => {
                                 id="outlined-basic" 
                                 label="User Name" 
                                 variant='filled'
-                                
+                                error={errors['userName']?.message}
+                                helperText={errors['userName']?.message}
                                 {...register('userName')} 
                                 onChange={(e)=>{setUserName(e.target.value)}}/>
-                            <p>{errors['userName']?.message}</p>
                             <TextField 
                                 name='password'
                                 className="field" 
@@ -73,10 +73,10 @@ const Login = () => {
                                 type='password'  
                                 label="Password" 
                                 variant="filled"
+                                error={errors['password']?.message || serverError && serverError}
+                                helperText={errors['password']?.message} 
                                 {...register('password')}
                                 onChange={(e)=>{setPassword(e.target.value)}}/>
-                            <p>{errors['password']?.message}</p>
-                            {serverError && <p>{serverError}</p>}
                             <Button className='login-btn'  variant='outlined' type='submit'>Login</Button>
                             <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
                     </Stack>

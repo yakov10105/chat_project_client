@@ -1,14 +1,6 @@
 .Signup{
+    height: 80vh;
     width: 50%;
-}
-.container{
-    background-color: var(--fourth-color);
-    padding: 20px;
-    border-radius: 15px;
-}
-.field{
-    background-color: #ffff ;
-    color: var(--secondary-color);
 }
 .stack{
     padding: 10px;

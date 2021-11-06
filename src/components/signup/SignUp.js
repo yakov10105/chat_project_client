@@ -83,7 +83,7 @@ const SignUp = () => {
    if(!isLoggedIn){
     return (
         <div className="Signup">
-            <Container maxWidth="sm" fixed="true" className="container">
+            <Container maxWidth="sm" fixed="true" className="data_container">
            <form onSubmit={handleAutoFill}>
                 <Stack 
                     spacing={2}
@@ -95,39 +95,41 @@ const SignUp = () => {
                             label="First Name" 
                             variant='filled' 
                             name="FirstName" 
+                            error={errors['firstName']?.message != null}
+                            helperText={errors['firstName']?.message}
                             {...register('firstName')}
                             onChange={handleChange} />
-                         <p>{errors['firstName']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
                             label="Last Name" 
                             variant="filled" 
                             name="LastName" 
+                            error={errors['lastName']?.message}
+                            helperText={errors['lastName']?.message}
                             {...register('lastName')}
                             onChange={handleChange}/>
-                         <p>{errors['lastName']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
                             label="User Name" 
                             variant="filled" 
                             name='UserName' 
+                            error={errors['userName']?.message || serverError.userNameError}
+                            helperText={errors['userName']?.message || serverError.userNameError}
                             {...register('userName')}
                             onChange={handleChange}/>
-                         <p>{errors['userName']?.message}</p>
-                         {serverError.userNameError &&  <p>{serverError.userNameError}</p>}
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
                             type="email" 
                             label="Email" 
                             variant="filled" 
-                            name='UserEmail' 
+                            name='UserEmail'
+                             error={errors['userEmail']?.message || serverError.emailError}
+                            helperText={errors['userEmail']?.message || serverError.emailError}
                             {...register('userEmail')}
                             onChange={handleChange}/>
-                         <p>{errors['userEmail']?.message}</p>
-                         {serverError.emailError &&  <p>{serverError.emailError}</p>}
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
@@ -135,9 +137,10 @@ const SignUp = () => {
                             label="Age" 
                             variant="filled" 
                             name="UserAge" 
+                            error={errors['userAge']?.message}
+                            helperText={errors['userAge']?.message}
                             {...register('userAge')}
                             onChange={handleChange}/>
-                         <p>{errors['userAge']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
@@ -145,9 +148,10 @@ const SignUp = () => {
                             label="Password" 
                             variant="filled" 
                             name="Password" 
+                            error={errors['password']?.message}
+                            helperText={errors['password']?.message}
                             {...register('password')}
                             onChange={handleChange}/>
-                         <p>{errors['password']?.message}</p>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
@@ -155,8 +159,9 @@ const SignUp = () => {
                             label="Confirm Password" 
                             variant="filled"
                             name='ConfirmPassword'
+                            error={errors['confirmPassword']?.message}
+                            helperText={errors['confirmPassword']?.message}
                             {...register('confirmPassword')}/>
-                         <p>{errors['confirmPassword']?.message}</p>
                         <Button color='primary' variant='outlined' type='submit' >Signup</Button>
                 </Stack>
            </form>

@@ -29,7 +29,7 @@ const Chat = ({messages, sendMessage, roomName,  closeConnection,user}) =>{
       <Grid container component={Paper} className={classes.chatSection}>
           <ConnectedUsers user={user}/>
           <Grid item xs={9}>
-            <MessageContainer messages = {messages} />
+            <MessageContainer messages = {messages} user={user} />
             <SendMessageForm sendMessage={sendMessage} />
           </Grid>
       </Grid>

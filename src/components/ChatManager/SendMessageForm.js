@@ -23,14 +23,22 @@ const SendMessageForm = ({ sendMessage }) => {
         //         <Button style={{width:100, height:30}} variant="contined" type='submit' disabled={!message} endIcon={<SendIcon />}>Send</Button>
         //     </InputGroup>
         // </Form>
+        <Form
+         onSubmit={e => {
+             e.preventDefault();
+             sendMessage(message);
+             setMessage('');
+         }}>
         <Grid container style={{padding: '20px'}}>
             <Grid item xs={11}>
-                <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+                <TextField id="outlined-basic-email" label="Message" fullWidth 
+                onChange={e => setMessage(e.target.value)} value={message}/>
             </Grid>
             <Grid xs={1} align="right">
-                <Fab color="primary"  aria-label="add"><SendIcon /></Fab>
+                <Fab color="primary" type='submit' aria-label="add"><SendIcon /></Fab>
             </Grid>
         </Grid>
+        </Form>
     )
 }
 
