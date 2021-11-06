@@ -6,17 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import useStyles from "./hooks/useStyles";
 import './MessageContainer.css';
 
-
-const useStyles= makeStyles(theme=>({
-    messaage_area:{
-        padding:'30px',
-        height: '70vh',
-        overflowY:'auto'
-    },
-    list_item:{
-
-    }
-}));
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
     const classes = useStyles();
@@ -35,7 +24,7 @@ const MessageContainer = ({ messages, user }) => {
         if(username === user){
             return "right"
         }
-        return "reciever"
+        return "left"
     }
 
 

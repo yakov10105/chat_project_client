@@ -1,17 +1,19 @@
-/* .right{
+.right{
     width: fit-content;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: lightgreen;
+    color: white;
+    background-color: #25D366;
+    margin-left: auto;
 }
 .left{
     width: fit-content;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: azure;
-    margin-left: auto;
+    color:white;
+    background-color: #075e54;
 }
-.center{
+/* .center{
     width: fit-content;
     border: 1px solid black;
     border-radius: 10px;
