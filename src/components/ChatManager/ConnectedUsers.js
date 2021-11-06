@@ -11,8 +11,12 @@ import axios from "axios";
 import Avatar from '@material-ui/core/Avatar';
 
 
-const ConnectedUsers = ({ user}) => {
+const ConnectedUsers = ({ user,openChat}) => {
     const [users,setUsers] = useState([])
+    const classes = useStyles();
+
+    //need to add search functionallity
+
     useEffect(()=>{
         axios.get('http://localhost:8082/api/users/all',{
             headers:{
@@ -20,18 +24,11 @@ const ConnectedUsers = ({ user}) => {
             }
         }).then((res)=>{
             console.log(res.data)
-            setUsers(res.data)
+            setUsers(res.data.filter((u)=>u.userName !== user ))
         }).catch(err=>{
             console.log(err)
         })
-    })
-    // return(
-    //     <div className='user-list'>
-    //         <h3>Connected Users</h3>
-    //         {users.map((u, idx) => <h4 key={idx}>{u}</h4>)}
-    //     </div>
-    // )
-    const classes = useStyles();
+    },[])
 
     return(
             <Grid item xs={3} className={classes.borderRight500}>
@@ -52,7 +49,7 @@ const ConnectedUsers = ({ user}) => {
                    {users && 
                         users.map((user,ix)=>{
                             return(
-                                <ListItem button key={ix}>
+                                <ListItem button key={ix} onClick={()=>openChat(user,user)}>
                                     <ListItemIcon>
                                         <Avatar alt={user.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>

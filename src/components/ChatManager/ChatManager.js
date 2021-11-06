@@ -54,7 +54,8 @@ const ChatManager = (props) => {
     }
   }
 
-  const closeConnection = async () => {
+  const closeConnection = async (userName) => {
+    //need to set the user offline - need to figure out how to do that
     try{
       await connection.stop();
     } catch(e){
@@ -62,12 +63,23 @@ const ChatManager = (props) => {
     }
 
   }
+  const openChat = (currentUser , otherUser)=>{
+    //need to define this function => when user click on one of the users in the list 
+    //their chat window need to be open
+
+  }
 
   return <div className='app'>
     {!connection
     ?<Lobby joinRoom={joinRoom} user={props.location.state.user.userName}/>
-    : <Chat sendMessage={sendMessage} messages={messages}
-        users={users} roomName={roomName} closeConnection={closeConnection} user={props.location.state.user.userName} />}
+    : <Chat 
+      sendMessage={sendMessage} 
+      messages={messages}
+      users={users} 
+      roomName={roomName} 
+      openChat={openChat}
+      closeConnection={closeConnection} 
+      user={props.location.state.user.userName} />}
   </div>
 }
 

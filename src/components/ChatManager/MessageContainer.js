@@ -4,6 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import useStyles from "./hooks/useStyles";
+import './MessageContainer.css';
 
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
@@ -17,7 +18,10 @@ const MessageContainer = ({ messages, user }) => {
     }, [messages]);
 
     const messageIsFromUser = (username) => {
-        if(username == user){
+        if(username=== "MyChat Bot"){
+            return "center";
+        }
+        if(username === user){
             return "right"
         }
         return "left"
@@ -25,59 +29,22 @@ const MessageContainer = ({ messages, user }) => {
 
 
     return (
-        // <div ref={messageRef} className="message-container">
-        //     {messages.map((m, index) => 
-        //         <div key={index} className="user-message">
-        //             <div className="message bg-primary">{m.message}</div>
-        //             <div className="from-user">{m.user}</div>
-        //         </div>
-        //     )}
-        // </div>
         <List className={classes.messageArea} ref={messageRef}>
             {messages.map((m, index) => 
-                 <div key={index} className="user-message">
-                     <ListItem key={index}>
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align={messageIsFromUser(m.user)} primary={m.message}></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align={messageIsFromUser(m.user)} secondary={m.user}></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem>
+                 <div key={index} className={messageIsFromUser(m.user)}>
+                    <ListItem key={index}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <ListItemText align={messageIsFromUser(m.user)} primary={m.message}></ListItemText>
+                            </Grid>
+                            <Grid item xs={12}>
+                                {/* Add also message date */}
+                                <ListItemText align={messageIsFromUser(m.user)} secondary={m.user+ `()`}></ListItemText>
+                            </Grid>
+                        </Grid>
+                    </ListItem>
                  </div>
              )}
-            {/* <ListItem key="1">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" primary="Hey man, What's up ?"></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" secondary="09:30"></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem>
-            <ListItem key="2">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align="left" primary="Hey, Iam Good! What about you ?"></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align="left" secondary="09:31"></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem>
-            <ListItem key="3">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" secondary="10:30"></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem> */}
         </List>
     )
 }

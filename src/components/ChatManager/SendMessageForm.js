@@ -1,5 +1,4 @@
-import { Form, InputGroup,  FormControl} from 'react-bootstrap';
-import {Button} from '@mui/material';
+import { Form} from 'react-bootstrap';
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
@@ -10,25 +9,14 @@ import Fab from '@material-ui/core/Fab';
 const SendMessageForm = ({ sendMessage }) => {
 
     const [message, setMessage] = useState('');
+    const handleSubmit = (e)=>{
+        e.preventDefault();
+        sendMessage(message);
+        setMessage('');
+    }
     return(
-        // <Form
-        // onSubmit={e => {
-        //     e.preventDefault();
-        //     sendMessage(message);
-        //     setMessage('');
-        // }}>
-        //     <InputGroup>
-        //         <FormControl style={{width:400, height:30}} type="user" placeholder="message..."
-        //         onChange={e => setMessage(e.target.value)} value={message} />  
-        //         <Button style={{width:100, height:30}} variant="contined" type='submit' disabled={!message} endIcon={<SendIcon />}>Send</Button>
-        //     </InputGroup>
-        // </Form>
         <Form
-         onSubmit={e => {
-             e.preventDefault();
-             sendMessage(message);
-             setMessage('');
-         }}>
+         onSubmit={handleSubmit}>
         <Grid container style={{padding: '20px'}}>
             <Grid item xs={11}>
                 <TextField id="outlined-basic-email" label="Message" fullWidth 

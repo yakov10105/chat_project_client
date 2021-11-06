@@ -7,27 +7,20 @@ import {Button} from '@mui/material';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 
-const Chat = ({messages, sendMessage, roomName,  closeConnection,user}) =>{
+const Chat = ({messages, sendMessage, roomName,openChat,  closeConnection,user}) =>{
   const classes = useStyles();
   return (
     <div>
       <div className="leave-room">
-            <Button variant="contained" onClick={() => closeConnection()}>
-            Leave Room</Button>
+            <Button variant="contained" onClick={() => closeConnection(user)}>Leave Room</Button>
       </div>
       <Grid container>
             <Grid item xs={12} >
                 <Typography variant="h5" className="header-message">Chat</Typography>
             </Grid>
       </Grid>
-      {/* <ConnectedUsers users={users}/>
-      <div className="chat">
-        <h1>{roomName}</h1>
-          <MessageContainer messages = {messages} />
-          <SendMessageForm sendMessage={sendMessage} />
-      </div> */}
       <Grid container component={Paper} className={classes.chatSection}>
-          <ConnectedUsers user={user}/>
+          <ConnectedUsers user={user} openChat={openChat}/>
           <Grid item xs={9}>
             <MessageContainer messages = {messages} user={user} />
             <SendMessageForm sendMessage={sendMessage} />

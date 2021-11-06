@@ -14,7 +14,7 @@ function App() {
           <Route path='/login' component={Login}></Route>
           <Route path='/signup' component={SignUp}></Route>
           <Route path='/chat' component={ChatManager}></Route>
-          <Redirect to='/'/>
+          <Route to='/' component={Login}/>
       </Switch>
       <Footer/>
     </div>
