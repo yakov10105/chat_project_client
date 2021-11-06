@@ -3,8 +3,20 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import useStyles from "./hooks/useStyles";
+import './MessageContainer.css';
+import { Divider, makeStyles } from "@material-ui/core";
 
+
+const useStyles= makeStyles(theme=>({
+    messaage_area:{
+        padding:'30px',
+        height: '70vh',
+        overflowY:'auto'
+    },
+    list_item:{
+
+    }
+}));
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
     const classes = useStyles();
@@ -17,67 +29,33 @@ const MessageContainer = ({ messages, user }) => {
     }, [messages]);
 
     const messageIsFromUser = (username) => {
-        if(username == user){
-            return "right"
+        if(username === user){
+            return "sender"
         }
-        return "left"
+        if(username === "MyChat Bot"){
+            return "bot"
+        }
+        return "reciever"
     }
 
 
     return (
-        // <div ref={messageRef} className="message-container">
-        //     {messages.map((m, index) => 
-        //         <div key={index} className="user-message">
-        //             <div className="message bg-primary">{m.message}</div>
-        //             <div className="from-user">{m.user}</div>
-        //         </div>
-        //     )}
-        // </div>
-        <List className={classes.messageArea} ref={messageRef}>
+        <List className={classes.messaage_area} ref={messageRef}>
             {messages.map((m, index) => 
-                 <div key={index} className="user-message">
-                     <ListItem key={index}>
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align={messageIsFromUser(m.user)} primary={m.message}></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align={messageIsFromUser(m.user)} secondary={m.user}></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem>
+                 <div key={index} className={messageIsFromUser(m.user)}>
+                    <ListItem className={classes.list_item} key={index}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <ListItemText  primary={m.message}></ListItemText>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ListItemText className="from"  secondary={m.user}></ListItemText>
+                            </Grid>
+                        </Grid>
+                    </ListItem>
+                    <Divider />
                  </div>
              )}
-            {/* <ListItem key="1">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" primary="Hey man, What's up ?"></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" secondary="09:30"></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem>
-            <ListItem key="2">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align="left" primary="Hey, Iam Good! What about you ?"></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align="left" secondary="09:31"></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem>
-            <ListItem key="3">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText align="right" secondary="10:30"></ListItemText>
-                    </Grid>
-                </Grid>
-            </ListItem> */}
         </List>
     )
 }

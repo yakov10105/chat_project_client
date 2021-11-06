@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
 import Lobby from './Lobby';
+import axios from 'axios';
 
 
 const ChatManager = (props) => {
@@ -54,20 +55,36 @@ const ChatManager = (props) => {
     }
   }
 
-  const closeConnection = async () => {
+  const closeConnection = async (userName) => {
     try{
       await connection.stop();
+      axios
+        .get(`http://localhost:8082/api/users/offline?userName=${userName}`)
+        .then(res=>{
+          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     } catch(e){
       console.log(e);
     }
+
+  }
+  const openUserChat =(userName,user)=>{
 
   }
 
   return <div className='app'>
     {!connection
     ?<Lobby joinRoom={joinRoom} user={props.location.state.user.userName}/>
-    : <Chat sendMessage={sendMessage} messages={messages}
-        users={users} roomName={roomName} closeConnection={closeConnection} user={props.location.state.user.userName} />}
+    : <Chat sendMessage={sendMessage} 
+            messages={messages}
+            users={users} 
+            roomName={roomName} 
+            closeConnection={closeConnection} 
+            user={props.location.state.user.userName}
+            openUserChat={openUserChat} />}
   </div>
 }
 
