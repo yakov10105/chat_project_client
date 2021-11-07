@@ -3,12 +3,17 @@ import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,A
 import axios from "axios";
 import useStyles from "./hooks/useStyles";
 
+const INITIAL_STATE = {
+    term:""
+}
 
 const ConnectedUsers = ({ user,openChat}) => {
-    const [users,setUsers] = useState([])
-    const classes = useStyles();
 
-    //need to add search functionallity
+    const [users,setUsers] = useState([])
+    const [tmpUsers,setTmpUsers] = useState([])
+    const [searchResult , setSearchResult] = useState([])
+    const [values, setValues] = useState(INITIAL_STATE)
+    const classes = useStyles();
 
     useEffect(()=>{
         axios.get('http://localhost:8082/api/users/all',{
@@ -17,11 +22,36 @@ const ConnectedUsers = ({ user,openChat}) => {
             }
         }).then((res)=>{
             console.log(res.data)
-            setUsers(res.data.filter((u)=>u.userName !== user ))
+            let result =res.data.filter((u)=>u.userName !== user )
+            setUsers(result);
+            setTmpUsers([...result]);
+          
         }).catch(err=>{
             console.log(err)
         })
+    
     },[])
+
+    useEffect(()=>{
+   
+    },[users])
+
+    useEffect(()=>{
+        let newUsers =  users.filter((u)=>u.userName.toLowerCase().startsWith(values.term.toLowerCase()));
+        setSearchResult((e)=>{console.log(newUsers); return newUsers});
+        if(newUsers.length!==0){
+            setTmpUsers([...newUsers])
+        }
+    },[values.term])
+
+    useEffect(()=>{
+        console.log(tmpUsers);
+    },[tmpUsers])
+
+    const handleSetValues = (e)=>{
+        const {name,value} = e.target;
+       setValues(prevState=>({...prevState,[name]:value}))
+    }
 
     return(
             <Grid item xs={3} className={classes.borderRight500}>
@@ -40,12 +70,13 @@ const ConnectedUsers = ({ user,openChat}) => {
                             label="Search" 
                             variant="outlined" 
                             name="term"
+                            onChange = {handleSetValues}
                             fullWidth />
                 </Grid>
                 <Divider />
                 <List>
-                   {users &&
-                        users.map((user,ix)=>{
+                   {tmpUsers &&
+                        tmpUsers.map((user,ix)=>{
                             return(
                                 <ListItem button key={ix} onClick={()=>openChat(user,user)}>
                                     <ListItemIcon>
