@@ -11,7 +11,7 @@ const ChatManager = (props) => {
   const [connection, setConnection] = useState(); 
   const [messages, setMessages] = useState([]); 
   const [users, setUsers] = useState([]); 
-  const [roomName, setroomName] = useState(''); 
+  const [roomName, setroomName] = useState('room'); 
 
   const joinRoom = async (userName, room) => {
     try{
@@ -78,17 +78,18 @@ const ChatManager = (props) => {
 
   }
 
-  return <div className='app'>
-    {!connection
-    ?<Lobby joinRoom={joinRoom} user={props.location.state.user.userName}/>
-    : <Chat sendMessage={sendMessage} 
-            messages={messages}
-            users={users} 
-            roomName={roomName} 
-            closeConnection={closeConnection} 
-            user={props.location.state.user.userName}
-            openChat={openChat} />}
-  </div>
+  return (
+    <div className='app'>
+      <Chat sendMessage={sendMessage} 
+                messages={messages}
+                users={users} 
+                roomName={roomName} 
+                closeConnection={closeConnection} 
+                user={props.location.state.user.userName}
+                openChat={openChat}
+                joinRoom={joinRoom} />
+    </div>
+  )
 }
 
 export default ChatManager

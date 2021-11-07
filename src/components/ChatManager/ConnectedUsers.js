@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     term:""
 }
 
-const ConnectedUsers = ({ user,openChat}) => {
+const ConnectedUsers = ({ user,openChat,joinRoom}) => {
 
     const [users,setUsers] = useState([])
     const [tmpUsers,setTmpUsers] = useState([])
@@ -44,9 +44,14 @@ const ConnectedUsers = ({ user,openChat}) => {
         }
     },[values.term])
 
+
     useEffect(()=>{
         console.log(tmpUsers);
     },[tmpUsers])
+
+    const combineGroupId =(user1Id , user2Id)=>{
+
+    }
 
     const handleSetValues = (e)=>{
         const {name,value} = e.target;
@@ -76,14 +81,14 @@ const ConnectedUsers = ({ user,openChat}) => {
                 <Divider />
                 <List>
                    {tmpUsers &&
-                        tmpUsers.map((user,ix)=>{
+                        tmpUsers.map((u,ix)=>{
                             return(
-                                <ListItem button key={ix} onClick={()=>openChat(user,user)}>
+                                <ListItem button key={ix} onClick={()=>joinRoom(user,u.userName)}>
                                     <ListItemIcon>
-                                        <Avatar alt={user.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                                        <Avatar alt={u.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>
-                                    <ListItemText primary={user.userName}>{user.userName}</ListItemText>
-                                    {user.isOnline && <ListItemText secondary="online" align="right"></ListItemText>}
+                                    <ListItemText primary={u.userName}>{u.userName}</ListItemText>
+                                    {u.isOnline && <ListItemText secondary="online" align="right"></ListItemText>}
                                 </ListItem>
                             )
                         })
