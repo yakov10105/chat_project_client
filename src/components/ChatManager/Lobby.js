@@ -1,9 +1,13 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Form, Button } from "react-bootstrap"
 
 
 const Lobby = (props) => {
     const [room, setRoom] = useState();
+
+    useEffect(()=>{
+        props.joinRoom(props.user, "room");
+    },[])
 
     return  <Form className="lobby"
         onSubmit={e => {

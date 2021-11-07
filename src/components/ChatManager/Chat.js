@@ -23,7 +23,7 @@ const Chat = ({messages, sendMessage, roomName,openChat,  closeConnection,user})
           <ConnectedUsers user={user} openChat={openChat}/>
           <Grid item xs={9}>
             <MessageContainer messages = {messages} user={user} />
-            <SendMessageForm sendMessage={sendMessage} />
+            <SendMessageForm sendMessage={sendMessage}  roomName={ roomName} />
           </Grid>
       </Grid>
   </div>

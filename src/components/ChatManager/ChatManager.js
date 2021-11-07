@@ -87,7 +87,7 @@ const ChatManager = (props) => {
             roomName={roomName} 
             closeConnection={closeConnection} 
             user={props.location.state.user.userName}
-            openUserChat={openChat} />}
+            openChat={openChat} />}
   </div>
 }
 

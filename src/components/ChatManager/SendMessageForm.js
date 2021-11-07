@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
 
 
-const SendMessageForm = ({ sendMessage }) => {
+const SendMessageForm = ({ sendMessage, roomName }) => {
 
     const [message, setMessage] = useState('');
     const handleSubmit = (e)=>{
@@ -23,7 +23,7 @@ const SendMessageForm = ({ sendMessage }) => {
                 onChange={e => setMessage(e.target.value)} value={message}/>
             </Grid>
             <Grid xs={1} align="right">
-                <Fab color="primary" type='submit' aria-label="add"><SendIcon /></Fab>
+                <Fab color="primary" type='submit' aria-label="add" disabled={roomName=="room"}><SendIcon /></Fab>
             </Grid>
         </Grid>
         </Form>
