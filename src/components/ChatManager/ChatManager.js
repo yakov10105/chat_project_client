@@ -11,16 +11,27 @@ const ChatManager = (props) => {
   const [connection, setConnection] = useState(); 
   const [messages, setMessages] = useState([]); 
   const [users, setUsers] = useState([]); 
-  const [roomName, setroomName] = useState('room'); 
+  const [roomName, setroomName] = useState('room');
+  const [isOpenChat , setIsOpenChat] = useState(false) 
+  const user = props.location.state.user;
 
-  const joinRoom = async (userName, room) => {
+  useEffect(()=>{
+
+  },[isOpenChat])
+
+  useEffect(()=>{
+    //setMessages([]);
+  },[roomName])
+
+  const joinRoom = async (senderUserName,recieverUserName) => {
+    closeConnection(senderUserName);
     try{
       const connection = new HubConnectionBuilder()
       .withUrl("http://localhost:8082/chat",{accessTokenFactory: ()=> localStorage.getItem('key')})
       .configureLogging(LogLevel.Information)
       .build();
 
-      setroomName(room);
+      
 
       connection.on("ReceiveMessage", (userName, message) => {
         setMessages(messages => [...messages, {user:userName ,message: message}]);
@@ -38,9 +49,11 @@ const ChatManager = (props) => {
       })
 
       await connection.start();
-      await connection.invoke("JoinRoomAsync", { user:userName,room:room});
+      await connection.invoke("JoinRoomAsync", { SenderUserName:senderUserName,ReciverUserName:recieverUserName});
 
       setConnection(connection);
+      setroomName(connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName}))
+      setIsOpenChat(true)
 
     } catch(e){
       console.log(e);
@@ -59,23 +72,9 @@ const ChatManager = (props) => {
     //need to set the user offline - need to figure out how to do that
     try{
       await connection.stop();
-      axios
-        .get(`http://localhost:8082/api/users/offline?userName=${userName}`)
-        .then(res=>{
-          console.log(res)
-        })
-        .catch(err=>{
-          console.log(err)
-        })
     } catch(e){
       console.log(e);
     }
-
-  }
-  const openChat = (currentUser , otherUser)=>{
-    //need to define this function => when user click on one of the users in the list 
-    //their chat window need to be open
-
   }
 
   return (
@@ -85,9 +84,9 @@ const ChatManager = (props) => {
                 users={users} 
                 roomName={roomName} 
                 closeConnection={closeConnection} 
-                user={props.location.state.user.userName}
-                openChat={openChat}
-                joinRoom={joinRoom} />
+                user={user.userName}
+                joinRoom={joinRoom} 
+                chatFlag={isOpenChat}/>
     </div>
   )
 }

@@ -7,12 +7,13 @@ const INITIAL_STATE = {
     term:""
 }
 
-const ConnectedUsers = ({ user,openChat,joinRoom}) => {
+const ConnectedUsers = ({ user,joinRoom}) => {
 
     const [users,setUsers] = useState([])
     const [tmpUsers,setTmpUsers] = useState([])
     const [searchResult , setSearchResult] = useState([])
     const [values, setValues] = useState(INITIAL_STATE)
+    const [isDisabled,setisDisabled] = useState(false)
     const classes = useStyles();
 
     useEffect(()=>{
@@ -49,9 +50,6 @@ const ConnectedUsers = ({ user,openChat,joinRoom}) => {
         console.log(tmpUsers);
     },[tmpUsers])
 
-    const combineGroupId =(user1Id , user2Id)=>{
-
-    }
 
     const handleSetValues = (e)=>{
         const {name,value} = e.target;
@@ -83,7 +81,7 @@ const ConnectedUsers = ({ user,openChat,joinRoom}) => {
                    {tmpUsers &&
                         tmpUsers.map((u,ix)=>{
                             return(
-                                <ListItem button key={ix} onClick={()=>joinRoom(user,u.userName)}>
+                                <ListItem button key={ix} onClick={()=>{joinRoom(user,u.userName)}}>
                                     <ListItemIcon>
                                         <Avatar alt={u.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>
