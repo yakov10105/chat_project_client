@@ -4,9 +4,13 @@ import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/sig
 import Chat from './Chat';
 import Lobby from './Lobby';
 import axios from 'axios';
+import useSound from 'use-sound';
+import notificationSound from '../../sounds/Notification.mp3'
 
 
 const ChatManager = (props) => {
+
+  const [play] = useSound(notificationSound)
 
   const [connection, setConnection] = useState(); 
   const [messages, setMessages] = useState([]); 
@@ -20,7 +24,7 @@ const ChatManager = (props) => {
   },[isOpenChat])
 
   useEffect(()=>{
-    //setMessages([]);
+
   },[roomName])
 
   const joinRoom = async (senderUserName,recieverUserName) => {
@@ -35,6 +39,7 @@ const ChatManager = (props) => {
 
       connection.on("ReceiveMessage", (userName, message) => {
         setMessages(messages => [...messages, {user:userName ,message: message}]);
+        play();
       });
 
       
