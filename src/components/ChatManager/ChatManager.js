@@ -2,7 +2,6 @@ import './ChatManager.css'
 import React, { useEffect, useState } from 'react'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
-import Lobby from './Lobby';
 import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
@@ -27,23 +26,34 @@ const ChatManager = (props) => {
 
   },[roomName])
 
+  const getMessagesHistory = (senderUserName,recieverUserName)=>{
+    axios.get(`http://localhost:8082/api/messages/get-messages?senderUserName=${senderUserName}&recieverUserName=${recieverUserName}`,{
+      headers:{
+        "Authorization":localStorage.getItem('key')
+      }
+    })
+    .then(res=>{
+        if(res.data){
+          const list = [];
+          for(let i=0;i<res.data.length;i++){
+            list.push({user:res.data[i].senderUserName, message:res.data[i].text})
+          }
+          setMessages(list)
+        }
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
+
   const joinRoom = async (senderUserName,recieverUserName) => {
     closeConnection(senderUserName);
     try{
       const connection = new HubConnectionBuilder()
-      .withUrl("http://localhost:8082/chat",{accessTokenFactory: ()=> localStorage.getItem('key')})
+      .withUrl(`http://localhost:8082/chat`,{accessTokenFactory: ()=> localStorage.getItem('key')})
       .configureLogging(LogLevel.Information)
       .build();
 
-      axios.get('http://localhost:8082/api/messages/get-messages',{senderUserName:senderUserName,recieverUserName:recieverUserName},{
-      headers:{
-        "Authorization":localStorage.getItem('key')
-      }
-      }).then(res=>{
-          setMessages(res.data)
-      }).catch(err=>{
-        console.log(err)
-      })
+
 
       connection.on("ReceiveMessage", (userName, message) => {
         setMessages(messages => [...messages, {user:userName ,message: message}]);
@@ -71,6 +81,7 @@ const ChatManager = (props) => {
     } catch(e){
       console.log(e);
     }
+    getMessagesHistory(senderUserName,recieverUserName)
   }
 
   const sendMessage = async (message) => {
