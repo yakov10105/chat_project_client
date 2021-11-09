@@ -35,11 +35,19 @@ const ChatManager = (props) => {
       .configureLogging(LogLevel.Information)
       .build();
 
-      
+      axios.get('http://localhost:8082/api/messages/get-messages',{senderUserName:senderUserName,recieverUserName:recieverUserName},{
+      headers:{
+        "Authorization":localStorage.getItem('key')
+      }
+      }).then(res=>{
+          setMessages(res.data)
+      }).catch(err=>{
+        console.log(err)
+      })
 
       connection.on("ReceiveMessage", (userName, message) => {
         setMessages(messages => [...messages, {user:userName ,message: message}]);
-        play();
+        //play();
       });
 
       

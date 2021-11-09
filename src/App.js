@@ -1,4 +1,4 @@
-import { Switch ,Route,Redirect} from 'react-router';
+import { Switch ,Route} from 'react-router';
 import './App.css';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp';

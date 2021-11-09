@@ -10,7 +10,8 @@ import{ useEffect , useState } from "react";
 
 const Chat = ({messages,chatFlag, sendMessage, roomName,joinRoom, closeConnection,user}) =>{
   const classes = useStyles();
-  
+
+
   const renderChat = ()=>{
     if(chatFlag){
       return(

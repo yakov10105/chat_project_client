@@ -13,7 +13,6 @@ const ConnectedUsers = ({ user,joinRoom}) => {
     const [tmpUsers,setTmpUsers] = useState([])
     const [searchResult , setSearchResult] = useState([])
     const [values, setValues] = useState(INITIAL_STATE)
-    const [isDisabled,setisDisabled] = useState(false)
     const classes = useStyles();
 
     useEffect(()=>{
@@ -49,6 +48,7 @@ const ConnectedUsers = ({ user,joinRoom}) => {
     useEffect(()=>{
         console.log(tmpUsers);
     },[tmpUsers])
+
 
 
     const handleSetValues = (e)=>{
