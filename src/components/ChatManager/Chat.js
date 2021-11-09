@@ -29,16 +29,16 @@ const Chat = ({messages,chatFlag, sendMessage, roomName,joinRoom, closeConnectio
 
   return (
       <div>
-        <div className="leave-room">
+        {/* <div className="leave-room">
               <Button variant="contained" onClick={() => closeConnection(user)}>Leave Room</Button>
         </div>
         <Grid container>
               <Grid item xs={12} >
                   <Typography variant="h5" className="header-message">Chat</Typography>
               </Grid>
-        </Grid>
+        </Grid> */}
         <Grid container component={Paper} className={classes.chatSection}>
-            <ConnectedUsers user={user} joinRoom={joinRoom}/>
+            <ConnectedUsers closeConnection={closeConnection} user={user} joinRoom={joinRoom}/>
             {renderChat()}
         </Grid>
     </div>

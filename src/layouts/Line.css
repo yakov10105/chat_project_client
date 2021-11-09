@@ -1,0 +1,27 @@
+.Line {
+    display: flex;
+    height: fit-content;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--gap);
+}
+
+.Line[justify="between"] {
+    justify-content: space-between;
+}
+
+.Line[justify="evenly"] {
+    justify-content: space-evenly;
+}
+
+.Line[justify="around"] {
+    justify-content: space-around;
+}
+
+.Line[justify="start"] {
+    justify-content: flex-start;
+}
+
+.Line[justify="end"] {
+    justify-content: flex-end;
+}

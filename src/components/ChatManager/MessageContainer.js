@@ -35,11 +35,10 @@ const MessageContainer = ({ messages, user }) => {
                     <ListItem key={index}>
                         <Grid container>
                             <Grid item xs={12}>
-                                <ListItemText align={messageIsFromUser(m.user)} primary={m.message}></ListItemText>
+                                <ListItemText  primary={m.message}></ListItemText>
                             </Grid>
                             <Grid item xs={12}>
-                                {/* Add also message date */}
-                                <ListItemText align={messageIsFromUser(m.user)} secondary={m.user}></ListItemText>
+                                <ListItemText align='right' secondary={m.user}></ListItemText>
                             </Grid>
                         </Grid>
                     </ListItem>
