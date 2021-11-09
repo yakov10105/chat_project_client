@@ -1,20 +1,23 @@
 import React,{useState,useEffect} from "react";
-import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar, makeStyles} from '@material-ui/core'
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button} from '@material-ui/core'
 import axios from "axios";
 import useStyles from "./hooks/useStyles";
+import icon from '../../assets/game-icon.png'
+import Line from "../../layouts/Line";
 
 const INITIAL_STATE = {
     term:""
 }
 
-const ConnectedUsers = ({ user,joinRoom}) => {
+const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const [users,setUsers] = useState([])
     const [tmpUsers,setTmpUsers] = useState([])
-    const [searchResult , setSearchResult] = useState([])
     const [values, setValues] = useState(INITIAL_STATE)
     const classes = useStyles();
 
+    //#region useEffect
+    //getting users from the service
     useEffect(()=>{
         axios.get('http://localhost:8082/api/users/all',{
             headers:{
@@ -32,24 +35,24 @@ const ConnectedUsers = ({ user,joinRoom}) => {
     
     },[])
 
+    //rerender when users changes
     useEffect(()=>{
    
     },[users])
 
+    //run search when the search text changes
     useEffect(()=>{
         let newUsers =  users.filter((u)=>u.userName.toLowerCase().startsWith(values.term.toLowerCase()));
-        setSearchResult((e)=>{console.log(newUsers); return newUsers});
         if(newUsers.length!==0){
             setTmpUsers([...newUsers])
         }
     },[values.term])
 
-
+    //rerender when tmp users changed
     useEffect(()=>{
         console.log(tmpUsers);
     },[tmpUsers])
-
-
+    //#endregion
 
     const handleSetValues = (e)=>{
         const {name,value} = e.target;
@@ -66,6 +69,13 @@ const ConnectedUsers = ({ user,joinRoom}) => {
                         <ListItemText primary={user}>{user}</ListItemText>
                     </ListItem>
                 </List>
+                <Divider />
+                <Line justify="between" >
+                    <Button color='primary' variant="contained" onClick={() => closeConnection(user)}>Leave Chat</Button>
+                    <Button title="Invite to play">
+                        <Avatar src={icon}/>
+                    </Button>
+                </Line>
                 <Divider />
                 <Grid item xs={12} style={{padding: '10px'}}>
                         <TextField 
@@ -89,8 +99,7 @@ const ConnectedUsers = ({ user,joinRoom}) => {
                                     {u.isOnline && <ListItemText secondary="online" align="right"></ListItemText>}
                                 </ListItem>
                             )
-                        })
-                   
+                        })         
                    }
                 </List>
             </Grid>

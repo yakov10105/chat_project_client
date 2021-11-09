@@ -5,6 +5,7 @@ import Chat from './Chat';
 import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
+import { Redirect } from 'react-router';
 
 
 const ChatManager = (props) => {
@@ -93,7 +94,6 @@ const ChatManager = (props) => {
   }
 
   const closeConnection = async (userName) => {
-    //need to set the user offline - need to figure out how to do that
     try{
       await connection.stop();
     } catch(e){
