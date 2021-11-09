@@ -6,27 +6,24 @@ import {Button} from '@mui/material';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 import useStyles from "./hooks/useStyles";
-import { useEffect } from "react";
+import{ useEffect , useState } from "react";
 
-const Chat = ({messages, sendMessage, roomName,openChat, joinRoom, closeConnection,user}) =>{
+const Chat = ({messages,chatFlag, sendMessage, roomName,joinRoom, closeConnection,user}) =>{
   const classes = useStyles();
 
-  useEffect(()=>{
-    joinRoom(user,roomName);
-  },[])
 
   const renderChat = ()=>{
-     if(roomName!=="room"){
-        return(
-          <Grid item xs={9}>
-            <MessageContainer messages = {messages} user={user} />
-            <SendMessageForm sendMessage={sendMessage}  roomName={ roomName} />
-          </Grid>
-        )
-     }
-     else{
-       return <h1>Not connected to room</h1>
-     }
+    if(chatFlag){
+      return(
+        <Grid item xs={9}>
+          <MessageContainer messages = {messages} user={user} />
+          <SendMessageForm sendMessage={sendMessage}  roomName={ roomName} />
+        </Grid>
+      )
+    }
+    else{
+      return <h1>Not connected to room</h1>
+    }
   }
 
 
@@ -41,7 +38,7 @@ const Chat = ({messages, sendMessage, roomName,openChat, joinRoom, closeConnecti
               </Grid>
         </Grid>
         <Grid container component={Paper} className={classes.chatSection}>
-            <ConnectedUsers user={user} joinRoom={joinRoom} openChat={openChat}/>
+            <ConnectedUsers user={user} joinRoom={joinRoom}/>
             {renderChat()}
         </Grid>
     </div>

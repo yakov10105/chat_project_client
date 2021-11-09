@@ -41,8 +41,8 @@ const SignUp = () => {
     }
     const loginAfterRegistering = ()=>{
         axios.post('http://localhost:8082/api/auth/login',{
-            UserName: userDetails.UserName,
-            Password: userDetails.Password
+            UserName: userDetails.userName,
+            Password: userDetails.password
         }).then((res)=>{
             localStorage.setItem("key",res.data.key)
             setLoggedUser(res.data.user)
@@ -172,7 +172,7 @@ const SignUp = () => {
    else{
         return (<Redirect
             to={{
-            pathname: "/caht",
+            pathname: "/chat",
             state: { user: loggedUser }
           }}
         />)

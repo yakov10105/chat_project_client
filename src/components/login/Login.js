@@ -37,7 +37,7 @@ const Login = () => {
             setUser(res.data.user)
             setIsLoggedIn(true);
         }).catch((err)=>{
-            if(err.response.data.error){
+            if(err.response){
                 setServerError(err.response.data.error)
             }
             else{
@@ -73,7 +73,7 @@ const Login = () => {
                                 type='password'  
                                 label="Password" 
                                 variant="filled"
-                                error={errors['password']?.message || serverError && serverError}
+                                error={errors['password']?.message || serverError }
                                 helperText={errors['password']?.message} 
                                 {...register('password')}
                                 onChange={(e)=>{setPassword(e.target.value)}}/>

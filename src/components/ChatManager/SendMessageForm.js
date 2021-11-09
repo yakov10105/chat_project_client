@@ -23,7 +23,7 @@ const SendMessageForm = ({ sendMessage, roomName }) => {
                 onChange={e => setMessage(e.target.value)} value={message}/>
             </Grid>
             <Grid xs={1} align="right">
-                <Fab color="primary" type='submit' aria-label="add" disabled={roomName=="room"}><SendIcon /></Fab>
+                <Fab color="primary" type='submit' aria-label="add" disabled={roomName==="room"}><SendIcon /></Fab>
             </Grid>
         </Grid>
         </Form>

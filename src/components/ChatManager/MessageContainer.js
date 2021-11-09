@@ -39,7 +39,7 @@ const MessageContainer = ({ messages, user }) => {
                             </Grid>
                             <Grid item xs={12}>
                                 {/* Add also message date */}
-                                <ListItemText align={messageIsFromUser(m.user)} secondary={m.user+ `()`}></ListItemText>
+                                <ListItemText align={messageIsFromUser(m.user)} secondary={m.user}></ListItemText>
                             </Grid>
                         </Grid>
                     </ListItem>
