@@ -37,7 +37,7 @@ const ChatManager = (props) => {
         if(res.data){
           const list = [];
           for(let i=0;i<res.data.length;i++){
-            list.push({user:res.data[i].senderUserName, message:res.data[i].text})
+            list.push({user:res.data[i].senderUserName, message:res.data[i].text , date:res.data[i].date})
           }
           setMessages(list)
         }
@@ -57,7 +57,9 @@ const ChatManager = (props) => {
 
 
       connection.on("ReceiveMessage", (userName, message) => {
-        setMessages(messages => [...messages, {user:userName ,message: message}]);
+        let date = new Date()
+        let dateString = `${date.getHours()}:${date.getMinutes()} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
+        setMessages(messages => [...messages, {user:userName ,message: message, date:dateString }]);
         //play();
       });
 
