@@ -58,7 +58,7 @@ const ChatManager = (props) => {
 
       connection.on("ReceiveMessage", (userName, message) => {
         let date = new Date()
-        let dateString = `${date.getHours()}:${date.getMinutes()} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
+        let dateString = `${date.getHours()}:${'0'+date.getMinutes().slice(-2)} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
         setMessages(messages => [...messages, {user:userName ,message: message, date:dateString }]);
         //play();
       });
