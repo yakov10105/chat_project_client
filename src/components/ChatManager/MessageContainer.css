@@ -1,11 +1,15 @@
-.right{
+.msg_box{
     width: 40%;
     border-radius: 10px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.right{
     color: black;
-    background-color: #00C6FF;
+    background-color: lightgray;
     margin-left: auto;
     left: -5%;
-    position: relative;
 }
 .right:after{
     content:"";
@@ -14,18 +18,15 @@
     top: 26px;
     width: 0;
     height: 0;
-    
+
     border-top: 13px solid transparent;
-    border-left: 26px solid #00C6FF;
+    border-left: 26px solid lightgray;
     border-bottom: 13px solid transparent;
 }
 .left{
-    width: 40%;
-    border-radius: 10px;
     color:white;
     right: -5%;
     background-color: #0078FF;
-    position: relative;
 }
 .left:before {
     content:"";
@@ -34,10 +35,9 @@
     top: 26px;
     width: 0;
     height: 0;
-    
+
     border-top: 13px solid transparent;
     border-right: 26px solid #0078FF;
     border-bottom: 13px solid transparent;
   }
-  
 

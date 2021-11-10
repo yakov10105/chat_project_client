@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import useStyles from "./hooks/useStyles";
 import './MessageContainer.css';
+import Line from "../../layouts/Line";
 
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
@@ -31,14 +32,17 @@ const MessageContainer = ({ messages, user }) => {
     return (
         <List className={classes.messageArea} ref={messageRef}>
             {messages.map((m, index) => 
-                 <div key={index} className={messageIsFromUser(m.user)}>
+                 <div key={index} className={messageIsFromUser(m.user)+" msg_box"}>
                     <ListItem key={index}>
                         <Grid container>
                             <Grid item xs={12}>
                                 <ListItemText  primary={m.message}></ListItemText>
                             </Grid>
                             <Grid item xs={12}>
-                                <ListItemText align='right' secondary={m.user}></ListItemText>
+                                <Line justify='between'>
+                                    <ListItemText align='left' secondary={m.user}></ListItemText>
+                                    <ListItemText align='right' secondary={m.date}></ListItemText>
+                                </Line>
                             </Grid>
                         </Grid>
                     </ListItem>

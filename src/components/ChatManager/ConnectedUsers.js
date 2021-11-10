@@ -4,6 +4,7 @@ import axios from "axios";
 import useStyles from "./hooks/useStyles";
 import icon from '../../assets/game-icon.png'
 import Line from "../../layouts/Line";
+import { deepOrange } from "@material-ui/core/colors";
 
 const INITIAL_STATE = {
     term:""
@@ -64,7 +65,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                 <List>
                     <ListItem button key="RemySharp">
                         <ListItemIcon>
-                        <Avatar alt={user} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                        <Avatar alt={user} sx={{ bgcolor: deepOrange[500] }} src="https://material-ui.com/static/images/avatar/1.jpg" />
                         </ListItemIcon>
                         <ListItemText primary={user}>{user}</ListItemText>
                     </ListItem>
