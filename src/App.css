@@ -10,12 +10,8 @@
 }
 
 .data_container{
-    background-color: var(--fourth-color);
-    border-color: white;
-    border-style: solid;
-    border-width: thick;
-    box-shadow: inset 0px 0px 5px 5px black;
-    padding: 30px;
+    background: white;
+    padding:0px;
     border-radius: 15px;
     margin-bottom: 350px;
     font-size: 20px;

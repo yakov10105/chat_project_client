@@ -97,7 +97,8 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                                         <Avatar alt={u.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>
                                     <ListItemText primary={u.userName}>{u.userName}</ListItemText>
-                                    {u.isOnline && <ListItemText secondary="online" align="right"></ListItemText>}
+                                    {u.isOnline && <ListItemText secondary={"🟢"}  align="right"></ListItemText>}
+                                    {!u.isOnline && <ListItemText secondary={"🔴"}  align="right"></ListItemText>}
                                 </ListItem>
                             )
                         })         

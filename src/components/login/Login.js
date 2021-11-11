@@ -1,6 +1,7 @@
 import React, { useState} from 'react'
 import './Login.css'
 import { Container, Divider, Stack, TextField,Button } from '@mui/material'
+import Line from '../../layouts/Line'
 import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -52,16 +53,27 @@ const Login = () => {
     if (!isLoggedin) {
         return (
             <div className="Login">
-               <Container maxWidth="sm" fixed="true" className="data_container">
+               <Container maxWidth="sm" fixed="true" sx={{paddingLeft:"0px"}} className="data_container">
+                   <Line justify="between">
+               
+               <div className="register">
+                   <p style={{color:"#ffffff", marginBottom:"185px", textAlign:"center"}}>Dont have An Acount Yet?</p>
+                            <Button className='sign-up_btn' component={Link} to="/signup" style={{
+                                borderRadius: 35,
+                                color: "#182418",
+                                background: "#DBD582",
+                                padding: "13px 26px" }} variant='contained' >SignUp</Button>
+               </div>
                <form onSubmit={handleAutoFill}>
                     <Stack 
                         spacing={2}>
+                            <p>Login</p>
                             <TextField 
                                 name='userName'
                                 className="field" 
                                 id="outlined-basic" 
                                 label="User Name" 
-                                variant='filled'
+                                variant='outlined'
                                 error={errors['userName']?.message}
                                 helperText={errors['userName']?.message}
                                 {...register('userName')} 
@@ -72,15 +84,20 @@ const Login = () => {
                                 id="outlined-basic" 
                                 type='password'  
                                 label="Password" 
-                                variant="filled"
+                                variant="outlined"
                                 error={errors['password']?.message || serverError }
                                 helperText={errors['password']?.message} 
                                 {...register('password')}
                                 onChange={(e)=>{setPassword(e.target.value)}}/>
-                            <Button className='login-btn'  variant='outlined' type='submit'>Login</Button>
-                            <Link className="signup-link" to="/signup">Dont have account ? click here to sign-up</Link>
+                            <Button className='login-btn'  variant='contained' style={{
+                                borderRadius: 35,
+                                background: "linear-gradient(60deg,  #5E9C2F,#5E9C2F)",
+                                padding: "11px 22px" }} type='submit'>Login</Button>
                     </Stack>
+                    
                </form>
+                       
+                       </Line>
                </Container>
             </div>
         )

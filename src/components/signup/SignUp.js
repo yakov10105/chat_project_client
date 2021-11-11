@@ -93,7 +93,7 @@ const SignUp = () => {
                             className="field" 
                             id="outlined-basic" 
                             label="First Name" 
-                            variant='filled' 
+                            variant='outlined' 
                             name="FirstName" 
                             error={errors['firstName']?.message != null}
                             helperText={errors['firstName']?.message}
@@ -103,7 +103,7 @@ const SignUp = () => {
                             className="field" 
                             id="outlined-basic" 
                             label="Last Name" 
-                            variant="filled" 
+                            variant="outlined" 
                             name="LastName" 
                             error={errors['lastName']?.message}
                             helperText={errors['lastName']?.message}
@@ -113,7 +113,7 @@ const SignUp = () => {
                             className="field" 
                             id="outlined-basic" 
                             label="User Name" 
-                            variant="filled" 
+                            variant="outlined" 
                             name='UserName' 
                             error={errors['userName']?.message || serverError.userNameError}
                             helperText={errors['userName']?.message || serverError.userNameError}
@@ -124,7 +124,7 @@ const SignUp = () => {
                             id="outlined-basic" 
                             type="email" 
                             label="Email" 
-                            variant="filled" 
+                            variant="outlined" 
                             name='UserEmail'
                              error={errors['userEmail']?.message || serverError.emailError}
                             helperText={errors['userEmail']?.message || serverError.emailError}
@@ -135,7 +135,7 @@ const SignUp = () => {
                             id="outlined-basic" 
                             type='number' 
                             label="Age" 
-                            variant="filled" 
+                            variant="outlined" 
                             name="UserAge" 
                             error={errors['userAge']?.message}
                             helperText={errors['userAge']?.message}
@@ -146,7 +146,7 @@ const SignUp = () => {
                             id="outlined-basic" 
                             type='password'  
                             label="Password" 
-                            variant="filled" 
+                            variant="outlined" 
                             name="Password" 
                             error={errors['password']?.message}
                             helperText={errors['password']?.message}
@@ -157,12 +157,15 @@ const SignUp = () => {
                             id="outlined-basic" 
                             type='password'  
                             label="Confirm Password" 
-                            variant="filled"
+                            variant="outlined"
                             name='ConfirmPassword'
                             error={errors['confirmPassword']?.message}
                             helperText={errors['confirmPassword']?.message}
                             {...register('confirmPassword')}/>
-                        <Button color='primary' variant='outlined' type='submit' >Signup</Button>
+                        <Button variant='contained' style={{
+                                borderRadius: 35,
+                                background: "linear-gradient(60deg,  #5E9C2F,#5E9C2F)",
+                                padding: "11px 22px" }} type='submit' >Signup</Button>
                 </Stack>
            </form>
            </Container>

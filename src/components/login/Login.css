@@ -1,25 +1,41 @@
 .Login{
     height: 50vh;
-    width: 50%;
-}
-.container{
-    background-color: var(--fourth-color);
-    padding: 20px;
-    border-radius: 15px;
-}
-.field{
-    background-color: #fff ;
-    color: var(--secondary-color);
-    border-radius: 10px;
-    outline: none;
+    width: 100%;
 }
 .signup-link{
-    color: black;
+    color: white;
     font-size: 20px;
     text-align: center;
     text-decoration: none;
 }
 .signup-link:hover{
-    text-decoration: underline;
+    color: orange;
     opacity: 0.9;
+}
+
+.register{
+    width: 40%;
+    padding: 50px;
+    background-image: url('../../assets/background.png');
+    background-position: center center;
+    height: 300px;
+    display: flex;
+    justify-content:end;
+    align-items:center;
+    flex-direction: column;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-left: -24px;
+}
+
+.login-btn{
+    background: linear-gradient(60deg,  #5E9C2F,#5E9C2F);
+    padding: 11px 22px;
+    border-radius: 35px;
+}
+
+.sign_up_btn{
+    background: linear-gradient(60deg,  #5E9C2F,#5E9C2F);
+    padding: 11px 22px;
+    border-radius: 35px;
 }
