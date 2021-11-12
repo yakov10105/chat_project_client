@@ -1,11 +1,11 @@
 import './ChatManager.css'
-import React, { useEffect, useState } from 'react'
+import React, {useContext, useEffect, useState } from 'react'
+import {UserContext } from '../../Context/UserContext' 
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
 import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
-import { Redirect } from 'react-router';
 
 
 const ChatManager = (props) => {
@@ -17,7 +17,13 @@ const ChatManager = (props) => {
   const [users, setUsers] = useState([]); 
   const [roomName, setroomName] = useState('room');
   const [isOpenChat , setIsOpenChat] = useState(false) 
-  const user = props.location.state.user;
+  const localUser = props.location.state.user;
+  const {user,setUser} = useContext(UserContext);
+
+
+  useEffect(()=>{
+    setUser(localUser);
+  },[])
 
   useEffect(()=>{
 
@@ -58,7 +64,7 @@ const ChatManager = (props) => {
 
       connection.on("ReceiveMessage", (userName, message) => {
         let date = new Date()
-        let dateString = `${date.getHours()}:${'0'+date.getMinutes().slice(-2)} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
+        let dateString = `${date.getHours()}:${date.getMinutes()} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
         setMessages(messages => [...messages, {user:userName ,message: message, date:dateString }]);
         //play();
       });
@@ -107,10 +113,10 @@ const ChatManager = (props) => {
     <div className='app'>
       <Chat sendMessage={sendMessage} 
                 messages={messages}
-                users={users} 
+                users={users}
                 roomName={roomName} 
                 closeConnection={closeConnection} 
-                user={user.userName}
+                user={localUser.userName}
                 joinRoom={joinRoom} 
                 chatFlag={isOpenChat}/>
     </div>
