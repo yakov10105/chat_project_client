@@ -1,0 +1,37 @@
+.bubble{
+    background-color: #b3e5fc;
+
+    height: 36px;
+    width: 64px;
+    padding: 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    border-radius: 18px;
+    border-top-left-radius: 4px;
+}
+
+.dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #0091ea;
+
+    animation: bounce 1000ms infinite;
+}
+
+.dot:nth-of-type(2) {
+    animation-delay: 50ms;
+}
+
+.dot:nth-of-type(3) {
+    animation-delay: 100ms;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0);}
+    20% { transform: translateY(-5px);}
+    40% { transform: translateY(0);}
+}

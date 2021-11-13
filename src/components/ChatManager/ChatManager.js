@@ -1,6 +1,5 @@
 import './ChatManager.css'
 import React, {useContext, useEffect, useState } from 'react'
-import {UserContext } from '../../Context/UserContext' 
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
 import axios from 'axios';
@@ -17,13 +16,7 @@ const ChatManager = (props) => {
   const [users, setUsers] = useState([]); 
   const [roomName, setroomName] = useState('room');
   const [isOpenChat , setIsOpenChat] = useState(false) 
-  const localUser = props.location.state.user;
-  const {user,setUser} = useContext(UserContext);
-
-
-  useEffect(()=>{
-    setUser(localUser);
-  },[])
+  const user = props.location.state.user;
 
   useEffect(()=>{
 
@@ -61,7 +54,6 @@ const ChatManager = (props) => {
       .build();
 
 
-
       connection.on("ReceiveMessage", (userName, message) => {
         let date = new Date()
         let dateString = `${date.getHours()}:${date.getMinutes()} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
@@ -78,6 +70,7 @@ const ChatManager = (props) => {
         setConnection();
         setMessages([]);
         setUsers([]);
+        setIsOpenChat(false);
       })
 
       await connection.start();
@@ -86,7 +79,7 @@ const ChatManager = (props) => {
       setConnection(connection);
       setroomName(connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName}))
       setIsOpenChat(true)
-
+      
     } catch(e){
       console.log(e);
     }
@@ -113,10 +106,10 @@ const ChatManager = (props) => {
     <div className='app'>
       <Chat sendMessage={sendMessage} 
                 messages={messages}
-                users={users}
+                //users={users}
                 roomName={roomName} 
                 closeConnection={closeConnection} 
-                user={localUser.userName}
+                user={user.userName}
                 joinRoom={joinRoom} 
                 chatFlag={isOpenChat}/>
     </div>
