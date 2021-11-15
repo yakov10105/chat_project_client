@@ -1,105 +1,153 @@
 {"LeftUp":[
     {
         "color":"1",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"top"
+        "position":"top",
+        "checkers":[{"number":0,
+                     "player":"1"}]
     },
     {
         "color":"1",
-        "position":"top"
+        "position":"top",
+        "checkers":[{"number":0,
+                     "player":"1"}]
     },
     {
         "color":"2",
-        "position":"top"
+        "position":"top",
+        "checkers":[{"number":0,
+                     "player":"1"}]
     },
     {
         "color":"1",
-        "position":"top"
+        "position":"top",
+        "checkers":[{"number":0,
+                     "player":"1"}]
     },
     {
         "color":"2",
-        "position":"top"
+        "position":"top",
+        "checkers":[{"number":0,
+                     "player":"1"}]
     }
 ],
 "LeftDown":[
     {
         "color":"2",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":[{"number":0,
+                     "player":"1"}]
     },
     {
         "color":"1",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":[{"number":0,
+                     "player":""}]
     },
     {
         "color":"2",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     }
 ],
 "RightUp":[
     {
         "color":"1",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"top"
+        "position":"top",
+        "checkers":{"number":0,
+                     "player":"1"}
     }
 ],
 "RightDown":[
     {
         "color":"2",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"2",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":0,
+                     "player":"1"}
     },
     {
         "color":"1",
-        "position":"bottom"
+        "position":"bottom",
+        "checkers":{"number":2,
+                     "player":"1"}
     }
 ]
 

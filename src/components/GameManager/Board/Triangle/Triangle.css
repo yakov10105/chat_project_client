@@ -63,6 +63,9 @@
   .triangleRightDownC2 {
     left: 50%;
     background: linear-gradient(to right top, var(--color1) 0%, var(--color1) 49%, transparent 51%);
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-end;
   }
   
   .triangleLeftDownReceivable {

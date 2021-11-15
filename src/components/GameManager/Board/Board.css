@@ -51,6 +51,12 @@
     height: 100%;
 }
 
+.bottom {
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-end;
+}
+
 
 /* .triangleLeftUpC2:nth-child(1){
     left: 20%;

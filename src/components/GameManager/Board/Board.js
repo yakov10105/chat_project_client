@@ -1,16 +1,20 @@
 import React,{useState} from 'react'
 import Data from './Fields.json'
+import Checker from '../Checker/Checker'
 import Triangle from './Triangle/Triangle'
+import getCheckers from '../getCheckers/getCheckers'
 import './Board.css'
 
 const Board = () => {
     const [list, setList] = useState(Data); 
 
     const renderTriangle = (array) => {
-        return array.map(l=> {
+        return array.map((l,index)=> {
             return (
-                <div className="tria_container">
-                    <Triangle color={l.color} position={l.position}/>
+                <div className={"tria_container" + " " + l.position}>
+                    <Triangle id={index} color={l.color} position={l.position}>
+                        {getCheckers(l.checkers.player,l.checkers.number)}
+                    </Triangle>
                 </div>
             )
         })
@@ -35,7 +39,7 @@ const Board = () => {
                     {renderTriangle(Data.RightDown)}
                 </div>
             </div>
-            
+
         </div>
     )
 }
