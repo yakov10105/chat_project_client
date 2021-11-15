@@ -70,7 +70,7 @@ const ChatManager = (props) => {
         setConnection();
         setMessages([]);
         setUsers([]);
-        setIsOpenChat(false);
+        // setIsOpenChat(false);
       })
 
       await connection.start();

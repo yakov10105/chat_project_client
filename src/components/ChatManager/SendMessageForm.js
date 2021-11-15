@@ -17,23 +17,15 @@ const SendMessageForm = ({ sendMessage, roomName }) => {
     useEffect(()=>{
         return (() => clearTimeout(timer));
     },[])
-    // function sleep(ms) {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    //   }
 
     const userTyping = () => {
         clearTimeout(timer);
         setIsTyping(true)
-        console.log(isTyping)
+        // console.log(isTyping)
         timer = setTimeout(() => {
             setIsTyping(false)
-            console.log(isTyping)
+            // console.log(isTyping)
         }, 2000);
-        // //sleep(2000).then(() => { 
-        //     console.log(isTyping); 
-        //     setIsTyping(false)
-        //     console.log(isTyping); 
-        //});
         
     }
 

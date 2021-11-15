@@ -18,6 +18,7 @@ const INITIAL_STATE = {
 
 const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
+    const [connection, setConnection] = useState(); 
     const [users,setUsers] = useState([])
     const [tmpUsers,setTmpUsers] = useState([])
     const [connectedUsers,setConnectedUsers] = useState([]);
@@ -60,6 +61,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
       const sendNotifficition = async (userName) => {
         try{
+            console.log("e");
             await connection.invoke("SendTyping", userName);
         } catch(e){
           console.log(e);
@@ -161,7 +163,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                             <ExitToAppIcon />
                         </IconButton>
                     </Tooltip>
-                    <Switch defaultChecked={usersFlag} color="warning" onChange={getCurrentUsers} />
+                    <Switch defaultChecked={usersFlag} color="success" onChange={getCurrentUsers} />
                     </Line>
                     <Tooltip title="Invite to play">
                     <Button>

@@ -1,0 +1,106 @@
+{"LeftUp":[
+    {
+        "color":"1",
+        "position":"top"
+    },
+    {
+        "color":"2",
+        "position":"top"
+    },
+    {
+        "color":"1",
+        "position":"top"
+    },
+    {
+        "color":"2",
+        "position":"top"
+    },
+    {
+        "color":"1",
+        "position":"top"
+    },
+    {
+        "color":"2",
+        "position":"top"
+    }
+],
+"LeftDown":[
+    {
+        "color":"2",
+        "position":"bottom"
+    },
+    {
+        "color":"1",
+        "position":"bottom"
+    },
+    {
+        "color":"2",
+        "position":"bottom"
+    },
+    {
+        "color":"1",
+        "position":"bottom"
+    },
+    {
+        "color":"2",
+        "position":"bottom"
+    },
+    {
+        "color":"1",
+        "position":"bottom"
+    }
+],
+"RightUp":[
+    {
+        "color":"1",
+        "position":"top"
+    },
+    {
+        "color":"2",
+        "position":"top"
+    },
+    {
+        "color":"1",
+        "position":"top"
+    },
+    {
+        "color":"2",
+        "position":"top"
+    },
+    {
+        "color":"1",
+        "position":"top"
+    },
+    {
+        "color":"2",
+        "position":"top"
+    }
+],
+"RightDown":[
+    {
+        "color":"2",
+        "position":"bottom"
+    },
+    {
+        "color":"1",
+        "position":"bottom"
+    },
+    {
+        "color":"2",
+        "position":"bottom"
+    },
+    {
+        "color":"1",
+        "position":"bottom"
+    },
+    {
+        "color":"2",
+        "position":"bottom"
+    },
+    {
+        "color":"1",
+        "position":"bottom"
+    }
+]
+
+}
