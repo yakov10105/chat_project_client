@@ -1,11 +1,12 @@
 import './ChatManager.css'
-import React, { useEffect, useState } from 'react'
+import React, {useContext, useEffect, useState } from 'react'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
 import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
-import { Redirect } from 'react-router';
+import LogoutButton from '../loguot-button/LogoutButton';
+import GameManager from '../GameManager/GameManager'
 
 
 const ChatManager = (props) => {
@@ -17,6 +18,7 @@ const ChatManager = (props) => {
   const [users, setUsers] = useState([]); 
   const [roomName, setroomName] = useState('room');
   const [isOpenChat , setIsOpenChat] = useState(false) 
+  const [isGameOn , setIsGameOn] = useState(false)
   const user = props.location.state.user;
 
   useEffect(()=>{
@@ -26,6 +28,12 @@ const ChatManager = (props) => {
   useEffect(()=>{
 
   },[roomName])
+
+  useEffect(()=>{
+    if(isGameOn){
+      //handle page layout
+    }
+  },[isGameOn])
 
   const getMessagesHistory = (senderUserName,recieverUserName)=>{
     axios.get(`http://localhost:8082/api/messages/get-messages?senderUserName=${senderUserName}&recieverUserName=${recieverUserName}`,{
@@ -55,10 +63,9 @@ const ChatManager = (props) => {
       .build();
 
 
-
       connection.on("ReceiveMessage", (userName, message) => {
         let date = new Date()
-        let dateString = `${date.getHours()}:${'0'+date.getMinutes().slice(-2)} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
+        let dateString = `${date.getHours()}:${date.getMinutes()} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
         setMessages(messages => [...messages, {user:userName ,message: message, date:dateString }]);
         //play();
       });
@@ -72,6 +79,7 @@ const ChatManager = (props) => {
         setConnection();
         setMessages([]);
         setUsers([]);
+        // setIsOpenChat(false);
       })
 
       await connection.start();
@@ -80,7 +88,7 @@ const ChatManager = (props) => {
       setConnection(connection);
       setroomName(connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName}))
       setIsOpenChat(true)
-
+      
     } catch(e){
       console.log(e);
     }
@@ -104,16 +112,26 @@ const ChatManager = (props) => {
   }
 
   return (
-    <div className='app'>
-      <Chat sendMessage={sendMessage} 
-                messages={messages}
-                users={users} 
-                roomName={roomName} 
-                closeConnection={closeConnection} 
-                user={user.userName}
-                joinRoom={joinRoom} 
-                chatFlag={isOpenChat}/>
-    </div>
+    <>
+      <div className='app'>
+        <Chat sendMessage={sendMessage} 
+                  messages={messages}
+                  //users={users}
+                  roomName={roomName} 
+                  closeConnection={closeConnection} 
+                  user={user.userName}
+                  joinRoom={joinRoom} 
+                  chatFlag={isOpenChat}/>
+      </div>
+      <div className="game-container">
+        {isGameOn &&
+            <GameManager/>
+        }
+      </div>
+      <div>
+        <LogoutButton/>
+      </div>
+    </>
   )
 }
 

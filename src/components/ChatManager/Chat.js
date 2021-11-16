@@ -1,3 +1,4 @@
+import{ useEffect , useContext, useState, useMemo } from "react";
 import  MessageContainer  from "./MessageContainer";
 import  SendMessageForm  from "./SendMessageForm";
 import  ConnectedUsers  from "./ConnectedUsers";
@@ -6,19 +7,25 @@ import {Button} from '@mui/material';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 import useStyles from "./hooks/useStyles";
-import{ useEffect , useState } from "react";
+import {UserTyping} from '../../Context/UserTyping';
 
 const Chat = ({messages,chatFlag, sendMessage, roomName,joinRoom, closeConnection,user}) =>{
+  const [isTyping, setIsTyping] = useState(false);
   const classes = useStyles();
+
+  
+  const value = useMemo(() => ({isTyping, setIsTyping}), [isTyping, setIsTyping])
 
 
   const renderChat = ()=>{
     if(chatFlag){
       return(
+        <UserTyping.Provider value={value}>
         <Grid item xs={9}>
           <MessageContainer messages = {messages} user={user} />
-          <SendMessageForm sendMessage={sendMessage}  roomName={ roomName} />
+          <SendMessageForm sendMessage={sendMessage}  roomName={roomName}/>
         </Grid>
+          </UserTyping.Provider>
       )
     }
     else{
@@ -29,18 +36,12 @@ const Chat = ({messages,chatFlag, sendMessage, roomName,joinRoom, closeConnectio
 
   return (
       <div>
-        {/* <div className="leave-room">
-              <Button variant="contained" onClick={() => closeConnection(user)}>Leave Room</Button>
-        </div>
-        <Grid container>
-              <Grid item xs={12} >
-                  <Typography variant="h5" className="header-message">Chat</Typography>
-              </Grid>
-        </Grid> */}
+      <UserTyping.Provider value={value}>
         <Grid container component={Paper} className={classes.chatSection}>
             <ConnectedUsers closeConnection={closeConnection} user={user} joinRoom={joinRoom}/>
             {renderChat()}
         </Grid>
+          </UserTyping.Provider>
     </div>
   )
 }

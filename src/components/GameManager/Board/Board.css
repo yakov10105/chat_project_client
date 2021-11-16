@@ -1,0 +1,78 @@
+#game_board {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    border: 4px solid black;
+    background-image: url('../../../assets/BoardBorderBG.jpg');
+    margin: 0px;
+    padding: 0px;
+}
+
+.blocksUp {
+    position: absolute;
+    top: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+  
+.blocksDown {
+    position: absolute;
+    bottom: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
+}
+
+#leftSide {
+    position: absolute;
+    top: 2%;
+    left: 5%;
+    bottom: 2%;
+    width: 36.5%;
+    display: block;
+    background-image: url('../../../assets/BoardBG.jpg');
+}
+
+#rightSide {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    bottom: 2%;
+    width: 36.5%;
+    display: block;
+    background-image: url('../../../assets/BoardBG.jpg');
+}
+
+.tria_container{
+    position: relative;
+    width: 20%;
+    height: 100%;
+}
+
+.bottom {
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-end;
+}
+
+
+/* .triangleLeftUpC2:nth-child(1){
+    left: 20%;
+}
+
+
+.triangleRightUpC2:nth-child(2){
+    left: 30%;
+}
+
+.triangleLeftUp:nth-child(2){
+    left: 20%;
+}
+
+
+.triangleRightUp:nth-child(4){
+    left: 30%;
+} */
