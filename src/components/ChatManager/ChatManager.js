@@ -6,6 +6,7 @@ import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
 import LogoutButton from '../loguot-button/LogoutButton';
+import GameManager from '../GameManager/GameManager'
 
 
 const ChatManager = (props) => {
@@ -17,6 +18,7 @@ const ChatManager = (props) => {
   const [users, setUsers] = useState([]); 
   const [roomName, setroomName] = useState('room');
   const [isOpenChat , setIsOpenChat] = useState(false) 
+  const [isGameOn , setIsGameOn] = useState(false)
   const user = props.location.state.user;
 
   useEffect(()=>{
@@ -26,6 +28,12 @@ const ChatManager = (props) => {
   useEffect(()=>{
 
   },[roomName])
+
+  useEffect(()=>{
+    if(isGameOn){
+      //handle page layout
+    }
+  },[isGameOn])
 
   const getMessagesHistory = (senderUserName,recieverUserName)=>{
     axios.get(`http://localhost:8082/api/messages/get-messages?senderUserName=${senderUserName}&recieverUserName=${recieverUserName}`,{
@@ -114,6 +122,11 @@ const ChatManager = (props) => {
                   user={user.userName}
                   joinRoom={joinRoom} 
                   chatFlag={isOpenChat}/>
+      </div>
+      <div className="game-container">
+        {isGameOn &&
+            <GameManager/>
+        }
       </div>
       <div>
         <LogoutButton/>

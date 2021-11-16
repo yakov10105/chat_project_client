@@ -1,9 +1,14 @@
-import React from 'react'
+import {React,useState} from 'react'
 import Board from './Board/Board'
 import Checker from './Checker/Checker'
 
 const GameManager = () => {
+    const [ board,setBoard] = useState()
+    
+    
     return (
+
+
         <div className='game_manager' 
             style={{
                 'height': '80vh',

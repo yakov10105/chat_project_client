@@ -43,11 +43,17 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
           connection.on("ReceiveTyping", (userName) => {
               //SetCurrentuser.username = username
           });
+
+          connection.on("ReceiveGameInvitation", (userName) => {
+            
+        });
           
           connection.onclose(e => {
             setConnection();
             setConnectedUsers([]);
-          })
+          });
+
+
     
           await connection.start();
           await connection.invoke("ConnectAsync", user);
@@ -145,6 +151,10 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         } 
     }
 
+    const onInviteClick=()=>{
+
+    }
+
     return(
             <Grid item xs={3} className={classes.borderRight500}>
                 <List>
@@ -157,16 +167,16 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                 </List>
                 <Divider />
                 <Line justify="between" >
-                <Line justify="between">
-                    <Tooltip title="Leave Chat">
-                        <IconButton sx={{color:"#d32f2f"}} onClick={() => closeConnection(user)} aria-label="refresh">
-                            <ExitToAppIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Switch defaultChecked={usersFlag} color="success" onChange={getCurrentUsers} />
+                    <Line justify="between">
+                        <Tooltip title="Leave Chat">
+                            <IconButton sx={{color:"#d32f2f"}} onClick={() => closeConnection(user)} aria-label="refresh">
+                                <ExitToAppIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Switch defaultChecked={usersFlag} color="success" onChange={getCurrentUsers} />
                     </Line>
                     <Tooltip title="Invite to play">
-                    <Button>
+                    <Button onClick={onInviteClick}>
                         <Avatar src={icon}/>
                     </Button>
                     </Tooltip>
