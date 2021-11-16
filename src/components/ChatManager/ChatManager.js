@@ -5,6 +5,7 @@ import Chat from './Chat';
 import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
+import LogoutButton from '../loguot-button/LogoutButton';
 
 
 const ChatManager = (props) => {
@@ -103,16 +104,21 @@ const ChatManager = (props) => {
   }
 
   return (
-    <div className='app'>
-      <Chat sendMessage={sendMessage} 
-                messages={messages}
-                //users={users}
-                roomName={roomName} 
-                closeConnection={closeConnection} 
-                user={user.userName}
-                joinRoom={joinRoom} 
-                chatFlag={isOpenChat}/>
-    </div>
+    <>
+      <div className='app'>
+        <Chat sendMessage={sendMessage} 
+                  messages={messages}
+                  //users={users}
+                  roomName={roomName} 
+                  closeConnection={closeConnection} 
+                  user={user.userName}
+                  joinRoom={joinRoom} 
+                  chatFlag={isOpenChat}/>
+      </div>
+      <div>
+        <LogoutButton/>
+      </div>
+    </>
   )
 }
 
