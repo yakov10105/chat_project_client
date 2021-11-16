@@ -12,27 +12,27 @@ const Board = () => {
     const [leftUpList,setLeftUpList]= useState([])
     const [leftDownList,setLeftDownList]= useState([])
     const [rightDownList,setRightDownList]= useState([])
+    
+    
+    useEffect(()=>{
+        getData()
+    },[])
     const getData=()=>{
         axios
         .get('http://localhost:8082/api/game/board')
         .then((res)=>{
-            //setServerGameBoard({...res.data})
-            setLeftDownList(res.data.boardFields.filter((f)=>f.position<=5))
-            setRightDownList(res.data.boardFields.filter((f)=>f.position>5 && f.position<=11))
-            setLeftUpList(res.data.boardFields.filter((f)=>f.position>11 && f.position<=17))
-            setRightUpList(res.data.boardFields.filter((f)=>f.position >17 && f.position<=23))
+            setServerGameBoard(res.data)
+            setLeftDownList(serverGameBoard.boardFields.filter((f)=>f.position<=5))
+            setRightDownList(serverGameBoard.boardFields.filter((f)=>f.position>5 && f.position<=11))
+            setRightUpList(serverGameBoard.boardFields.filter((f)=>f.position>11 && f.position<=17))
+            setLeftUpList(serverGameBoard.boardFields.filter((f)=>f.position >17))
         })
         .catch((err)=>{
             console.log(err)
         })
-        console.log("ggg")
     }
-    useEffect(()=>{
-        getData()
-    },[])
-
-
-
+    
+    
 
     const renderTriangle = (array) => {
         return array.map((f,index)=> {
@@ -49,8 +49,10 @@ const Board = () => {
                 color= "2"	
             
             if(f.checkers.length>0)
-                if(f.checkers[0].player.id=== serverGameBoard.player1.id)
+                if(f.checkers[0].player.id=== serverGameBoard.player1.id){
                     player=1
+
+                }
                 else
                     player=2
                 
