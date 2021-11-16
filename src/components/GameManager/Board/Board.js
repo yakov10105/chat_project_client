@@ -16,11 +16,11 @@ const Board = () => {
         axios
         .get('http://localhost:8082/api/game/board')
         .then((res)=>{
-            setServerGameBoard(res.data)
-            setLeftDownList(serverGameBoard.boardFields.filter((f)=>f.position<=5))
-            setRightDownList(serverGameBoard.boardFields.filter((f)=>f.position>5 && f.position<=11))
-            setLeftUpList(serverGameBoard.boardFields.filter((f)=>f.position>11 && f.position<=17))
-            setRightUpList(serverGameBoard.boardFields.filter((f)=>f.position >17 && f.position<=23))
+            //setServerGameBoard({...res.data})
+            setLeftDownList(res.data.boardFields.filter((f)=>f.position<=5))
+            setRightDownList(res.data.boardFields.filter((f)=>f.position>5 && f.position<=11))
+            setLeftUpList(res.data.boardFields.filter((f)=>f.position>11 && f.position<=17))
+            setRightUpList(res.data.boardFields.filter((f)=>f.position >17 && f.position<=23))
         })
         .catch((err)=>{
             console.log(err)
