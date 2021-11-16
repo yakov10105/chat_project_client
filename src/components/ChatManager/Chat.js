@@ -29,19 +29,23 @@ const Chat = ({messages,chatFlag, sendMessage, roomName,joinRoom, closeConnectio
       )
     }
     else{
-      return <h1>Not connected to room</h1>
+      return(
+        <div>
+          <h1>Not connected to any chat</h1>
+        </div>
+      )
     }
   }
 
 
   return (
-      <div>
+    <div>
       <UserTyping.Provider value={value}>
         <Grid container component={Paper} className={classes.chatSection}>
             <ConnectedUsers closeConnection={closeConnection} user={user} joinRoom={joinRoom}/>
             {renderChat()}
         </Grid>
-          </UserTyping.Provider>
+      </UserTyping.Provider>
     </div>
   )
 }

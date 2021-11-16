@@ -13,10 +13,6 @@ const Board = () => {
     const [leftDownList,setLeftDownList]= useState([])
     const [rightDownList,setRightDownList]= useState([])
     
-    
-    useEffect(()=>{
-        getData()
-    },[])
     const getData=()=>{
         axios
         .get('http://localhost:8082/api/game/board')
@@ -32,8 +28,22 @@ const Board = () => {
         })
     }
     
+    useEffect(()=>{
+        getData()
+    },[])
     
-
+    
+    const handleOnClick=(e)=>{
+        axios
+        .get(`http://localhost:8082/api/game/get-moves?pos=${e}`)
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+    
     const renderTriangle = (array) => {
         return array.map((f,index)=> {
             let position,color,number,player;
@@ -59,8 +69,8 @@ const Board = () => {
             number = f.checkers.length
             
           return (
-                <div className={"tria_container " + position}>
-                    <Triangle id={index} color={color} position={position}>
+                <div className={"tria_container " + position} id={index} onClick={()=>handleOnClick(index)} >
+                    <Triangle id={index} color={color}  position={position}>
                         {getCheckers(player,number)}
                     </Triangle>
                 </div>
