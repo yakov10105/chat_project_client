@@ -13,6 +13,10 @@ const Board = () => {
     const [leftDownList,setLeftDownList]= useState([])
     const [rightDownList,setRightDownList]= useState([])
     
+    useEffect(()=>{
+        getData()
+    },[])
+    
     const getData=()=>{
         axios
         .get('http://localhost:8082/api/game/board')
@@ -28,10 +32,6 @@ const Board = () => {
         })
     }
     
-    useEffect(()=>{
-        getData()
-    },[])
-    
     
     const handleOnClick=(e)=>{
         axios
@@ -44,8 +44,8 @@ const Board = () => {
         })
     }
     
-    const renderTriangle = (array) => {
-        return array.map((f,index)=> {
+    const renderTriangle = (array,index) => {
+        return array.map((f,idx)=> {
             let position,color,number,player;
 		
             if(f.position>=0 && f.position<=11) 
@@ -69,8 +69,8 @@ const Board = () => {
             number = f.checkers.length
             
           return (
-                <div className={"tria_container " + position} id={index} onClick={()=>handleOnClick(index)} >
-                    <Triangle id={index} color={color}  position={position}>
+                <div className={"tria_container " + position} id={index+idx} onClick={()=>handleOnClick(index+idx)} >
+                    <Triangle id={index+idx} color={color}  position={position}>
                         {getCheckers(player,number)}
                     </Triangle>
                 </div>
@@ -82,19 +82,19 @@ const Board = () => {
 
             <div id="leftSide" className="row">
                 <div className="blocksUp">
-                    {renderTriangle(leftUpList)}
+                    {renderTriangle(leftUpList,18)}
                 </div>
                 <div className="blocksDown">
-                    {renderTriangle(leftDownList)}
+                    {renderTriangle(leftDownList,0)}
                 </div>
             </div>
 
             <div id="rightSide" className="row">
                 <div className="blocksUp">
-                    {renderTriangle(rightUpList)}
+                    {renderTriangle(rightUpList,12)}
                 </div>
                 <div className="blocksDown">
-                    {renderTriangle(rightDownList)}
+                    {renderTriangle(rightDownList,6)}
                 </div>
             </div>
 
