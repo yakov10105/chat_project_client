@@ -1,0 +1,5 @@
+.app_manager{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}

@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import useStyles from "./hooks/useStyles";
 import './MessageContainer.css';
 import Line from "../../layouts/Line";
+import TextField from '@mui/material/TextField';
+import { withWidth } from "@material-ui/core";
 
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
@@ -19,9 +21,9 @@ const MessageContainer = ({ messages, user }) => {
     }, [messages]);
 
     const messageIsFromUser = (username) => {
-        if(username=== "MyChat Bot"){
-            return "center";
-        }
+        // if(username=== "MyChat Bot"){
+        //     return "center";
+        // }
         if(username === user){
             return "right"
         }
@@ -36,7 +38,15 @@ const MessageContainer = ({ messages, user }) => {
                     <ListItem key={index}>
                         <Grid container>
                             <Grid item xs={12}>
-                                <ListItemText  primary={m.message}></ListItemText>
+                                <ListItemText xs={{backgroundColor:"#ffff00"}}  primary={
+                                    <TextField
+                                    multiline
+                                    maxRows={10}
+                                    value={m.message}
+                                    variant="outlined"
+                                    aria-readonly
+                                    />}>
+                                </ListItemText>
                             </Grid>
                             <Grid item xs={12}>
                                 <Line justify='between'>

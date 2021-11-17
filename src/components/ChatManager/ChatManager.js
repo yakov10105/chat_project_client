@@ -2,9 +2,12 @@ import './ChatManager.css'
 import React, {useContext, useEffect, useState } from 'react'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
+import GameManager from '../GameManager/GameManager';
 import axios from 'axios';
 import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
+import {GameOnContext} from '../../Context/GameOnContext';
+import {RoomContext} from '../../Context/RoomContext';
 
 
 const ChatManager = (props) => {
@@ -14,9 +17,10 @@ const ChatManager = (props) => {
   const [connection, setConnection] = useState(); 
   const [messages, setMessages] = useState([]); 
   const [users, setUsers] = useState([]); 
-  const [roomName, setroomName] = useState('room');
   const [isOpenChat , setIsOpenChat] = useState(false) 
-  const user = props.location.state.user;
+  const {roomName, setRoomName} = useContext(RoomContext);
+  const {isGameOn, setIsGameOn} = useContext(GameOnContext);
+  const user = props.user;
 
   useEffect(()=>{
 
@@ -26,7 +30,8 @@ const ChatManager = (props) => {
 
   },[roomName])
 
-  const getMessagesHistory = (senderUserName,recieverUserName)=>{
+
+  const getMessagesHistory = (senderUserName,recieverUserName, setRoom)=>{
     axios.get(`http://localhost:8082/api/messages/get-messages?senderUserName=${senderUserName}&recieverUserName=${recieverUserName}`,{
       headers:{
         "Authorization":localStorage.getItem('key')
@@ -61,25 +66,20 @@ const ChatManager = (props) => {
         //play();
       });
 
-      
-      connection.on("UsersInRoom", (users) => {
-        setUsers(users);
-      });
-
       connection.onclose(e => {
         setConnection();
         setMessages([]);
         setUsers([]);
-        // setIsOpenChat(false);
+        //setIsOpenChat(false);
       })
 
       await connection.start();
       await connection.invoke("JoinRoomAsync", { SenderUserName:senderUserName,ReciverUserName:recieverUserName});
-
       setConnection(connection);
-      setroomName(connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName}))
       setIsOpenChat(true)
-      
+      debugger;
+      setRoom(connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName}))
+      debugger;
     } catch(e){
       console.log(e);
     }
@@ -94,6 +94,14 @@ const ChatManager = (props) => {
     }
   }
 
+  // const StartGame = async (message) => {
+  //   try{
+  //       await connection.invoke("SendMessageAsync", message);
+  //   } catch(e){
+  //     console.log(e);
+  //   }
+  // }
+
   const closeConnection = async (userName) => {
     try{
       await connection.stop();
@@ -101,13 +109,14 @@ const ChatManager = (props) => {
       console.log(e);
     }
   }
+  
 
   return (
-    <div className='app'>
+    <div className='chat_manager' className={isGameOn ? ' no_messages': null} >
       <Chat sendMessage={sendMessage} 
                 messages={messages}
                 //users={users}
-                roomName={roomName} 
+                // roomName={roomName} 
                 closeConnection={closeConnection} 
                 user={user.userName}
                 joinRoom={joinRoom} 

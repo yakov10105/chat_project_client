@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useContext} from "react";
-import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button} from '@mui/material'
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Alert } from '@mui/material'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -10,6 +10,8 @@ import icon from '../../assets/game-icon.png'
 import Line from "../../layouts/Line";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {UserTyping} from '../../Context/UserTyping';
+import {GameOnContext} from '../../Context/GameOnContext';
+import {RoomContext} from '../../Context/RoomContext';
 import TypingBubble from '../../layout/typingBubble/typingBubble'
 
 const INITIAL_STATE = {
@@ -24,7 +26,9 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const [connectedUsers,setConnectedUsers] = useState([]);
     const [usersFlag,setUsersFlag] = useState(false)
     const [currentUser,setCurrentUser] = useState({})
+    const {isGameOn, setIsGameOn} = useContext(GameOnContext);
     const {isTyping, setIsTyping} = useContext(UserTyping);
+    const {roomName, setRoomName} = useContext(RoomContext);
     const [values, setValues] = useState(INITIAL_STATE)
     const classes = useStyles();
 
@@ -34,6 +38,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
           .withUrl(`http://localhost:8082/login`)
           .configureLogging(LogLevel.Information)
           .build();
+          
     
           connection.on("ConnectedUsers", (users) => {
             setConnectedUsers(users);
@@ -41,8 +46,24 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
           });
 
           connection.on("ReceiveTyping", (userName) => {
-              //SetCurrentuser.username = username
-          });
+            //SetCurrentuser.username = username
+        });
+
+        connection.on("GetSender", (userName) => {
+            //SetCurrentuser.username = username
+        });
+          
+        connection.on("ReceiveGameInvitation", (userName) => {
+            if (confirm(userName + " Invite you to play BackGammon")) {
+                setGameOn(connection, userName)
+              } else {
+                console.log('Cancel');
+              }
+        });
+
+        connection.on("SetGame", () => {
+            setIsGameOn(true);
+        });
           
           connection.onclose(e => {
             setConnection();
@@ -52,12 +73,31 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
           await connection.start();
           await connection.invoke("ConnectAsync", user);
     
+          debugger;
           setConnection(connection);
     
         } catch(e){
           console.log(e);
         }
       }
+
+      
+
+    const setGameOn = async (connection, currentUserName) => {
+        try{
+            await connection.invoke("SetGameOn",{SenderUserName:user, ReciverUserName:currentUserName} );
+        } catch(e){
+        console.log(e);
+        }
+    }
+
+    const sendGameRequest = async () => {
+        try{
+            await connection.invoke("SendGameRequest",{SenderUserName:user, ReciverUserName:currentUser.userName} );
+        } catch(e){
+        console.log(e);
+        }
+    }
 
       const sendNotifficition = async (userName) => {
         try{
@@ -84,7 +124,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     },[users])
 
     useEffect(()=>{
-        // console.log(currentUser)
+
     },[currentUser])
 
     //run search when the search text changes
@@ -166,7 +206,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                     <Switch defaultChecked={usersFlag} color="success" onChange={getCurrentUsers} />
                     </Line>
                     <Tooltip title="Invite to play">
-                    <Button>
+                    <Button onClick={sendGameRequest}>
                         <Avatar src={icon}/>
                     </Button>
                     </Tooltip>
@@ -187,7 +227,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                         tmpUsers.map((u,ix)=>{
                             return(
                                 <ListItem button key={ix} onClick={()=>{
-                                    joinRoom(user,u.userName);
+                                    joinRoom(user,u.userName, setRoomName);
                                     setCurrentUser(u);
                                     }}>
                                     <ListItemIcon>
@@ -202,6 +242,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                         })         
                    }
                 </List>
+                
             </Grid>
     )
 }

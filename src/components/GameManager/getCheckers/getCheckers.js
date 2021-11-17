@@ -18,7 +18,7 @@ const getCheckers = (player, numberOfCheckers) => {//, callerIdKey, canMove
             // else {
             //     checkers.push(<Checker player={player} count={1} key={callerIdKey + player + 'P' + i} />);
             // }            
-                checkers.push(<Checker player={player}/>);                
+                checkers.push(<Checker player={player} draggable={true}/>);                
         }
 
         //add label to the first checker if the point has more than 5 checkers
