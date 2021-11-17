@@ -77,9 +77,10 @@ const ChatManager = (props) => {
       await connection.invoke("JoinRoomAsync", { SenderUserName:senderUserName,ReciverUserName:recieverUserName});
       setConnection(connection);
       setIsOpenChat(true)
-      debugger;
-      setRoom(connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName}))
-      debugger;
+      connection.invoke('GetRoomId',{SenderUserName:senderUserName,ReciverUserName:recieverUserName})
+        .then((res)=>{
+          setRoomName(res)
+        })
     } catch(e){
       console.log(e);
     }

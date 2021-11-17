@@ -24,8 +24,7 @@ const GameManager = ({user}) => {
           })
     
           await connection.start();
-          debugger;
-          await connection.invoke("JoinGameAsync",  userName);
+          await connection.invoke("JoinGameAsync",{UserName:userName,RoomName:roomName});
           
         } catch(e){
           console.log(e);

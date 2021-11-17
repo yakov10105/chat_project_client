@@ -30,9 +30,11 @@ const AppManager = (props) => {
     else{
         return(<div className='app_manager'>
         <Line justify="between">
-        <GameOnContext.Provider value={value}>
-            <ChatManager user={user}></ChatManager>
-        </GameOnContext.Provider>
+        <RoomContext.Provider value={roomValue}>
+            <GameOnContext.Provider value={value}>
+                <ChatManager user={user}></ChatManager>
+            </GameOnContext.Provider>
+        </RoomContext.Provider>
         </Line>
     </div>)
     }

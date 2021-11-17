@@ -54,7 +54,8 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         });
           
         connection.on("ReceiveGameInvitation", (userName) => {
-            if (confirm(userName + " Invite you to play BackGammon")) {
+            var res = window.confirm(userName + " Invite you to play BackGammon");
+            if (res) {
                 setGameOn(connection, userName)
               } else {
                 console.log('Cancel');
