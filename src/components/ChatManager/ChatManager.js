@@ -95,13 +95,6 @@ const ChatManager = (props) => {
     }
   }
 
-  // const StartGame = async (message) => {
-  //   try{
-  //       await connection.invoke("SendMessageAsync", message);
-  //   } catch(e){
-  //     console.log(e);
-  //   }
-  // }
 
   const closeConnection = async (userName) => {
     try{

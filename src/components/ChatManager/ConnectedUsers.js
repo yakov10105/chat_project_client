@@ -74,7 +74,6 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
           await connection.start();
           await connection.invoke("ConnectAsync", user);
     
-          debugger;
           setConnection(connection);
     
         } catch(e){

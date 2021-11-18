@@ -6,31 +6,40 @@ import getCheckers from '../getCheckers/getCheckers'
 import './Board.css'
 import axios from 'axios'
 
-const Board = () => {
-    const [serverGameBoard,setServerGameBoard] = useState({})
+const Board = ({getBoard}) => {
+    //const [serverGameBoard,setServerGameBoard] = useState({})
+    const [ board,setBoard] = useState({});
     const [rightUpList,setRightUpList]= useState([])
     const [leftUpList,setLeftUpList]= useState([])
     const [leftDownList,setLeftDownList]= useState([])
     const [rightDownList,setRightDownList]= useState([])
     
     useEffect(()=>{
-        getData()
+        getBoard().then((res)=>{
+            setBoard(res)
+            setLeftDownList(board.boardFields.filter((f)=>f.position<=5))
+            setRightDownList(board.boardFields.filter((f)=>f.position>5 && f.position<=11))
+            setRightUpList(board.boardFields.filter((f)=>f.position>11 && f.position<=17))
+            setLeftUpList(board.boardFields.filter((f)=>f.position >17))
+        })
+
+
     },[])
     
-    const getData=()=>{
-        axios
-        .get('http://localhost:8082/api/game/board')
-        .then((res)=>{
-            setServerGameBoard(res.data)
-            setLeftDownList(serverGameBoard.boardFields.filter((f)=>f.position<=5))
-            setRightDownList(serverGameBoard.boardFields.filter((f)=>f.position>5 && f.position<=11))
-            setRightUpList(serverGameBoard.boardFields.filter((f)=>f.position>11 && f.position<=17))
-            setLeftUpList(serverGameBoard.boardFields.filter((f)=>f.position >17))
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
-    }
+    // const getData=()=>{
+    //     axios
+    //     .get('http://localhost:8082/api/game/board')
+    //     .then((res)=>{
+    //         setServerGameBoard(res.data)
+    //         setLeftDownList(serverGameBoard.boardFields.filter((f)=>f.position<=5))
+    //         setRightDownList(serverGameBoard.boardFields.filter((f)=>f.position>5 && f.position<=11))
+    //         setRightUpList(serverGameBoard.boardFields.filter((f)=>f.position>11 && f.position<=17))
+    //         setLeftUpList(serverGameBoard.boardFields.filter((f)=>f.position >17))
+    //     })
+    //     .catch((err)=>{
+    //         console.log(err)
+    //     })
+    // }
     
     
     const handleOnClick=(e)=>{
@@ -59,7 +68,7 @@ const Board = () => {
                 color= "2"	
             
             if(f.checkers.length>0)
-                if(f.checkers[0].player.id=== serverGameBoard.player1.id){
+                if(f.checkers[0].player.id=== board.player1.id){
                     player=1
 
                 }
