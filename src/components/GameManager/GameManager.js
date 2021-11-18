@@ -7,7 +7,7 @@ import Checker from './Checker/Checker'
 const GameManager = ({user}) => {
 
   const [connection, setConnection] = useState({}); 
-  const [board,setBoard] = useState({})
+  const [board,setBoard] = useState()
   const {roomName, setRoomName} = useContext(RoomContext);
 
     const joinGame = async (userName) => {
@@ -26,22 +26,14 @@ const GameManager = ({user}) => {
           await connection.start();
           await connection.invoke("JoinGameAsync",{UserName:userName,RoomName:roomName});
           setConnection(connection)
-          // await connection.invoke("GetBoard").then((res)=>{
-          //   setBoard(res)
-          // })
+          await connection.invoke("GetBoard").then((res)=>{
+            setBoard(res)
+          })
           
         } catch(e){
           console.log(e);
         }
       }
-    const getBoard =async()=>{
-      try{
-        await connection.invoke("GetBoard")
-      }
-      catch(err){
-        console.log(err)
-      }
-    }
 
       
   useEffect(()=>{
@@ -56,7 +48,7 @@ const GameManager = ({user}) => {
                 'background-color': 'aliceblue',
             }}>
             {board && <Board
-              getBoard={getBoard}
+              //getBoard={getBoard}
               board={board}/>}
         </div>
     )
