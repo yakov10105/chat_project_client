@@ -1,4 +1,4 @@
-import React,{useEffect, useState,useContext} from 'react'
+import React,{useEffect, useState,useContext, isValidElement} from 'react'
 import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Alert } from '@mui/material'
 import Data from './Fields.json'
 import Checker from '../Checker/Checker'
@@ -9,7 +9,7 @@ import { BoardContext } from "../../../Context/BoardContext";
 import './Board.css'
 import axios from 'axios'
 
-const Board = ({GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves}) => {
+const Board = ({GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves,isActivePlayer}) => {
     //const [serverGameBoard,setServerGameBoard] = useState({})
     //const [ board,setBoard] = useState({});
     const [rightUpList,setRightUpList]= useState([])
@@ -31,7 +31,6 @@ const Board = ({GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves}) =>
             setRightDownList(JsonBoard.BoardFields.filter((f)=>f.position>5 && f.position<=11))
             setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
             setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
-
 
 
     },[board])
@@ -88,7 +87,7 @@ const Board = ({GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves}) =>
             number = f.checkers.length
             
           return (
-                <div className={"tria_container " + position} id={index+idx} onClick={()=>handleTriangleClick(index+idx)} >
+                <div className={"tria_container " + position} id={index+idx} onClick={isActivePlayer ?()=>handleTriangleClick(index+idx):{}} >
                     <Triangle id={index+idx} color={color} canReceive={f._canReceive}  position={position}>
                         {getCheckers(player,number)}
                     </Triangle>

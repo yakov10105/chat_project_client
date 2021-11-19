@@ -2,13 +2,17 @@
     background: url('./assets/background.jpg');
     background-repeat: repeat;
     overflow: scroll;
-    height: 100vh;
+    position: relative;
+    min-height: 100vh;
+    height: 110vh;
     width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding-top: 5rem;
 }
-
+.components{
+    padding-bottom: 2.5rem; 
+}
 .data_container{
     background: white;
     padding:0px;

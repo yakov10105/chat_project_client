@@ -8,6 +8,7 @@ const GameManager = ({user}) => {
 
   const [connection, setConnection] = useState(); 
   const [board,setBoard] = useState()
+  const [isMyTurn,setIsMyTurn] = useState(false);
   const {roomName, setRoomName} = useContext(RoomContext);
 
     
@@ -19,7 +20,6 @@ const GameManager = ({user}) => {
   },[roomName])
 
     const joinGame = async (userName) => {
-        //closeConnection(senderUserName);
         try{
           const connection = new HubConnectionBuilder()
           .withUrl(`http://localhost:8082/game`,{accessTokenFactory: ()=> localStorage.getItem('key')})
@@ -38,6 +38,15 @@ const GameManager = ({user}) => {
             setBoard(res)
           })
           
+          await connection.invoke("GetCurrentPlayerName")
+          .then((res)=>{
+              if(user.userName===res){
+                setIsMyTurn(true)
+              }else{
+                setIsMyTurn(false)
+              }
+            })
+          
         } catch(e){
           console.log(e);
         }
@@ -52,6 +61,21 @@ const GameManager = ({user}) => {
           console.log(e);
         }
       }
+
+      // const isActivePlayer = async()=>{
+      //   try{
+      //     await connection.invoke("GetCurrentPlayerName")
+      //       .then((res)=>{
+      //           if(user.userName===res){
+      //             setIsMyTurn(true)
+      //           }else{
+      //             setIsMyTurn(false)
+      //           }
+      //         })
+      //        } catch(e){
+      //       console.log(e);
+      //       }
+      //     }
 
       const RollDices = async () => {
         try{
@@ -91,7 +115,8 @@ const GameManager = ({user}) => {
               GetBoardForUser={GetBoardForUser}
               RollDices={RollDices}
               GetDicesValue={GetDicesValue}
-              GetPossibleMoves={GetPossibleMoves}/>}
+              GetPossibleMoves={GetPossibleMoves}
+              isActivePlayer={isMyTurn}/>}
               </BoardContext.Provider>
         </div>
     )

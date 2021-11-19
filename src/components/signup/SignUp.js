@@ -1,11 +1,12 @@
 import React , {useState}from 'react'
-import { Container,Stack,TextField,Button } from '@mui/material'
+import { Container,Stack,TextField,Button, Divider } from '@mui/material'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Redirect } from 'react-router'
 import './SignUp.css';
+import Line from '../../layouts/Line'
 
 const schema = yup.object().shape({
     firstName: yup.string().required("* First Name is requierd"),
@@ -84,11 +85,8 @@ const SignUp = () => {
     return (
         <div className="Signup">
             <Container maxWidth="sm" fixed="true" className="data_container">
-           <form onSubmit={handleAutoFill}>
-                <Stack 
-                    spacing={2}
-                    className="stack"
-                    >
+           <form className="stack" onSubmit={handleAutoFill}>
+                    <Stack spacing={1}>
                         <TextField  
                             className="field" 
                             id="outlined-basic" 
@@ -162,10 +160,10 @@ const SignUp = () => {
                             error={errors['confirmPassword']?.message}
                             helperText={errors['confirmPassword']?.message}
                             {...register('confirmPassword')}/>
-                        <Button variant='contained' style={{
-                                borderRadius: 35,
-                                background: "linear-gradient(60deg,  #5E9C2F,#5E9C2F)",
-                                padding: "11px 22px" }} type='submit' >Signup</Button>
+                <Button variant='contained' style={{
+                    borderRadius: 35,
+                    background: "linear-gradient(60deg,  #5E9C2F,#5E9C2F)",
+                    padding: "11px 22px" }} type='submit' >Signup</Button>
                 </Stack>
            </form>
            </Container>

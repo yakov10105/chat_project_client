@@ -8,6 +8,7 @@ import useSound from 'use-sound';
 import notificationSound from '../../sounds/Notification.mp3'
 import {GameOnContext} from '../../Context/GameOnContext';
 import {RoomContext} from '../../Context/RoomContext';
+import LogoutButton from '../logout-button/LogoutButton';
 
 
 const ChatManager = (props) => {
@@ -107,6 +108,7 @@ const ChatManager = (props) => {
 
   return (
     <div className='chat_manager' className={isGameOn ? ' no_messages': null} >
+      <LogoutButton/>
       <Chat sendMessage={sendMessage} 
                 messages={messages}
                 //users={users}
