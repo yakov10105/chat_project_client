@@ -1,14 +1,22 @@
-import React,{useEffect,useState, useContext} from 'react'
+import React,{useEffect,useState, useContext, useMemo} from 'react'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import { RoomContext } from "../../Context/RoomContext";
+import { BoardContext } from "../../Context/BoardContext";
 import Board from './Board/Board'
-import Checker from './Checker/Checker'
 
 const GameManager = ({user}) => {
 
-  const [connection, setConnection] = useState({}); 
+  const [connection, setConnection] = useState(); 
   const [board,setBoard] = useState()
   const {roomName, setRoomName} = useContext(RoomContext);
+
+    
+  const value = useMemo(() => ({board,setBoard}), [board,setBoard])
+      
+  useEffect(()=>{
+    console.log("RenderGameRoomName")
+    joinGame(user.userName);
+  },[roomName])
 
     const joinGame = async (userName) => {
         //closeConnection(senderUserName);
@@ -25,7 +33,7 @@ const GameManager = ({user}) => {
     
           await connection.start();
           await connection.invoke("JoinGameAsync",{UserName:userName,RoomName:roomName});
-          setConnection(connection)
+          setConnection(connection);
           await connection.invoke("GetBoard").then((res)=>{
             setBoard(res)
           })
@@ -35,10 +43,39 @@ const GameManager = ({user}) => {
         }
       }
 
-      
-  useEffect(()=>{
-    joinGame(user.userName);
-  },[roomName])
+      const GetBoardForUser = async () => {
+        try{
+            await connection.invoke("GetBoard").then((res)=>{
+              setBoard(res)
+            });
+        } catch(e){
+          console.log(e);
+        }
+      }
+
+      const RollDices = async () => {
+        try{
+            await connection.invoke("RollDices");
+        } catch(e){
+          console.log(e);
+        }
+      }
+
+      const GetDicesValue = async () => {
+        try{
+            return(await connection.invoke("GetDicesValue"));
+        } catch(e){
+          console.log(e);
+        }
+      }
+
+      const GetPossibleMoves = async (pos) => {
+        try{
+            return(await connection.invoke("GetPossibleMoves", pos));
+        } catch(e){
+          console.log(e);
+        }
+      }
 
     return (
         <div className='game_manager' 
@@ -47,9 +84,15 @@ const GameManager = ({user}) => {
                 'width': '80vw',
                 'background-color': 'aliceblue',
             }}>
+              <BoardContext.Provider value={value}>
             {board && <Board
               //getBoard={getBoard}
-              board={board}/>}
+              board={board}
+              GetBoardForUser={GetBoardForUser}
+              RollDices={RollDices}
+              GetDicesValue={GetDicesValue}
+              GetPossibleMoves={GetPossibleMoves}/>}
+              </BoardContext.Provider>
         </div>
     )
 }

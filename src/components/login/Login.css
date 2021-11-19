@@ -30,8 +30,8 @@
 
 .login-btn{
     background: linear-gradient(60deg,  #5E9C2F,#5E9C2F);
-    padding: 11px 22px;
-    border-radius: 35px;
+    width: 100px;
+    margin-left: 100px;
 }
 
 .sign_up_btn{
