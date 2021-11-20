@@ -51,7 +51,7 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
             setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
             setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
 
-            setOponentEliminated(JsonBoard.EliminatedField.checkers.filter(c=>c.player.id===user.id))
+            setOponentEliminated(JsonBoard.EliminatedField.checkers.filter(c=>c.player.id !== JsonBoard.ActivePlayer.id))
             // setBlackEliminated(JsonBoard.EliminatedField.checkers.filter(c=>c.player.id!==user.id))
             SetWhiteOutOffBoard(JsonBoard.GoalFieldPlayer1.checkers)
             SetBlackOutOffBoard(JsonBoard.GoalFieldPlayer2.checkers)
