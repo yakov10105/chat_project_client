@@ -39,9 +39,10 @@ const GameManager = ({user}) => {
           });
 
           connection.on("ChangeTurn", async () => {
-              setIsMyTurn(!isMyTurn)
-              await connection.invoke("GetBoard").then((res)=>{
-                setBoard(res)
+              setIsMyTurn(current => !current, async () => {
+                await connection.invoke("GetBoard").then((res)=>{
+                  setBoard(res)
+                });
               });
           })
           connection.onclose(e => {
@@ -137,6 +138,7 @@ const GameManager = ({user}) => {
             }}>
               <BoardContext.Provider value={value}>
             {board && <Board
+              user = {user}
               board={board}
               GetBoardForUser={GetBoardForUser}
               RollDices={RollDices}

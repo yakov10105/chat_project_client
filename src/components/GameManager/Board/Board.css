@@ -101,4 +101,22 @@
     border-radius: 35px;
 }
 
+.container-out{
+    position: absolute;
+    font-size: 16px;
+    color: white;
+    padding-top: 20px;
+    left:90%;
+    color: white;
+    font-weight: bold;
+}
+
+.oponent-turn{
+    
+    color: black;
+    font-weight: bold;
+    font-size: 26px;
+    color: khaki;
+}
+
 
