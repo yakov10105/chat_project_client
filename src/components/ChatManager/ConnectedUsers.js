@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useContext} from "react";
-import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Alert } from '@mui/material'
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Alert, AlertTitle, Snackbar  } from '@mui/material'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -12,7 +12,9 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {UserTyping} from '../../Context/UserTyping';
 import {GameOnContext} from '../../Context/GameOnContext';
 import {RoomContext} from '../../Context/RoomContext';
+import {IsMyTurnContext} from '../../Context/IsMyTurnContext';
 import TypingBubble from '../../layout/typingBubble/typingBubble'
+import CloseIcon from '@mui/icons-material/Close';
 
 const INITIAL_STATE = {
     term:""
@@ -26,9 +28,12 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const [connectedUsers,setConnectedUsers] = useState([]);
     const [usersFlag,setUsersFlag] = useState(false)
     const [currentUser,setCurrentUser] = useState({})
+    const [gameRequestSender,setGameRequestSender] = useState('')
+    const [open, setOpen] = useState(false);
     const {isGameOn, setIsGameOn} = useContext(GameOnContext);
     const {isTyping, setIsTyping} = useContext(UserTyping);
     const {roomName, setRoomName} = useContext(RoomContext);
+    const {isMyTurn, setIsMyTurn} = useContext(IsMyTurnContext);
     const [values, setValues] = useState(INITIAL_STATE)
     const classes = useStyles();
 
@@ -54,12 +59,8 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         });
           
         connection.on("ReceiveGameInvitation", (userName) => {
-            var res = window.confirm(userName + " Invite you to play BackGammon");
-            if (res) {
-                setGameOn(connection, userName)
-              } else {
-                console.log('Cancel');
-              }
+                setGameRequestSender(userName + " Invite you to play BackGammon")
+                setOpen(true);
         });
 
         connection.on("SetGame", () => {
@@ -93,7 +94,9 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const sendGameRequest = async () => {
         try{
+            if(!isGameOn){
             await connection.invoke("SendGameRequest",{SenderUserName:user, ReciverUserName:currentUser.userName} );
+            }
         } catch(e){
         console.log(e);
         }
@@ -175,6 +178,41 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         const {name,value} = e.target;
        setValues(prevState=>({...prevState,[name]:value}))
     }
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
+
+      const handleGameAccept = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        let userName = gameRequestSender.replace(" Invite you to play BackGammon", "")
+        setGameOn(connection, userName)
+        setOpen(false);
+        setIsMyTurn(false);
+        setIsGameOn(true);
+      };
+    
+      const action = (
+        <React.Fragment>
+          <Button color="secondary" size="small" onClick={handleGameAccept}>
+            Accept
+          </Button>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      );
 
     const renderTypingBubble = (user) => {
         // console.log(user)
@@ -242,7 +280,13 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                         })         
                    }
                 </List>
-                
+                <Snackbar
+                open={open}
+                autoHideDuration={20000}
+                onClose={handleClose}
+                message={gameRequestSender}
+                action={action}
+                />
             </Grid>
     )
 }

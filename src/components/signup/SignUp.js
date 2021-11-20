@@ -84,11 +84,8 @@ const SignUp = () => {
     return (
         <div className="Signup">
             <Container maxWidth="sm" fixed="true" className="data_container">
-           <form onSubmit={handleAutoFill}>
-                <Stack 
-                    spacing={2}
-                    className="stack"
-                    >
+           <form className="stack" onSubmit={handleAutoFill} >
+                <Stack  spacing={1} >
                         <TextField  
                             className="field" 
                             id="outlined-basic" 

@@ -16,7 +16,7 @@ const DiceArea = (props) => {
     // });
 
     const renderDices = () => {
-        console.log("renderDices")
+        // console.log("renderDices")
         if (!props.diceValues) {
             return <RollButton label="Roll Dice" clicked={props.clicked} />
         }

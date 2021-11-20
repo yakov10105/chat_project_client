@@ -11,13 +11,21 @@
 
 
 
-.blocksUp {
+.blocksUpWhite {
     position: absolute;
     top: 0;
     height: 45%;
     width: 100%;
     display: flex;
     flex-direction: row-reverse;
+}
+
+.blocksUpBlack {
+    position: absolute;
+    top: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
 }
 
 .centerDashBoard{
@@ -30,12 +38,21 @@
     align-items: center;
 }
   
-.blocksDown {
+.blocksDownWhite {
     position: absolute;
     bottom: 0;
     height: 45%;
     width: 100%;
     display: flex;
+}
+
+.blocksDownBlack {
+    position: absolute;
+    bottom: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 #leftSide {

@@ -2,6 +2,7 @@ import './ChatManager.css'
 import React, {useContext, useEffect, useState } from 'react'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
 import Chat from './Chat';
+import LogoutButton from '../Logout/LogoutButton';
 import GameManager from '../GameManager/GameManager';
 import axios from 'axios';
 import useSound from 'use-sound';
@@ -107,6 +108,7 @@ const ChatManager = (props) => {
 
   return (
     <div className='chat_manager' className={isGameOn ? ' no_messages': null} >
+      <LogoutButton/>
       <Chat sendMessage={sendMessage} 
                 messages={messages}
                 //users={users}

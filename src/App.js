@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header/>
+      <div className="components">
       <Switch>
             <Route path='/login' component={Login} ></Route>
             <Route path='/signup' component={SignUp}></Route>
@@ -26,6 +26,7 @@ function App() {
             <Route exact path='/unauthorized' component={UnAuthorizedPage}/>
             <Route to='/' component={Login}/>
       </Switch>
+      </div>
       <Footer/>
     </div>
   );
