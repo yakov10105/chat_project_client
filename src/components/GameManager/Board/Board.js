@@ -10,7 +10,7 @@ import { IsMyTurnContext } from "../../../Context/IsMyTurnContext";
 import './Board.css'
 import axios from 'axios'
 
-const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves, UpdatePossibleMoves, Move, GetIsMovesLeft, ChangeTurn}) => {
+const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves, UpdatePossibleMoves, Move, GetIsMovesLeft, ChangeTurn, GetEliminatedCheckers}) => {
     //const [serverGameBoard,setServerGameBoard] = useState({})
     //const [ board,setBoard] = useState({});
     const [rightUpList,setRightUpList]= useState([])
@@ -21,13 +21,14 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
     const [possibleMoves,setPossibleMoves]= useState([])
     const [diceValues,setDiceValues]= useState();
     const [isWhiteCheckers, setIsWhiteCheckers] = useState(false);
-    const [numberOfEaten, setNumberOfEaten] = useState(0);
-    const [numberOfOut, setNumberOfOut] = useState(0);
-    // const [blackEliminated,setBlackEliminated]=useState(0)
+    const [numberOfBlackEliminated, setNumberOfBlackEliminated] = useState(0);
+    const [numberOfWhiteEliminated, setNumberOfWhiteEliminated] = useState(0);
     const [oponentEliminated,setOponentEliminated]=useState(0)
+    // const [numberOfOut, setNumberOfOut] = useState(0);
+    // const [blackEliminated,setBlackEliminated]=useState(0)
     // const [oponentOutOffBoard,SetOponentOutOffBoard]=useState(0)
-    const [blackOutOffBoard,SetBlackOutOffBoard]=useState(0)
-    const [whiteOutOffBoard,SetWhiteOutOffBoard]=useState(0)
+    // const [blackOutOffBoard,SetBlackOutOffBoard]=useState(0)
+    // const [whiteOutOffBoard,SetWhiteOutOffBoard]=useState(0)
     const {board,setBoard} = useContext(BoardContext);
     const {isMyTurn,setIsMyTurn} = useContext(IsMyTurnContext);
     const [jsonBoard,setJsonBoard]= useState({});
@@ -50,14 +51,14 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
             setRightDownList(JsonBoard.BoardFields.filter((f)=>f.position>5 && f.position<=11))
             setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
             setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
-
-            setOponentEliminated(JsonBoard.EliminatedField.checkers.filter(c=>c.player.id===user.id))
             // setBlackEliminated(JsonBoard.EliminatedField.checkers.filter(c=>c.player.id!==user.id))
-            SetWhiteOutOffBoard(JsonBoard.GoalFieldPlayer1.checkers)
-            SetBlackOutOffBoard(JsonBoard.GoalFieldPlayer2.checkers)
 
-            setNumberOfEaten(oponentEliminated.length)
-            setNumberOfOut(isWhiteCheckers ? whiteOutOffBoard.length : blackOutOffBoard.length)
+            updateEliminated(JsonBoard);
+
+            // SetWhiteOutOffBoard(JsonBoard.GoalFieldPlayer1.checkers)
+            // SetBlackOutOffBoard(JsonBoard.GoalFieldPlayer2.checkers)
+
+            // setNumberOfOut(isWhiteCheckers ? whiteOutOffBoard.length : blackOutOffBoard.length)
 
             //console.log(blackEliminated,whiteEliminated,whiteOutOffBoard,blackOutOffBoard)
             // setIsMyTurn(isMyTurn);
@@ -66,6 +67,27 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
 
 
     },[board])
+
+    const updateEliminated= (jsonB) => {
+        if(isWhiteCheckers){
+            const eleminated = GetEliminatedCheckers(isWhiteCheckers);
+            eleminated.then((res) =>{
+                let num = res.length;
+                setNumberOfBlackEliminated(num);
+                console.log(numberOfBlackEliminated);
+            });
+            // setNumberOfEaten(oponentEliminated.length)
+        }
+        else{
+        const eleminated = GetEliminatedCheckers(!isWhiteCheckers);
+        eleminated.then((res) =>{
+            let num = res.length;
+            setNumberOfWhiteEliminated(num);
+            console.log(numberOfWhiteEliminated);
+        });
+        // setNumberOfEaten(oponentEliminated.length)
+        }
+    }
 
     useEffect(()=>{
         
@@ -100,6 +122,7 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
         if(currentTriangleIdx !== undefined){
             Move(currentTriangleIdx, to)
             UpdatePossibleMoves();
+            updateEliminated(jsonBoard);
             const val = GetDicesValue();
             val.then((v) => {
             setDiceValues(v);
@@ -196,8 +219,8 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
         return(
             <div>
                 <Checker player={1}/>
-                <div>Eaten: {numberOfEaten}</div>
-                <div>Out Of Board: {numberOfOut}</div>
+                <div>Eaten: {numberOfWhiteEliminated}</div>
+                {/* <div>Out Of Board: {numberOfOut}</div> */}
             </div>
         )
     }
@@ -206,8 +229,8 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
         return(
             <div>
                 <Checker/>
-                <div>Eaten: {numberOfEaten}</div>
-                <div style={{paddingBottom:"50vh"}}>Out Of Board: {numberOfOut}</div>
+                <div>Eaten: {numberOfBlackEliminated}</div>
+                {/* <div style={{paddingBottom:"50vh"}}>Out Of Board: {numberOfOut}</div> */}
             </div>
         )
     }

@@ -45,6 +45,10 @@ const GameManager = ({user}) => {
                 });
               });
           })
+
+          // connection.on("GetEliminatedCheckers", (isWhite) => {
+
+          // })
           connection.onclose(e => {
             setConnection();
             
@@ -127,6 +131,14 @@ const GameManager = ({user}) => {
           console.log(e);
         }
       }
+
+      const GetEliminatedCheckers = async (isWhite) => {
+        try{
+          return(await connection.invoke("GetNumberOfEliminatedCheckers", isWhite));
+        } catch(e){
+          console.log(e);
+        }
+      }
       
 
     return (
@@ -147,7 +159,8 @@ const GameManager = ({user}) => {
               UpdatePossibleMoves={UpdatePossibleMoves}
               Move={Move}
               GetIsMovesLeft={GetIsMovesLeft}
-              ChangeTurn={ChangeTurn}/>}
+              ChangeTurn={ChangeTurn}
+              GetEliminatedCheckers={GetEliminatedCheckers}/>}
               </BoardContext.Provider>
         </div>
     )
