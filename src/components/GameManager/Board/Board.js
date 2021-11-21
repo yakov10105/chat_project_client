@@ -1,5 +1,5 @@
-import React,{useEffect, useState} from 'react'
-import Data from './Fields.json'
+import React,{useEffect, useState,useContext} from 'react'
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Alert } from '@mui/material'
 import Checker from '../Checker/Checker'
 import Triangle from './Triangle/Triangle'
 import getCheckers from '../getCheckers/getCheckers'
