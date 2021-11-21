@@ -1,6 +1,7 @@
 .Login{
-    height: 50vh;
-    width: 100%;
+    position:absolute;
+    left: 0;
+    width: 100vw;
 }
 .signup-link{
     color: white;
@@ -30,8 +31,8 @@
 
 .login-btn{
     background: linear-gradient(60deg,  #5E9C2F,#5E9C2F);
-    width: 100px;
     margin-left: 100px;
+    padding-left: 100px;
 }
 
 .sign_up_btn{
