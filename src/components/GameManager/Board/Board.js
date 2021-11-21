@@ -23,9 +23,8 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
     const [isWhiteCheckers, setIsWhiteCheckers] = useState(false);
     const [numberOfEaten, setNumberOfEaten] = useState(0);
     const [numberOfOut, setNumberOfOut] = useState(0);
-    // const [blackEliminated,setBlackEliminated]=useState(0)
+    const [canDragToGoalField,setCanDragToGoalField]=useState(false)
     const [oponentEliminated,setOponentEliminated]=useState(0)
-    // const [oponentOutOffBoard,SetOponentOutOffBoard]=useState(0)
     const [blackOutOffBoard,SetBlackOutOffBoard]=useState(0)
     const [whiteOutOffBoard,SetWhiteOutOffBoard]=useState(0)
     const {board,setBoard} = useContext(BoardContext);
@@ -90,8 +89,14 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
             setPossibleMoves([]);
             res.then((r) => {
                 console.log("setCurrentTriangleIdx " +index);
-                // console.log("handleTriangleClick " +index);
                 setPossibleMoves(r);
+                for(let i =0; i<possibleMoves.length;i++){
+                    if(possibleMoves[i]===27 || possibleMoves[i]===26){
+                        setCanDragToGoalField(true)
+                    }else{
+                        setCanDragToGoalField(false)
+                    }
+                }
             })
         }
     }
@@ -231,6 +236,9 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
             <div className="container-out" id="black">
                 {renderBlackEaten()}
                 {renderWhiteEaten()}
+                <div style={{width:"100px" , height:"100px",background:canDragToGoalField? "green" : "red"}} onClick={canDragToGoalField? isWhiteCheckers?()=>handleMove(27):()=>handleMove(26):{}}>
+
+                </div>
             </div>
             <div id="leftSide" className="row">
                 <div className={isWhiteCheckers ? "blocksUpWhite" : "blocksDownBlack"}>

@@ -127,6 +127,7 @@ const GameManager = ({user}) => {
           console.log(e);
         }
       }
+
       
 
     return (
