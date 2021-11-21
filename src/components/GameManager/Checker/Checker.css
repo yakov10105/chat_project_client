@@ -15,7 +15,7 @@ div.checker {
     margin: 0px auto;
     overflow: hidden;
     border-radius: 50%;
-    pointer-events: none;
+    cursor: pointer;
 }
 
 div.checkerP1 {

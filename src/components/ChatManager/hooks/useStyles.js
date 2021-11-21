@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     table: {
-      minWidth: 650,
+      minWidth: 750,
     },
     chatSection: {
       width: '100%',
@@ -14,7 +14,8 @@ const useStyles = makeStyles({
     borderRight500: {
         height: '70vh',
         width:'100vh',
-        borderRight: '1px solid #e0e0e0'
+        borderRight: '1px solid #e0e0e0',
+        minWidth: 200,
     },
     messageArea: {
       height: '70vh',

@@ -10,4 +10,7 @@
     padding: 0;
 }
 html { height: 100%; }
-body { min-height: 100%; }
+body { 
+    min-height: 100%;
+    font-family: 'Raleway', sans-serif;
+ }

@@ -9,7 +9,9 @@
     padding: 0px;
 }
 
-.blocksUp {
+
+
+.blocksUpWhite {
     position: absolute;
     top: 0;
     height: 45%;
@@ -17,13 +19,40 @@
     display: flex;
     flex-direction: row-reverse;
 }
+
+.blocksUpBlack {
+    position: absolute;
+    top: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
+}
+
+.centerDashBoard{
+    position: absolute;
+    top: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
   
-.blocksDown {
+.blocksDownWhite {
     position: absolute;
     bottom: 0;
     height: 45%;
     width: 100%;
     display: flex;
+}
+
+.blocksDownBlack {
+    position: absolute;
+    bottom: 0;
+    height: 45%;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 #leftSide {
@@ -34,6 +63,14 @@
     width: 36.5%;
     display: block;
     background-image: url('../../../assets/BoardBG.jpg');
+}
+#center {
+    position: absolute;
+    top: 2%;
+    left: 43%;
+    bottom: 2%;
+    width: 100%;
+    display: block;
 }
 
 #rightSide {
@@ -58,21 +95,28 @@
     justify-content: flex-end;
 }
 
+.roll-btn{
+    background: linear-gradient(60deg,  #5E9C2F,#5E9C2F);
+    padding: 11px 22px;
+    border-radius: 35px;
+}
 
-/* .triangleLeftUpC2:nth-child(1){
-    left: 20%;
+.container-out{
+    position: absolute;
+    font-size: 16px;
+    color: white;
+    padding-top: 20px;
+    left:90%;
+    color: white;
+    font-weight: bold;
+}
+
+.oponent-turn{
+    
+    color: black;
+    font-weight: bold;
+    font-size: 26px;
+    color: khaki;
 }
 
 
-.triangleRightUpC2:nth-child(2){
-    left: 30%;
-}
-
-.triangleLeftUp:nth-child(2){
-    left: 20%;
-}
-
-
-.triangleRightUp:nth-child(4){
-    left: 30%;
-} */

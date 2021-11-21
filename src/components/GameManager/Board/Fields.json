@@ -2,8 +2,8 @@
     {
         "color":"1",
         "position":"top",
-        "checkers":{"number":2,
-                     "player":1}
+        "checkers":{"number":5,
+                     "player":2}
     },
     {
         "color":"2",
@@ -26,7 +26,11 @@
     {
         "color":"1",
         "position":"top",
+<<<<<<< HEAD
+        "checkers":{"number":3,
+=======
         "checkers":{"number":0,
+>>>>>>> main
                      "player":1}
     },
     {
@@ -40,14 +44,23 @@
     {
         "color":"2",
         "position":"bottom",
+<<<<<<< HEAD
+        "checkers":{"number":5,
+                     "player":1}
+=======
         "checkers":{"number":2,
                      "player":2}
+>>>>>>> main
     },
     {
         "color":"1",
         "position":"bottom",
         "checkers":{"number":0,
+<<<<<<< HEAD
+                     "player":""}
+=======
                      "player":0}
+>>>>>>> main
     },
     {
         "color":"2",
@@ -64,8 +77,13 @@
     {
         "color":"2",
         "position":"bottom",
+<<<<<<< HEAD
+        "checkers":{"number":3,
+                     "player":"1"}
+=======
         "checkers":{"number":0,
                      "player":1}
+>>>>>>> main
     },
     {
         "color":"1",
@@ -78,7 +96,11 @@
     {
         "color":"1",
         "position":"top",
+<<<<<<< HEAD
+        "checkers":{"number":5,
+=======
         "checkers":{"number":0,
+>>>>>>> main
                      "player":1}
     },
     {
@@ -108,16 +130,26 @@
     {
         "color":"2",
         "position":"top",
+<<<<<<< HEAD
+        "checkers":{"number":2,
+                     "player":2}
+=======
         "checkers":{"number":5,
                      "player":1}
+>>>>>>> main
     }
 ],
 "RightDown":[
     {
         "color":"2",
         "position":"bottom",
+<<<<<<< HEAD
+        "checkers":{"number":5,
+                     "player":2}
+=======
         "checkers":{"number":0,
                      "player":1}
+>>>>>>> main
     },
     {
         "color":"1",
@@ -146,8 +178,13 @@
     {
         "color":"1",
         "position":"bottom",
+<<<<<<< HEAD
+        "checkers":{"number":2,
+                     "player":1}
+=======
         "checkers":{"number":5,
                      "player":2}
+>>>>>>> main
     }
 ]
 

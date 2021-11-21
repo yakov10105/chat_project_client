@@ -1,0 +1,19 @@
+.Footer{
+    width: 95%;
+    height: 3rem;
+    background-color: gray;
+    opacity: 0.4;
+    position:absolute;
+    bottom: 0px;
+    padding: 2%;
+}
+.footer-image{
+    height: 3rem;
+    width: auto;
+}
+.name{
+    text-align: center;
+}
+.icon{
+   cursor: pointer;
+}

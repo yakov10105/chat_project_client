@@ -6,12 +6,14 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
 import {UserTyping} from '../../Context/UserTyping';
+import {RoomContext} from '../../Context/RoomContext';
 
 
-const SendMessageForm = ({ sendMessage, roomName }) => {
+const SendMessageForm = ({ sendMessage }) => {
 
     const [message, setMessage] = useState('');
     const {isTyping, setIsTyping} = useContext(UserTyping);
+    const {roomName, setRoomName} = useContext(RoomContext);
     let timer = null;
 
     useEffect(()=>{

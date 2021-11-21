@@ -1,5 +1,6 @@
 import React , {useState}from 'react'
-import { Container,Stack,TextField,Button } from '@mui/material'
+import {Container, Stack, TextField, Button, Grid, Typography, Box   } from '@mui/material'
+import Logo from'../../assets/GameIcon.svg'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
@@ -82,15 +83,30 @@ const SignUp = () => {
 
    if(!isLoggedIn){
     return (
-        <div className="Signup">
-            <Container maxWidth="sm" fixed="true" className="data_container">
-           <form onSubmit={handleAutoFill}>
-                <Stack 
-                    spacing={2}
-                    className="stack"
-                    >
+            <div  className="data_container">
+           <form className="stack"  onSubmit={handleAutoFill} >
+                    <Grid container padding={3} spacing={2} justifyContent="center" alignItems="center">
+                        <Grid container justifyContent="space-between" alignItems="center">
+                            
+                    <Grid item xs={1} sm={4}  md="auto" lg="auto">
+                            <img src={Logo} width="100" alt="Shesh Logo" />
+                    </Grid>
+                    <Grid item xs={6} sm={4} md="auto">
+                    <Typography variant="h3">
+                        Sign Up
+                    </Typography>
+                    </Grid>
+                    <Box component={Grid}  item xs={3} md="auto" justifyContent="flex-end" alignItems="center" display={{ xs: "none", sm: "flex" }}>
+                        <Grid item sm="auto" md="auto">
+                            <img src={Logo} width="100" alt="Shesh Logo" />
+                        </Grid>
+                    </Box>
+                        </Grid>
+
+                        <Grid item xs={12} md={4}>
                         <TextField  
                             className="field" 
+                            fullWidth
                             id="outlined-basic" 
                             label="First Name" 
                             variant='outlined' 
@@ -99,8 +115,12 @@ const SignUp = () => {
                             helperText={errors['firstName']?.message}
                             {...register('firstName')}
                             onChange={handleChange} />
+                        </Grid>
+
+                        <Grid item xs={12} md={8}>
                         <TextField  
                             className="field" 
+                            fullWidth
                             id="outlined-basic" 
                             label="Last Name" 
                             variant="outlined" 
@@ -109,8 +129,14 @@ const SignUp = () => {
                             helperText={errors['lastName']?.message}
                             {...register('lastName')}
                             onChange={handleChange}/>
+                        </Grid>
+                        
+                        
+
+                        <Grid item xs={12} md={8}>
                         <TextField  
                             className="field" 
+                            fullWidth
                             id="outlined-basic" 
                             label="User Name" 
                             variant="outlined" 
@@ -119,19 +145,12 @@ const SignUp = () => {
                             helperText={errors['userName']?.message || serverError.userNameError}
                             {...register('userName')}
                             onChange={handleChange}/>
+                        </Grid>
+
+                        <Grid item xs={12} md={4}>
                         <TextField  
                             className="field" 
-                            id="outlined-basic" 
-                            type="email" 
-                            label="Email" 
-                            variant="outlined" 
-                            name='UserEmail'
-                             error={errors['userEmail']?.message || serverError.emailError}
-                            helperText={errors['userEmail']?.message || serverError.emailError}
-                            {...register('userEmail')}
-                            onChange={handleChange}/>
-                        <TextField  
-                            className="field" 
+                            fullWidth
                             id="outlined-basic" 
                             type='number' 
                             label="Age" 
@@ -141,8 +160,27 @@ const SignUp = () => {
                             helperText={errors['userAge']?.message}
                             {...register('userAge')}
                             onChange={handleChange}/>
+                        </Grid>
+                        
+                        <Grid item xs={12}>
                         <TextField  
                             className="field" 
+                            fullWidth
+                            id="outlined-basic" 
+                            type="email" 
+                            label="Email" 
+                            variant="outlined" 
+                            name='UserEmail'
+                             error={errors['userEmail']?.message || serverError.emailError}
+                            helperText={errors['userEmail']?.message || serverError.emailError}
+                            {...register('userEmail')}
+                            onChange={handleChange}/>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                        <TextField  
+                            className="field" 
+                            fullWidth
                             id="outlined-basic" 
                             type='password'  
                             label="Password" 
@@ -152,8 +190,12 @@ const SignUp = () => {
                             helperText={errors['password']?.message}
                             {...register('password')}
                             onChange={handleChange}/>
+                        </Grid>
+
+                        <Grid item xs={12}>
                         <TextField  
                             className="field" 
+                            fullWidth
                             id="outlined-basic" 
                             type='password'  
                             label="Confirm Password" 
@@ -162,14 +204,30 @@ const SignUp = () => {
                             error={errors['confirmPassword']?.message}
                             helperText={errors['confirmPassword']?.message}
                             {...register('confirmPassword')}/>
-                        <Button variant='contained' style={{
+                        </Grid>
+
+                        <Grid container padding={2}  justifyContent="space-between" alignItems="center">
+                            
+                    <Box component={Grid}  item xs={3} md="auto" justifyContent="flex-end" alignItems="center" display={{ xs: "none", sm: "flex" }}>
+                        <Grid item sm="auto" md="auto">
+                            <img src={Logo} width="100" alt="Shesh Logo" />
+                        </Grid>
+                    </Box>
+                    <Grid item xs={6} sm={4} md={6}>
+                    <Button variant='contained' style={{
                                 borderRadius: 35,
                                 background: "linear-gradient(60deg,  #5E9C2F,#5E9C2F)",
-                                padding: "11px 22px" }} type='submit' >Signup</Button>
-                </Stack>
+                                padding: "15px 30px", width:"100%" }} type='submit' >Signup
+                                </Button>
+                    </Grid>
+                    
+                    <Grid item xs={5} sm={4} md="auto">
+                            <img src={Logo} width="100" alt="Shesh Logo" />
+                    </Grid>
+                        </Grid>
+                    </Grid>
            </form>
-           </Container>
-        </div>
+           </div>
     )
    }
    else{
