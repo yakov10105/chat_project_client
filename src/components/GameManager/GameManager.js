@@ -142,6 +142,8 @@ const GameManager = ({user}) => {
       
 
     return (
+
+
         <div className='game_manager' 
             style={{
                 'height': '80vh',
