@@ -6,10 +6,12 @@ import getCheckers from '../getCheckers/getCheckers'
 import DiceArea from '../DiceArea/DiceArea'
 import { BoardContext } from "../../../Context/BoardContext";
 import { IsMyTurnContext } from "../../../Context/IsMyTurnContext";
+import { WinnerContext } from '../../../Context/WinnerContext'
 import './Board.css'
 import axios from 'axios'
+import useEnhancedEffect from '@mui/utils/useEnhancedEffect'
 
-const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMoves, UpdatePossibleMoves, Move, GetIsMovesLeft, ChangeTurn, GetEliminatedCheckers}) => {
+const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, GetPossibleMoves, UpdatePossibleMoves, Move, GetIsMovesLeft, ChangeTurn, GetEliminatedCheckers}) => {
     const [rightUpList,setRightUpList]= useState([])
     const [leftUpList,setLeftUpList]= useState([])
     const [leftDownList,setLeftDownList]= useState([])
@@ -28,6 +30,7 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
     const [whiteOutOffBoard,SetWhiteOutOffBoard]=useState(0)
     const {board,setBoard} = useContext(BoardContext);
     const {isMyTurn,setIsMyTurn} = useContext(IsMyTurnContext);
+    const {isWinner,setIsWinner} = useContext(WinnerContext);
     const [jsonBoard,setJsonBoard]= useState({});
 
     
@@ -35,7 +38,9 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
     useEffect(()=>{
         setIsWhiteCheckers(isMyTurn)
     },[])
+    useEffect(()=>{
 
+    },[isWinner])
     useEffect(()=>{
             //setBoard(res)
             //console.log("renderBoard");
@@ -135,6 +140,10 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
                 const turn = GetIsMovesLeft()
                 turn.then((t) => {
                     if(!t){
+                        const winner = CheckForWinner();
+                        winner.then((isWinner)=>{
+                            setIsWinner(isWinner)
+                        })
                         resetBoardState();
                         ChangeTurn();
                     }
@@ -253,38 +262,46 @@ const Board = ({user, GetBoardForUser, RollDices, GetDicesValue, GetPossibleMove
         GetBoardForUser();
     }
 
-    return (
-        <div id="game_board" className="container-fluid">
-            <div className="container-out" id="black">
-                {renderBlackEaten()}
-                {renderWhiteEaten()}
-                <div style={{width:"100px" , height:"100px",background:canDragToGoalField? "green" : "red"}} onClick={canDragToGoalField? isWhiteCheckers?()=>handleMove(27):()=>handleMove(26):{}}>
+    if(isWinner===null){
+        return (
+            <div id="game_board" className="container-fluid">
+                <div className="container-out" id="black">
+                    {renderBlackEaten()}
+                    {renderWhiteEaten()}
+                    <div style={{width:"100px" , height:"100px",background:canDragToGoalField? "green" : "red"}} onClick={canDragToGoalField? isWhiteCheckers?()=>handleMove(27):()=>handleMove(26):{}}>
+                    </div>
+                </div>
+                <div id="leftSide" className="row">
+                    <div className={isWhiteCheckers ? "blocksUpWhite" : "blocksDownBlack"}>
+                        {renderTriangle(leftUpList,18)}
+                    </div>
+                    <div className={isWhiteCheckers ? "blocksDownWhite" : "blocksUpBlack"}>
+                        {renderTriangle(leftDownList,0)}
+                    </div>
+                </div>
+                <div id="center">
+                    <div className="centerDashBoard">
+                        {renderDiceArea(isMyTurn)}
+                    </div>
+                </div>
+    
+                <div id="rightSide" className="row">
+                    <div className={isWhiteCheckers ? "blocksUpWhite" : "blocksDownBlack"}>
+                        {renderTriangle(rightUpList,12)}
+                    </div>
+                    <div className={isWhiteCheckers ? "blocksDownWhite" : "blocksUpBlack"}>
+                        {renderTriangle(rightDownList,6)}
+                    </div>
                 </div>
             </div>
-            <div id="leftSide" className="row">
-                <div className={isWhiteCheckers ? "blocksUpWhite" : "blocksDownBlack"}>
-                    {renderTriangle(leftUpList,18)}
-                </div>
-                <div className={isWhiteCheckers ? "blocksDownWhite" : "blocksUpBlack"}>
-                    {renderTriangle(leftDownList,0)}
-                </div>
-            </div>
-            <div id="center">
-                <div className="centerDashBoard">
-                    {renderDiceArea(isMyTurn)}
-                </div>
-            </div>
-
-            <div id="rightSide" className="row">
-                <div className={isWhiteCheckers ? "blocksUpWhite" : "blocksDownBlack"}>
-                    {renderTriangle(rightUpList,12)}
-                </div>
-                <div className={isWhiteCheckers ? "blocksDownWhite" : "blocksUpBlack"}>
-                    {renderTriangle(rightDownList,6)}
-                </div>
-            </div>
-        </div>
-    )
+        )
+    }
+    else if(!isWinner){
+        return(<h1>You Lost the Game ...</h1>)
+    }
+    else{
+        return(<h1>Winner Winner Chicken Dinner</h1>)
+    }
 }
 
 export default Board

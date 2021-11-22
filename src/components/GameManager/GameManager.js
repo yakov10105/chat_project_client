@@ -4,6 +4,7 @@ import { RoomContext } from "../../Context/RoomContext";
 import { BoardContext } from "../../Context/BoardContext";
 import { IsMyTurnContext } from "../../Context/IsMyTurnContext";
 import Board from './Board/Board'
+import { WinnerContext } from '../../Context/WinnerContext';
 
 const GameManager = ({user}) => {
 
@@ -11,6 +12,9 @@ const GameManager = ({user}) => {
   const [board,setBoard] = useState()
   const {roomName, setRoomName} = useContext(RoomContext);
   const {isMyTurn, setIsMyTurn} = useContext(IsMyTurnContext);
+
+  const [isWinner,setIsWinner] = useState(null)
+  const winnerValue = useMemo(()=>({isWinner,setIsWinner}),[isWinner,setIsWinner])
 
     
   const value = useMemo(() => ({board,setBoard}), [board,setBoard])
@@ -37,6 +41,15 @@ const GameManager = ({user}) => {
               console.log(e);
             }
           });
+
+          connection.on("AnyWinner",async (winnerName)=>{
+              if(user.userName===winnerName){
+                 setIsWinner(true)
+              }
+              else{
+                setIsWinner(false)
+              }
+          })
 
           connection.on("ChangeTurn", async () => {
               setIsMyTurn(current => !current, async () => {
@@ -73,6 +86,14 @@ const GameManager = ({user}) => {
             });
         } catch(e){
           console.log(e);
+        }
+      }
+
+      const CheckForWinner=async()=>{
+        try{
+          return await connection.invoke("CheckForWinner")
+        }catch(err){
+          console.log(err)
         }
       }
 
@@ -143,7 +164,7 @@ const GameManager = ({user}) => {
 
     return (
 
-
+      <WinnerContext.Provider value={winnerValue}>
         <div className='game_manager' 
             style={{
                 'height': '80vh',
@@ -160,11 +181,13 @@ const GameManager = ({user}) => {
               GetPossibleMoves={GetPossibleMoves}
               UpdatePossibleMoves={UpdatePossibleMoves}
               Move={Move}
+              CheckForWinner={CheckForWinner}
               GetIsMovesLeft={GetIsMovesLeft}
               ChangeTurn={ChangeTurn}
               GetEliminatedCheckers={GetEliminatedCheckers}/>}
               </BoardContext.Provider>
         </div>
+      </WinnerContext.Provider>
     )
 }
 
