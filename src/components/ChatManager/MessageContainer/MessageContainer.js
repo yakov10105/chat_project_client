@@ -3,15 +3,15 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import useStyles from "./hooks/useStyles";
+import Style from "./Style";
 import './MessageContainer.css';
-import Line from "../../layouts/Line";
+import Line from "../../../layouts/Line";
 import TextField from '@mui/material/TextField';
 import { withWidth } from "@material-ui/core";
 
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
-    const classes = useStyles();
+    const classes = Style();
 
     useEffect(() => {
         if (messageRef && messageRef.current) {
@@ -21,9 +21,6 @@ const MessageContainer = ({ messages, user }) => {
     }, [messages]);
 
     const messageIsFromUser = (username) => {
-        // if(username=== "MyChat Bot"){
-        //     return "center";
-        // }
         if(username === user){
             return "right"
         }
@@ -32,6 +29,8 @@ const MessageContainer = ({ messages, user }) => {
 
 
     return (
+        
+        <Grid item xs={11}>
         <List className={classes.messageArea} ref={messageRef}>
             {messages.map((m, index) => 
                  <div key={index} className={messageIsFromUser(m.user)+" msg_box"}>
@@ -40,12 +39,13 @@ const MessageContainer = ({ messages, user }) => {
                             <Grid item xs={12}>
                                 <ListItemText xs={{backgroundColor:"#ffff00"}}  primary={
                                     <TextField
+                                    variant="standard"
+                                    InputProps={{ disableUnderline: true }}
                                     multiline
-                                    maxRows={10}
+                                    fullWidth
+                                    maxRows={100}
                                     value={m.message}
-                                    variant="outlined"
-                                    aria-readonly
-                                    />}>
+                                    aria-readonly />} >
                                 </ListItemText>
                             </Grid>
                             <Grid item xs={12}>
@@ -59,6 +59,7 @@ const MessageContainer = ({ messages, user }) => {
                  </div>
              )}
         </List>
+        </Grid>
     )
 }
 

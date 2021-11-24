@@ -4,6 +4,7 @@ import { RoomContext } from "../../Context/RoomContext";
 import { BoardContext } from "../../Context/BoardContext";
 import { IsMyTurnContext } from "../../Context/IsMyTurnContext";
 import Board from './Board/Board'
+import Grid from '@material-ui/core/Grid';
 import { WinnerContext } from '../../Context/WinnerContext';
 
 const GameManager = ({user}) => {
@@ -167,9 +168,9 @@ const GameManager = ({user}) => {
       <WinnerContext.Provider value={winnerValue}>
         <div className='game_manager' 
             style={{
-                'height': '80vh',
-                'width': '80vw',
-                'background-color': 'aliceblue',
+                'height': '70vh',
+                'width': '70vw',
+                marginLeft:"15%"
             }}>
               <BoardContext.Provider value={value}>
             {board && <Board

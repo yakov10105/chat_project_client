@@ -246,7 +246,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
         <div>
             <Checker/>
             <div>Eaten: {numberOfEaten}</div>
-            <div style={{paddingBottom:"50vh"}}>Out Of Board: {numberOfOut}</div>
+            <div style={{paddingBottom:"30vh"}}>Out Of Board: {numberOfOut}</div>
         </div>
         )
     }

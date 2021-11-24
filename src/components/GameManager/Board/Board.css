@@ -95,14 +95,10 @@
     justify-content: flex-end;
 }
 
-.roll-btn{
-    background: linear-gradient(60deg,  #5E9C2F,#5E9C2F);
-    padding: 11px 22px;
-    border-radius: 35px;
-}
-
 .container-out{
     position: absolute;
+    display: flex;
+    flex-direction: column;
     font-size: 16px;
     color: white;
     padding-top: 20px;
@@ -112,10 +108,10 @@
 }
 
 .oponent-turn{
-    
+    position: absolute;
     color: black;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 16px;
     color: khaki;
 }
 
