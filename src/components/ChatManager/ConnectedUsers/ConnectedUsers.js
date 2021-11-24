@@ -63,9 +63,8 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
           });
 
           connection.on("ReceiveMessage", (room) => {
+            // playNewMessage();
             setFromRoomName(room);
-            playNewMessage();
-            console.log("play")
           });
 
           connection.on("ReceiveTyping", (userName) => {
@@ -77,8 +76,8 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         });
           
         connection.on("ReceiveGameInvitation", (userName) => {
-            playGameInvitation(); 
             setGameRequestSender(userName + " Invite you to play BackGammon")
+            // playGameInvitation(); 
             setOpen(true);
         });
 
@@ -109,7 +108,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const setGameOn = async (currentUserName) => {
         try{
-            await accountConnection.invoke("SetGameOn",{SenderUserName:user, ReciverUserName:currentUserName} );
+            await accountConnection.invoke("SetGameOn",{SenderUserName:user, ReciverUserName:currentUser.userName} );
         } catch(e){
         console.log(e);
         }
@@ -337,12 +336,12 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                                     joinRoom(user,u.userName);
                                     setCurrentUser(u);
                                     }}>
-                                    {isNewMessagesFrom(u)}
                                     <ListItemIcon>
                                         <Avatar alt={u.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>
                                     {renderTypingBubble(u)}
                                     <ListItemText primary={u.userName}>{u.userName}</ListItemText>
+                                    {isNewMessagesFrom(u)}
                                     {u.isOnline && <ListItemText secondary={"🟢"}  align="right"></ListItemText>}
                                     {!u.isOnline && <ListItemText secondary={"🔴"}  align="right"></ListItemText>}
                                 </ListItem>
