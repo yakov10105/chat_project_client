@@ -20,14 +20,11 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
     const [possibleMoves,setPossibleMoves]= useState([])
     const [diceValues,setDiceValues]= useState();
     const [isWhiteCheckers, setIsWhiteCheckers] = useState(false);
-    const [numberOfEaten, setNumberOfEaten] = useState(0);
-    const [oponentEliminated,setOponentEliminated]=useState(0)
     const [canDragToGoalField,setCanDragToGoalField]=useState(false)
-    const [numberOfOut, setNumberOfOut] = useState(0);
     const [blackEliminated,setBlackEliminated]=useState(0)
-    const [oponentOutOffBoard,SetOponentOutOffBoard]=useState(0)
-    const [blackOutOffBoard,SetBlackOutOffBoard]=useState(0)
-    const [whiteOutOffBoard,SetWhiteOutOffBoard]=useState(0)
+    const [whiteEliminated,setWhiteEliminated]=useState(0)
+    const [blackOutOffBoard,SetBlackOutOffBoard]=useState([])
+    const [whiteOutOffBoard,SetWhiteOutOffBoard]=useState([])
     const {board,setBoard} = useContext(BoardContext);
     const {isMyTurn,setIsMyTurn} = useContext(IsMyTurnContext);
     const {isWinner,setIsWinner} = useContext(WinnerContext);
@@ -38,56 +35,37 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
     useEffect(()=>{
         setIsWhiteCheckers(isMyTurn)
     },[])
+
     useEffect(()=>{
 
     },[isWinner])
     useEffect(()=>{
-            //setBoard(res)
-            //console.log("renderBoard");
+
             const JsonBoard = JSON.parse(board);
             setJsonBoard(JsonBoard);
             setLeftDownList(JsonBoard.BoardFields.filter((f)=>f.position<=5))
             setRightDownList(JsonBoard.BoardFields.filter((f)=>f.position>5 && f.position<=11))
             setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
             setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
-            // setBlackEliminated(JsonBoard.EliminatedField.checkers.filter(c=>c.player.id!==user.id))
-
-            //updateEliminated();
-            //setCanDragToGoalField(false)
-            SetWhiteOutOffBoard(JsonBoard.GoalFieldPlayer1.checkers)
-            SetBlackOutOffBoard(JsonBoard.GoalFieldPlayer2.checkers)
-
-            setNumberOfEaten(oponentEliminated.length)
-            setNumberOfOut(isWhiteCheckers ? whiteOutOffBoard.length : blackOutOffBoard.length)
-
-            //console.log(blackEliminated,whiteEliminated,whiteOutOffBoard,blackOutOffBoard)
-            // setIsMyTurn(isMyTurn);
-            // console.log(isMyTurn);
-
+            console.log(JsonBoard);
+            updateEliminated();
 
 
     },[board])
 
-    // const updateEliminated= () => {
-    //     if(isWhiteCheckers){
-    //         const eleminated = GetEliminatedCheckers(isWhiteCheckers);
-    //         eleminated.then((res) =>{
-    //             let num = res.length;
-    //             setNumberOfBlackEliminated(num);
-    //             console.log(numberOfBlackEliminated);
-    //         });
-    //         // setNumberOfEaten(oponentEliminated.length)
-    //     }
-    //     else{
-    //     const eleminated = GetEliminatedCheckers(!isWhiteCheckers);
-    //     eleminated.then((res) =>{
-    //         let num = res.length;
-    //         setNumberOfWhiteEliminated(num);
-    //         console.log(numberOfWhiteEliminated);
-    //     });
-    //     //setNumberOfEaten(oponentEliminated.length)
-    //     }
-    // }
+    const updateEliminated= async () => {
+        console.log("updateEliminated");
+            const whiteEleminated = GetEliminatedCheckers(true);
+            await whiteEleminated.then((number) =>{
+                    setWhiteEliminated(number);
+                    console.log("setWhiteEliminated" + number);
+            });
+
+            const BlackEleminated = GetEliminatedCheckers(false);
+            await BlackEleminated.then((number) =>{
+                    setBlackEliminated(number);
+            });
+    }
 
     useEffect(()=>{
         
@@ -102,28 +80,45 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
         res.then((r) => {
             //console.log("DiceValues");
             setDiceValues(r);
+
+            if((isWhiteCheckers && whiteEliminated > 0) || (!isWhiteCheckers && blackEliminated > 0)){
+                
+                handleTriangleClick(25)
+            }
+
          })
     }
 
     const handleTriangleClick= (index)=>{
         if(isMyTurn){
             setCurrentTriangleIdx(index)
-            const res = GetPossibleMoves(index)
+            // const res = GetPossibleMoves(index)
+            // const turn = GetIsMovesLeft()
+            //         turn.then((t) => {
+            //             if(!t){
+            //                 resetBoardState();
+            //                 ChangeTurn();
+            //                 return
+            //             }
+            //         });
             setPossibleMoves([]);
             res.then((r) => {
-                console.log("setCurrentTriangleIdx " +index);
-                setPossibleMoves(r);
-                for(let i =0; i<possibleMoves.length;i++){
-                    if(possibleMoves[i]===27 || possibleMoves[i]===26){
-                        setCanDragToGoalField(true)
+                    setPossibleMoves(r);
+                    console.log(possibleMoves)
+                    for(let i =0; i<possibleMoves.length;i++){
+                        if(possibleMoves[i]===27 || possibleMoves[i]===26){
+                            setCanDragToGoalField(true)
+                        }
                     }
-                }
             })
         }
     }
 
     const handleMove= (to)=>{
         if(currentTriangleIdx !== undefined){
+            console.log("isWhiteCheckers " +isWhiteCheckers)
+            console.log("whiteEliminated " +whiteEliminated)
+            console.log("blackEliminated " +blackEliminated)
             Move(currentTriangleIdx, to)
             UpdatePossibleMoves();
             //updateEliminated(jsonBoard);
@@ -131,24 +126,44 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             val.then((v) => {
             setDiceValues(v);
             })
-            const res = GetPossibleMoves(to)
-            res.then((r) => {
-                console.log("setCurrentTriangleIdx " +to);
-                console.log("handleTriangleClick " +to);
-                setPossibleMoves(r);
-                setCurrentTriangleIdx(to)
-                const turn = GetIsMovesLeft()
-                turn.then((t) => {
-                    if(!t){
-                        const winner = CheckForWinner();
-                        winner.then((isWinner)=>{
-                            setIsWinner(isWinner)
-                        })
-                        resetBoardState();
-                        ChangeTurn();
-                    }
+            if(to != 25){
+                const res = GetPossibleMoves(to)
+                res.then((r) => {
+                    // console.log("setCurrentTriangleIdx " +to);
+                    // console.log("handleTriangleClick " +to);
+                    setPossibleMoves(r);
+                    setCurrentTriangleIdx(to)
+                    const turn = GetIsMovesLeft()
+                    turn.then((t) => {
+                        if(!t){
+                            const winner = CheckForWinner();
+                            winner.then((isWinner)=>{
+                                setIsWinner(isWinner)
+                            })
+                            resetBoardState();
+                            ChangeTurn();
+                        }
+                    })
                 })
-            })
+            }
+            else{
+                const res = GetPossibleMoves(to)
+                res.then((r) => {
+                    setPossibleMoves(r);
+                    setCurrentTriangleIdx(25)
+                    const turn = GetIsMovesLeft()
+                    turn.then((t) => {
+                        if(!t){
+                            const winner = CheckForWinner();
+                            winner.then((isWinner)=>{
+                                setIsWinner(isWinner)
+                            })
+                            resetBoardState();
+                            ChangeTurn();
+                        }
+                    })
+                })
+            }
         }
     }
     
@@ -198,7 +213,10 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
                 <div className={"tria_container " + position} id={index+idx} onClick={isMyTurn && diceValues ?
                                                                                                 f._canReceive ?
                                                                                                     () => (handleMove(index+idx)):
-                                                                                                    ()=>handleTriangleClick(index+idx)
+
+                                                                                                    ()=>( (isWhiteCheckers&& whiteEliminated > 0 ? handleTriangleClick(25) :
+                                                                                                          (!isWhiteCheckers && blackEliminated > 0) ? handleTriangleClick(25) :
+                                                                                                           handleTriangleClick(index+idx)))
                                                                                                 : {}}  >
                     <Triangle id={index+idx} color={color} canReceive={(f._canReceive && isMyTurn)}  position={position}>
                         {getCheckers(player,number)}
@@ -225,14 +243,10 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
 
     const renderWhiteEaten = () => {
         return(
-            // <div>
-            //     <Checker player={1}/>
-            //     <div>Eaten: {numberOfWhiteEliminated}</div>
-            // </div>
             <div>
                 <Checker player={1}/>
-                <div>Eaten: {numberOfEaten}</div>
-                <div>Out Of Board: {numberOfOut}</div>
+                <div>Eaten white: {whiteEliminated}</div>
+                {/* <div>Out Of Board: {numberOfOut}</div> */}
         </div>
         )
     }
@@ -245,8 +259,8 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             // </div>
         <div>
             <Checker/>
-            <div>Eaten: {numberOfEaten}</div>
-            <div style={{paddingBottom:"30vh"}}>Out Of Board: {numberOfOut}</div>
+            <div>Eaten black: {blackEliminated}</div>
+            {/* <div style={{paddingBottom:"30vh"}}>Out Of Board: {numberOfOut}</div> */}
         </div>
         )
     }

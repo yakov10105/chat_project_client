@@ -5,12 +5,14 @@ const Style = makeStyles({
       height: '70vh',
       width:'100%',
       overflowY: 'auto',
-      padding:'3%'
+      padding:'0px'
     },
     messageAreaHeader: {
-      position: 'fixed',
-      top: '0',
-      width: '100%',
+      color: 'black',
+      borderBottomLeftRadius:'30px',
+      borderBottomRightRadius:'30px',
+      border: '1px solid #bcbcbc'
+
     }
   });
 

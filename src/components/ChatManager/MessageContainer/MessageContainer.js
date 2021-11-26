@@ -1,5 +1,5 @@
 import { useEffect, useRef, useContext } from "react";
-import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,  } from '@mui/material'
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar, ListSubheader } from '@mui/material'
 import { purple, blue, green, orange, red } from '@mui/material/colors'
 import Style from "./Style";
 import './MessageContainer.css';
@@ -32,16 +32,18 @@ const MessageContainer = ({ messages, user }) => {
 
     return (
         
-        <Grid item xs={11}>
-        <List className={classes.messageArea} ref={messageRef}><List>
-                    <ListItem button key="RemySharp" className={classes.messageAreaHeader}>
+        <Grid item xs={12}>
+        <List className={classes.messageArea} ref={messageRef}>
+            <ListSubheader>
+                <ListItem className={classes.messageAreaHeader}>
                         <ListItemIcon>
                             <Avatar style={{backgroundColor: getColour()}} alt={reciverUser.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                         </ListItemIcon>
                         <ListItemText primary={reciverUser.userName}></ListItemText>
                     </ListItem>
-                </List>
-                <Divider style={{ background: 'black', marginBottom:"10px" }}/>
+            </ListSubheader>
+                    
+                
             {messages.map((m, index) => 
                  <div key={index} className={messageIsFromUser(m.user)+" msg_box"}>
                     <ListItem key={index}>

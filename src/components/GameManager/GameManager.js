@@ -162,28 +162,27 @@ const GameManager = ({user}) => {
     return (
 
       <WinnerContext.Provider value={winnerValue}>
-        <div className='game_manager' 
-            style={{
-                'height': '70vh',
-                'width': '70vw',
-                marginLeft:"15%"
-            }}>
-              <BoardContext.Provider value={value}>
-            {board && <Board
-              user = {user}
-              board={board}
-              GetBoardForUser={GetBoardForUser}
-              RollDices={RollDices}
-              GetDicesValue={GetDicesValue}
-              GetPossibleMoves={GetPossibleMoves}
-              UpdatePossibleMoves={UpdatePossibleMoves}
-              Move={Move}
-              CheckForWinner={CheckForWinner}
-              GetIsMovesLeft={GetIsMovesLeft}
-              ChangeTurn={ChangeTurn}
-              GetEliminatedCheckers={GetEliminatedCheckers}/>}
-              </BoardContext.Provider>
-        </div>
+        <BoardContext.Provider value={value}>
+          <div className='game_manager' 
+              style={{
+                  'height': '70vh',
+                  'width': '70vw'
+              }}>
+              {board && <Board
+                user = {user}
+                board={board}
+                GetBoardForUser={GetBoardForUser}
+                RollDices={RollDices}
+                GetDicesValue={GetDicesValue}
+                GetPossibleMoves={GetPossibleMoves}
+                UpdatePossibleMoves={UpdatePossibleMoves}
+                Move={Move}
+                CheckForWinner={CheckForWinner}
+                GetIsMovesLeft={GetIsMovesLeft}
+                ChangeTurn={ChangeTurn}
+                GetEliminatedCheckers={GetEliminatedCheckers}/>}
+          </div>
+        </BoardContext.Provider>
       </WinnerContext.Provider>
     )
 }
