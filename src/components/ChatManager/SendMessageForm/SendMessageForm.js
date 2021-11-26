@@ -20,9 +20,9 @@ const SendMessageForm = ({user}) => {
     const {accountConnection, setAccountConnection} = useContext(AccountConnection);
     let timer = null;
 
-    useEffect(()=>{
-        return (() => clearTimeout(timer));
-    },[])
+    // useEffect(()=>{
+    //     return (() => clearTimeout(timer));
+    // },[])
 
     const userTyping = () => {
         clearTimeout(timer);
@@ -58,7 +58,7 @@ const SendMessageForm = ({user}) => {
 
     const handleOnChange = (e) =>{
         setMessage(e.target.value);
-        userTyping();
+        //userTyping();
     }
 
     const handleSubmit = (e)=>{

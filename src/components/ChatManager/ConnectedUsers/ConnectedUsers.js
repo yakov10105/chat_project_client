@@ -16,12 +16,16 @@ import {RoomContext} from '../../../Context/RoomContext';
 import {IsMyTurnContext} from '../../../Context/IsMyTurnContext';
 import {AccountConnection} from '../../../ConnectionContext/AccountConnection';
 import {ChatConnection} from '../../../ConnectionContext/ChatConnection';
+import {ReciverContext} from '../../../Context/ReciverUserContext';
 import TypingBubble from '../../../layout/typingBubble/typingBubble'
 import CloseIcon from '@mui/icons-material/Close';
 import useSound from 'use-sound';
 import notificationSound from '../../../sounds/Notification.mp3'
 import newMessageSound from '../../../sounds/NewMessage.mp3'
 import gameInvitationSound from '../../../sounds/GameInvitation.mp3'
+import {useDocumentTitle} from "../../../hooks/setDocumentTitle"
+import { green } from '@mui/material/colors';
+
 
 const INITIAL_STATE = {
     term:""
@@ -36,7 +40,6 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const [connectedUsers,setConnectedUsers] = useState([]);
     const [newMessages,setNewMessages] = useState([]);
     const [usersFlag,setUsersFlag] = useState(false)
-    const [currentUser,setCurrentUser] = useState({})
     const [gameRequestSender,setGameRequestSender] = useState('')
     const [open, setOpen] = useState(false);
     const [fromRoomName, setFromRoomName] = useState('');
@@ -44,8 +47,10 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const {isTyping, setIsTyping} = useContext(UserTyping);
     const {roomName, setRoomName} = useContext(RoomContext);
     const {isMyTurn, setIsMyTurn} = useContext(IsMyTurnContext);
+    const {reciverUser, setReciverUser} = useContext(ReciverContext);
     const {accountConnection, setAccountConnection} = useContext(AccountConnection);
     const {chatConnection, setChatConnection} = useContext(AccountConnection);
+    const [document_title, setDoucmentTitle] = useDocumentTitle("Shesh");
     const [values, setValues] = useState(INITIAL_STATE)
     const classes = Style();
 
@@ -76,8 +81,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         });
           
         connection.on("ReceiveGameInvitation", (userName) => {
-            setGameRequestSender(userName + " Invite you to play BackGammon")
-            // playGameInvitation(); 
+            setGameRequestSender(userName + " Invite you to play BackGammon");
             setOpen(true);
         });
 
@@ -93,8 +97,8 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     
           await connection.start();
-          await connection.invoke("ConnectAsync", user);
-          await connection.invoke("ConnectAsync", user);
+          await connection.invoke("ConnectAsync", user.userName);
+          await connection.invoke("ConnectAsync", user.userName);
           CheckForNewMessages(connection);
     
           setAccountConnection(connection);
@@ -108,7 +112,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const setGameOn = async (currentUserName) => {
         try{
-            await accountConnection.invoke("SetGameOn",{SenderUserName:user, ReciverUserName:currentUser.userName} );
+            await accountConnection.invoke("SetGameOn",{SenderUserName:user.userName, ReciverUserName:reciverUser.userName} );
         } catch(e){
         console.log(e);
         }
@@ -117,7 +121,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const sendGameRequest = async () => {
         try{
             if(!isGameOn){
-            await accountConnection.invoke("SendGameRequest",{SenderUserName:user, ReciverUserName:currentUser.userName} );
+            await accountConnection.invoke("SendGameRequest",{SenderUserName:user.userName, ReciverUserName:reciverUser.userName} );
             }
         } catch(e){
         console.log(e);
@@ -135,12 +139,11 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
       const CheckForNewMessages =  async (connec, room) => {
         try{
-            console.log("roomName" + roomName);
-            console.log("room" + room);
             if(roomName !== room){
                 await connec.invoke("CheckForNewMessages").then((res)=>{
                     setNewMessages(res);
-                    });
+                    handleDocumentTitle(res);
+                });
             }
             else{
                 connec.invoke("ReadUnReadMessages", roomName)
@@ -154,7 +157,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
       useEffect(()=> {
           connectToServer();
-    },[user])
+    },[])
 
 
     useEffect(()=> {
@@ -171,10 +174,6 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         // console.log(users);
     },[users])
 
-    useEffect(()=>{
-
-    },[currentUser])
-
     //run search when the search text changes
     useEffect(()=>{
         let newUsers =  users.filter((u)=>u.userName.toLowerCase().startsWith(values.term.toLowerCase()));
@@ -188,6 +187,11 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         // console.log(tmpUsers);
     },[tmpUsers])
 
+    
+    useEffect(()=>{
+        joinRoom()
+    },[reciverUser])
+
     useEffect(()=>{
         getUsers();
     },[usersFlag])
@@ -200,17 +204,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                     "Authorization":localStorage.getItem('key')
                 }
             }).then((res)=>{
-                // console.log(res.data)
-            // console.log(newMessages)
-                const result =res.data.filter((u)=>u.userName !== user )
-                // result.forEach(u => {
-                //     const NewMessages = CheckForNewMessages(u.userName);
-                //     NewMessages.then((r) => {
-                //         // console.log(r)
-                //         u.newMessages = r;
-                //     })
-                // });
-                // console.log(result)
+                const result =res.data.filter((u)=>u.userName !== user.userName )
                 setUsers(result);
                 setTmpUsers([...result]);
               
@@ -219,7 +213,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
             })
         }
         else{
-            let result =connectedUsers.filter((u)=>u.userName !== user )
+            let result =connectedUsers.filter((u)=>u.userName !== user.userName )
             setUsers(result);
             setTmpUsers([...result]);
         }
@@ -251,6 +245,20 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         setIsMyTurn(false);
         setIsGameOn(true);
       };
+
+      const handleDocumentTitle= (res) => { 
+        let mes = 0;
+        for (let i = 0; i < res.length; i++){
+            mes = mes + res[i]?.numberOfNewMessages;
+            console.log(i);
+        }
+        if(mes > 0){
+            setDoucmentTitle(`Shesh (${mes})`) 
+        }
+        else{
+            setDoucmentTitle("Shesh") 
+        }
+      }
     
       const action = (
         <React.Fragment>
@@ -270,9 +278,9 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
       const renderTypingBubble = (user) => {
         // console.log(user)
-        if(isTyping && user === currentUser){
+        if(isTyping && user === reciverUser){
             // constole.log('TypingBubble')
-            sendNotifficition(currentUser.userName)
+            sendNotifficition(reciverUser.userName)
             return <TypingBubble/>
         } 
     }
@@ -298,16 +306,16 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                 <List>
                     <ListItem button key="RemySharp">
                         <ListItemIcon>
-                        <Avatar alt={user} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                        <Avatar sx={{ bgcolor: green[700] }} alt={user.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                         </ListItemIcon>
-                        <ListItemText primary={user}>{user}</ListItemText>
+                        <ListItemText primary={user.userName} secondary={"💰" + user.winCoins}></ListItemText>
                     </ListItem>
                 </List>
                 <Divider />
                 <Line justify="between" >
                     <Line justify="between" >
                         <Tooltip title="Leave Chat">
-                            <IconButton sx={{color:"#d32f2f"}} onClick={() => closeConnection(user)} aria-label="refresh">
+                            <IconButton sx={{color:"#d32f2f"}} onClick={() => closeConnection(user.userName)} aria-label="refresh">
                                 <ExitToAppIcon />
                             </IconButton>
                         </Tooltip>
@@ -333,14 +341,13 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                         tmpUsers.map((u,ix)=>{
                             return(
                                 <ListItem button key={ix} onClick={()=>{
-                                    joinRoom(user,u.userName);
-                                    setCurrentUser(u);
+                                    setReciverUser(u);
                                     }}>
                                     <ListItemIcon>
                                         <Avatar alt={u.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
                                     </ListItemIcon>
                                     {renderTypingBubble(u)}
-                                    <ListItemText primary={u.userName}>{u.userName}</ListItemText>
+                                    <ListItemText primary={u.userName} secondary={"💰" + u.winCoins}></ListItemText>
                                     {isNewMessagesFrom(u)}
                                     {u.isOnline && <ListItemText secondary={"🟢"}  align="right"></ListItemText>}
                                     {!u.isOnline && <ListItemText secondary={"🔴"}  align="right"></ListItemText>}

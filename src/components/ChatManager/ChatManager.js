@@ -4,23 +4,22 @@ import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/sig
 import Chat from './Chat/Chat';
 import axios from 'axios';
 import useSound from 'use-sound';
-import notificationSound from '../../sounds/Notification.mp3'
 import  ConnectedUsers  from "./ConnectedUsers/ConnectedUsers";
 import {GameOnContext} from '../../Context/GameOnContext';
 import {RoomContext} from '../../Context/RoomContext';
 import {ChatConnection} from '../../ConnectionContext/ChatConnection';
 import {AccountConnection} from '../../ConnectionContext/AccountConnection';
+import {ReciverContext} from '../../Context/ReciverUserContext';
 
 
 const ChatManager = (props) => {
-
-  const [play] = useSound(notificationSound)
 
   const [messages, setMessages] = useState([]); 
   const {roomName, setRoomName} = useContext(RoomContext);
   const {isGameOn, setIsGameOn} = useContext(GameOnContext);
   const {chatConnection, setChatConnection} = useContext(ChatConnection);
   const {accountConnection, setAccountConnection} = useContext(AccountConnection);
+  const {reciverUser, setReciverUser} = useContext(ReciverContext);
   const user = props.user;
 
   const getMessagesHistory = (senderUserName,recieverUserName)=>{
@@ -36,14 +35,15 @@ const ChatManager = (props) => {
             list.push({user:res.data[i].senderUserName, message:res.data[i].text , date:res.data[i].date, recieverHasRead:res.data[i].recieverHasRead })
           }
           setMessages(list)
-          // console.log(list)
         }
     }).catch(err=>{
       console.log(err)
     })
   }
 
-  const joinRoom = async (senderUserName,recieverUserName) => {
+  const joinRoom = async () => {
+    let senderUserName = user.userName
+    let recieverUserName = reciverUser.userName
     if(chatConnection){
       closeConnection(senderUserName);
     }
@@ -57,16 +57,12 @@ const ChatManager = (props) => {
       connection.on("ReceiveMessage", (userName, message) => {
         let date = new Date()
         let dateString = `${date.getHours()}:${date.getMinutes()} (${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()})`
-        setMessages(messages => [...messages, {user:userName ,message: message, date:dateString, recieverHasRead: false }]);//, recieverHasRead: false
-        // if(user.userName != userName){
-        //   play();
-        // }
+        setMessages(messages => [...messages, {user:userName ,message: message, date:dateString, recieverHasRead: false }]);
       });
 
       connection.onclose(e => {
         setChatConnection();
         setMessages([]);
-        setUsers([]);
       })
 
       await connection.start();
@@ -93,9 +89,9 @@ const ChatManager = (props) => {
   
 
   return (
-    <div className='chat_manager' className={isGameOn ? ' no_messages': null} >
-      <ConnectedUsers closeConnection={closeConnection} user={user.userName} joinRoom={joinRoom} messages={messages}/>
-      {!isGameOn && chatConnection && 
+    <div className='chat_manager'>
+      <ConnectedUsers closeConnection={closeConnection} user={user} joinRoom={joinRoom}/>
+      {!isGameOn && chatConnection && reciverUser && 
       <Chat 
        messages={messages}
        closeConnection={closeConnection} 

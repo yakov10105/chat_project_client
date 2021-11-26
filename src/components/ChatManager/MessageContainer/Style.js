@@ -6,6 +6,11 @@ const Style = makeStyles({
       width:'100%',
       overflowY: 'auto',
       padding:'3%'
+    },
+    messageAreaHeader: {
+      position: 'fixed',
+      top: '0',
+      width: '100%',
     }
   });
 

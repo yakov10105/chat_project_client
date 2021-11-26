@@ -60,12 +60,8 @@ const GameManager = ({user}) => {
               });
           })
 
-          // connection.on("GetEliminatedCheckers", (isWhite) => {
-
-          // })
           connection.onclose(e => {
             setConnection();
-            
           })
     
           await connection.start();

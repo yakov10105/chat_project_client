@@ -7,7 +7,8 @@ const Style = makeStyles({
         width:drawerWidth
       },
       drawerPaper: {
-        width:drawerWidth
+        width:drawerWidth,
+        paddingLeft:"5px"
       },
       root:{
         display:'flex'

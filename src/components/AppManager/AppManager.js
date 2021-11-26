@@ -4,6 +4,7 @@ import {Grid} from '@mui/material';
 import ChatManager from '../ChatManager/ChatManager';
 import GameManager from '../GameManager/GameManager';
 import {GameOnContext} from '../../Context/GameOnContext';
+import {ReciverContext} from '../../Context/ReciverUserContext';
 import {RoomContext} from '../../Context/RoomContext';
 import {IsMyTurnContext} from '../../Context/IsMyTurnContext';
 import {ChatConnection} from '../../ConnectionContext/ChatConnection';
@@ -12,6 +13,7 @@ import LogoutButton from '../Logout/LogoutButton';
 
 const AppManager = (props) => {
     const user = props.location.state.user;
+    const [reciverUser, setReciverUser] = useState(false);
     const [isGameOn, setIsGameOn] = useState(false);
     const [roomName, setRoomName] = useState('');
     const [isMyTurn, setIsMyTurn] = useState(true);
@@ -20,6 +22,7 @@ const AppManager = (props) => {
 
     
   const value = useMemo(() => ({isGameOn, setIsGameOn}), [isGameOn, setIsGameOn])
+  const reciver = useMemo(() => ({reciverUser, setReciverUser}), [reciverUser, setReciverUser])
   const roomValue = useMemo(() => ({roomName, setRoomName}), [roomName, setRoomName])
   const isMyTurnContext = useMemo(() => ({isMyTurn, setIsMyTurn}), [isMyTurn, setIsMyTurn])
   const chatConnectionContext = useMemo(() => ({chatConnection, setChatConnection}), [chatConnection, setChatConnection])
@@ -31,15 +34,17 @@ const AppManager = (props) => {
                 <ChatConnection.Provider value={chatConnectionContext}>
                     <AccountConnection.Provider value={accountConnectionContext}>
                         <RoomContext.Provider value={roomValue}>
-                            <GameOnContext.Provider value={value}>
-                                <LogoutButton/>
-                                <Grid item>
-                                    <ChatManager user={user}/>
-                                </Grid>
-                                <Grid item sx={12}>
-                                    <GameManager user={user}/>
-                                </Grid>
-                            </GameOnContext.Provider>
+                            <ReciverContext.Provider value={reciver}>
+                                <GameOnContext.Provider value={value}>
+                                    <LogoutButton/>
+                                    <Grid item>
+                                        <ChatManager user={user}/>
+                                    </Grid>
+                                    <Grid item sx={12}>
+                                        <GameManager user={user}/>
+                                    </Grid>
+                                </GameOnContext.Provider>
+                            </ReciverContext.Provider>
                         </RoomContext.Provider>
                     </AccountConnection.Provider>  
                 </ChatConnection.Provider>
@@ -53,10 +58,12 @@ const AppManager = (props) => {
                 <ChatConnection.Provider value={chatConnectionContext}>
                     <AccountConnection.Provider value={accountConnectionContext}>
                         <RoomContext.Provider value={roomValue}>
-                            <GameOnContext.Provider value={value}>
-                                <LogoutButton/>
-                                <ChatManager user={user}></ChatManager>
-                            </GameOnContext.Provider>
+                            <ReciverContext.Provider value={reciver}>
+                                <GameOnContext.Provider value={value}>
+                                    <LogoutButton/>
+                                    <ChatManager user={user}></ChatManager>
+                                </GameOnContext.Provider>
+                            </ReciverContext.Provider>
                         </RoomContext.Provider>
                     </AccountConnection.Provider>
                 </ChatConnection.Provider>  
