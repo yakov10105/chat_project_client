@@ -40,7 +40,6 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
 
     },[isWinner])
     useEffect(()=>{
-        setIsWinner(true)
             const JsonBoard = JSON.parse(board);
             console.log(JsonBoard);
             setJsonBoard(JsonBoard);
