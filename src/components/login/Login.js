@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import './Login.css'
 import { Container, Divider, Stack, TextField,Button } from '@mui/material'
 import Line from '../../layouts/Line'
@@ -53,7 +53,7 @@ const Login = () => {
     if (!isLoggedin) {
         return (
             <div className="Login">
-               <Container maxWidth="sm" fixed="true" sx={{paddingLeft:"0px"}} className="data_container">
+               <Container maxWidth="sm" fixed="false" className="data_container">
                    <Line justify="between">
                
                <div className="register">
@@ -105,7 +105,7 @@ const Login = () => {
     else{
         return (<Redirect
             to={{
-            pathname: "/chat",
+            pathname: "/app",
             state: { user: user }
           }}
         />)

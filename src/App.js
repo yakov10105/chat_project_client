@@ -5,6 +5,7 @@ import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp';
 import ChatManager from './components/ChatManager/ChatManager';
 import GameManager from './components/GameManager/GameManager';
+import AppManager from './components/AppManager/AppManager';
 import UnAuthorizedPage from './components/UnAuthorizedPage'
 import Header from './layout/header/Header'
 import Footer from './layout/footer/Footer'
@@ -13,17 +14,21 @@ import ProtectedRoute from './components/Routing/ProtectedRoute';
 
 function App() {
 
+
+  
   return (
     <div className="App">
-      <Header/>
+      <div className="components">
       <Switch>
             <Route path='/login' component={Login} ></Route>
             <Route path='/signup' component={SignUp}></Route>
             <ProtectedRoute path='/chat' component={ChatManager} ></ProtectedRoute>
+            <Route path='/app' component={AppManager} ></Route>
             <Route path='/Game' component={GameManager} ></Route>
             <Route exact path='/unauthorized' component={UnAuthorizedPage}/>
             <Route to='/' component={Login}/>
       </Switch>
+      </div>
       <Footer/>
     </div>
   );

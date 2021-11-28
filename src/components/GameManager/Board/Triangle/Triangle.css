@@ -36,11 +36,13 @@
   }
   
   .triangleLeftUpReceivable {
+    cursor: pointer;
     left: 0;
     background: linear-gradient(to left bottom, var(--receiveColor) 0%, var(--receiveColor) 49%, transparent 51%);
   }
   
   .triangleRightUpReceivable {
+    cursor: pointer;
     left: 50%;
     background: linear-gradient(to right bottom, var(--receiveColor) 0%, var(--receiveColor) 49%, transparent 51%);
   }
@@ -69,11 +71,13 @@
   }
   
   .triangleLeftDownReceivable {
+    cursor: pointer;
     left: 0;
     background: linear-gradient(to left top, var(--receiveColor) 0%, var(--receiveColor) 49%, transparent 51%);
   }
   
   .triangleRightDownReceivable {
+    cursor: pointer;
     left: 50%;
     background: linear-gradient(to right top, var(--receiveColor) 0%, var(--receiveColor) 49%, transparent 51%);
   }

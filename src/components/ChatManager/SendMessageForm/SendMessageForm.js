@@ -5,18 +5,24 @@ import { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
-import {UserTyping} from '../../Context/UserTyping';
+import {UserTyping} from '../../../Context/UserTyping';
+import {RoomContext} from '../../../Context/RoomContext';
+import {ChatConnection} from '../../../ConnectionContext/ChatConnection';
+import {AccountConnection} from '../../../ConnectionContext/AccountConnection';
 
 
-const SendMessageForm = ({ sendMessage, roomName }) => {
+const SendMessageForm = ({user}) => {
 
     const [message, setMessage] = useState('');
     const {isTyping, setIsTyping} = useContext(UserTyping);
+    const {roomName, setRoomName} = useContext(RoomContext);
+    const {chatConnection, setChatConnection} = useContext(ChatConnection);
+    const {accountConnection, setAccountConnection} = useContext(AccountConnection);
     let timer = null;
 
-    useEffect(()=>{
-        return (() => clearTimeout(timer));
-    },[])
+    // useEffect(()=>{
+    //     return (() => clearTimeout(timer));
+    // },[])
 
     const userTyping = () => {
         clearTimeout(timer);
@@ -28,10 +34,31 @@ const SendMessageForm = ({ sendMessage, roomName }) => {
         }, 2000);
         
     }
+    
+
+  const sendMessage = async (message) => {
+    try{
+        await chatConnection.invoke("SendMessageAsync", message);
+        receiveMessage(roomName)
+    } catch(e){
+      console.log(e);
+    }
+  }
+
+  
+
+  const receiveMessage = async (roomName) => {
+    try{
+        console.log("e");
+        await accountConnection.invoke("ReceiveMessage", roomName);
+    } catch(e){
+      console.log(e);
+    }
+  }
 
     const handleOnChange = (e) =>{
         setMessage(e.target.value);
-        userTyping();
+        //userTyping();
     }
 
     const handleSubmit = (e)=>{
