@@ -40,7 +40,6 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
 
     },[isWinner])
     useEffect(()=>{
-        setIsWinner(true)
             const JsonBoard = JSON.parse(board);
             console.log(JsonBoard);
             setJsonBoard(JsonBoard);
@@ -103,10 +102,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
                     const turn = GetIsMovesLeft()
                     turn.then((t) => {
                         if(!t){
-                            const winner = CheckForWinner();
-                            winner.then((isWinner)=>{
-                                setIsWinner(isWinner)
-                            })
+                            CheckForWinner();
                             resetBoardState();
                             ChangeTurn();
                         }
@@ -135,7 +131,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             val.then((v) => {
             setDiceValues(v);
             })
-            if(to != 25){
+            if(to !== 25){
                 const res = GetPossibleMoves(to)
                 res.then((r) => {
                     // console.log("setCurrentTriangleIdx " +to);

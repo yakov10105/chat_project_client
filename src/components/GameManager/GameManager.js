@@ -31,7 +31,7 @@ const GameManager = ({user}) => {
         //closeConnection(senderUserName);
         try{
           const connection = new HubConnectionBuilder()
-          .withUrl(`http://localhost:8082/game`,{accessTokenFactory: ()=> localStorage.getItem('key')})
+          .withUrl(`https://chatappbackgammon.azurewebsites.net/game`,{accessTokenFactory: ()=> localStorage.getItem('key')})
           .configureLogging(LogLevel.Information)
           .build();
 

@@ -57,7 +57,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const connectToServer = async () => {
         try{
           const connection = new HubConnectionBuilder()
-          .withUrl(`http://localhost:8082/login`)
+          .withUrl(`https://chatappbackgammon.azurewebsites.net/login`)
           .configureLogging(LogLevel.Information)
           .build();
           
@@ -199,7 +199,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const getUsers = async () =>{
         if(!usersFlag){
-            axios.get('http://localhost:8082/api/users/all',{
+            axios.get('https://chatappbackgammon.azurewebsites.net/api/users/all',{
                 headers:{
                     "Authorization":localStorage.getItem('key')
                 }

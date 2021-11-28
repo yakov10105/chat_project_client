@@ -41,7 +41,7 @@ const SignUp = () => {
         handleSubmit(registerUser)();
     }
     const loginAfterRegistering = ()=>{
-        axios.post('http://localhost:8082/api/auth/login',{
+        axios.post('https://chatappbackgammon.azurewebsites.net/api/auth/login',{
             UserName: userDetails.userName,
             Password: userDetails.password
         }).then((res)=>{
@@ -53,7 +53,7 @@ const SignUp = () => {
         })
     }
     const registerUser=()=>{
-        axios.post('http://localhost:8082/api/auth/register',userDetails)
+        axios.post('https://chatappbackgammon.azurewebsites.net/api/auth/register',userDetails)
         .then((res)=>{
             console.log(res.data)
             loginAfterRegistering();
@@ -233,7 +233,7 @@ const SignUp = () => {
    else{
         return (<Redirect
             to={{
-            pathname: "/chat",
+            pathname: "/app",
             state: { user: loggedUser }
           }}
         />)
