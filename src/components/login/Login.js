@@ -30,7 +30,7 @@ const Login = () => {
         handleSubmit(sendRequest)();
     }
     const sendRequest = () =>{
-        axios.post('https://chatappbackgammon.azurewebsites.net/api/auth/login',{
+        axios.post('https://chatapp-server.azurewebsites.net/api/auth/login',{
             UserName: userName,
             Password: password
         }).then((res)=>{
