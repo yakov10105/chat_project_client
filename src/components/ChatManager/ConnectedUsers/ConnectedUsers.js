@@ -98,7 +98,6 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     
           await connection.start();
           await connection.invoke("ConnectAsync", user.userName);
-          await connection.invoke("ConnectAsync", user.userName);
           CheckForNewMessages(connection);
     
           setAccountConnection(connection);
