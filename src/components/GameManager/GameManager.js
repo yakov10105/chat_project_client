@@ -4,6 +4,9 @@ import { RoomContext } from "../../Context/RoomContext";
 import { BoardContext } from "../../Context/BoardContext";
 import { IsMyTurnContext } from "../../Context/IsMyTurnContext";
 import Board from './Board/Board'
+import Grid from '@material-ui/core/Grid';
+import { WinnerContext } from '../../Context/WinnerContext';
+import { GameOnContext } from '../../Context/GameOnContext';
 
 const GameManager = ({user}) => {
 
@@ -11,6 +14,10 @@ const GameManager = ({user}) => {
   const [board,setBoard] = useState()
   const {roomName, setRoomName} = useContext(RoomContext);
   const {isMyTurn, setIsMyTurn} = useContext(IsMyTurnContext);
+  const {isGameOn, setIsGameOn} = useContext(GameOnContext);
+
+  const [isWinner,setIsWinner] = useState(null)
+  const winnerValue = useMemo(()=>({isWinner,setIsWinner}),[isWinner,setIsWinner])
 
     
   const value = useMemo(() => ({board,setBoard}), [board,setBoard])
@@ -38,6 +45,15 @@ const GameManager = ({user}) => {
             }
           });
 
+          connection.on("AnyWinner",async (winnerName)=>{
+              if(user.userName===winnerName){
+                 setIsWinner(true)
+              }
+              else{
+                setIsWinner(false)
+              }
+          })
+
           connection.on("ChangeTurn", async () => {
               setIsMyTurn(current => !current, async () => {
                 await connection.invoke("GetBoard").then((res)=>{
@@ -46,12 +62,9 @@ const GameManager = ({user}) => {
               });
           })
 
-          // connection.on("GetEliminatedCheckers", (isWhite) => {
-
-          // })
           connection.onclose(e => {
             setConnection();
-            
+            setIsGameOn(false);
           })
     
           await connection.start();
@@ -73,6 +86,14 @@ const GameManager = ({user}) => {
             });
         } catch(e){
           console.log(e);
+        }
+      }
+
+      const CheckForWinner=async()=>{
+        try{
+          await connection.invoke("CheckForWinner")
+        }catch(err){
+          console.log(err)
         }
       }
 
@@ -139,32 +160,43 @@ const GameManager = ({user}) => {
           console.log(e);
         }
       }
+
+      
+      const closeConnection = async () => {
+        try{
+          await connection.stop();
+        } catch(e){
+          console.log(e);
+        }
+      }
       
 
     return (
 
-
-        <div className='game_manager' 
-            style={{
-                'height': '80vh',
-                'width': '80vw',
-                'background-color': 'aliceblue',
-            }}>
-              <BoardContext.Provider value={value}>
-            {board && <Board
-              user = {user}
-              board={board}
-              GetBoardForUser={GetBoardForUser}
-              RollDices={RollDices}
-              GetDicesValue={GetDicesValue}
-              GetPossibleMoves={GetPossibleMoves}
-              UpdatePossibleMoves={UpdatePossibleMoves}
-              Move={Move}
-              GetIsMovesLeft={GetIsMovesLeft}
-              ChangeTurn={ChangeTurn}
-              GetEliminatedCheckers={GetEliminatedCheckers}/>}
-              </BoardContext.Provider>
-        </div>
+      <WinnerContext.Provider value={winnerValue}>
+        <BoardContext.Provider value={value}>
+          <div className='game_manager' 
+              style={{
+                  'height': '70vh',
+                  'width': '70vw'
+              }}>
+              {board && <Board
+                user = {user}
+                board={board}
+                GetBoardForUser={GetBoardForUser}
+                RollDices={RollDices}
+                GetDicesValue={GetDicesValue}
+                GetPossibleMoves={GetPossibleMoves}
+                UpdatePossibleMoves={UpdatePossibleMoves}
+                Move={Move}
+                CheckForWinner={CheckForWinner}
+                GetIsMovesLeft={GetIsMovesLeft}
+                ChangeTurn={ChangeTurn}
+                GetEliminatedCheckers={GetEliminatedCheckers}
+                closeConnection={closeConnection}/>}
+          </div>
+        </BoardContext.Provider>
+      </WinnerContext.Provider>
     )
 }
 

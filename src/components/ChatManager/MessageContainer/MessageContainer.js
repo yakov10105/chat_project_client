@@ -1,17 +1,16 @@
-import { useEffect, useRef } from "react";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
-import useStyles from "./hooks/useStyles";
+import { useEffect, useRef, useContext } from "react";
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar, ListSubheader } from '@mui/material'
+import { purple, blue, green, orange, red } from '@mui/material/colors'
+import Style from "./Style";
 import './MessageContainer.css';
-import Line from "../../layouts/Line";
-import TextField from '@mui/material/TextField';
+import Line from "../../../layouts/Line";
+import {ReciverContext} from '../../../Context/ReciverUserContext';
 import { withWidth } from "@material-ui/core";
 
 const MessageContainer = ({ messages, user }) => {
     const messageRef = useRef();
-    const classes = useStyles();
+    const classes = Style();
+    const {reciverUser, setReciverUser} = useContext(ReciverContext);
 
     useEffect(() => {
         if (messageRef && messageRef.current) {
@@ -21,9 +20,6 @@ const MessageContainer = ({ messages, user }) => {
     }, [messages]);
 
     const messageIsFromUser = (username) => {
-        // if(username=== "MyChat Bot"){
-        //     return "center";
-        // }
         if(username === user){
             return "right"
         }
@@ -31,21 +27,37 @@ const MessageContainer = ({ messages, user }) => {
     }
 
 
+    const colours = [blue[800], green[500], orange[500], purple[800], red[800]];
+    const getColour = () => colours[Math.floor(Math.random() * colours.length)];
+
     return (
+        
+        <Grid item xs={12}>
         <List className={classes.messageArea} ref={messageRef}>
+            <ListSubheader>
+                <ListItem className={classes.messageAreaHeader}>
+                        <ListItemIcon>
+                            <Avatar style={{backgroundColor: getColour()}} alt={reciverUser.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                        </ListItemIcon>
+                        <ListItemText primary={reciverUser.userName}></ListItemText>
+                    </ListItem>
+            </ListSubheader>
+                    
+                
             {messages.map((m, index) => 
                  <div key={index} className={messageIsFromUser(m.user)+" msg_box"}>
                     <ListItem key={index}>
                         <Grid container>
                             <Grid item xs={12}>
-                                <ListItemText xs={{backgroundColor:"#ffff00"}}  primary={
+                                <ListItemText primary={
                                     <TextField
+                                    variant="standard"
+                                    InputProps={{ disableUnderline: true }}
                                     multiline
-                                    maxRows={10}
+                                    fullWidth
+                                    maxRows={100}
                                     value={m.message}
-                                    variant="outlined"
-                                    aria-readonly
-                                    />}>
+                                    aria-readonly />} >
                                 </ListItemText>
                             </Grid>
                             <Grid item xs={12}>
@@ -59,6 +71,7 @@ const MessageContainer = ({ messages, user }) => {
                  </div>
              )}
         </List>
+        </Grid>
     )
 }
 

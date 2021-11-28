@@ -21,15 +21,12 @@ const Triangle = (props) => {
         classColor += "C2";
     }
 
-    let action = null;
     if (props.canReceive) {
-        action = props.canReceive;
         pointContainerClasses += ' containerClickable';
         classReceivable = 'Receivable';
         classColor = '';
     }
     if (props.canMove) {
-        action = props.canMove;
         pointContainerClasses += ' containerClickable';
     }
 
@@ -37,7 +34,7 @@ const Triangle = (props) => {
         <div className="triangle col-xs-2 ">
             <div className={"trianglePart triangleLeft" + classOrientation + classColor + classReceivable}></div>
             <div className={"trianglePart triangleRight" + classOrientation + classColor + classReceivable}></div>
-            <div className={"pointContainer " + pointContainerClasses} onClick={action}>
+            <div className={"pointContainer " + pointContainerClasses}>
                 {props.children}
             </div>
         </div>
