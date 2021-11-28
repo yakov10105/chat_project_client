@@ -11,7 +11,7 @@ import './Board.css'
 import axios from 'axios'
 import useEnhancedEffect from '@mui/utils/useEnhancedEffect'
 
-const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, GetPossibleMoves, UpdatePossibleMoves, Move, GetIsMovesLeft, ChangeTurn, GetEliminatedCheckers}) => {
+const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, GetPossibleMoves, UpdatePossibleMoves, Move, GetIsMovesLeft, ChangeTurn, GetEliminatedCheckers, closeConnection}) => {
     const [rightUpList,setRightUpList]= useState([])
     const [leftUpList,setLeftUpList]= useState([])
     const [leftDownList,setLeftDownList]= useState([])
@@ -40,14 +40,14 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
 
     },[isWinner])
     useEffect(()=>{
-
+        setIsWinner(true)
             const JsonBoard = JSON.parse(board);
+            console.log(JsonBoard);
             setJsonBoard(JsonBoard);
             setLeftDownList(JsonBoard.BoardFields.filter((f)=>f.position<=5))
             setRightDownList(JsonBoard.BoardFields.filter((f)=>f.position>5 && f.position<=11))
             setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
             setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
-            console.log(JsonBoard);
             updateEliminated();
 
 
@@ -55,8 +55,8 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
 
     const updateEliminated= async () => {
         console.log("updateEliminated");
-            const whiteEleminated = GetEliminatedCheckers(true);
-            await whiteEleminated.then((number) =>{
+            const WhiteEleminated = GetEliminatedCheckers(true);
+            await WhiteEleminated.then((number) =>{
                     setWhiteEliminated(number);
                     console.log("setWhiteEliminated" + number);
             });
@@ -64,6 +64,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             const BlackEleminated = GetEliminatedCheckers(false);
             await BlackEleminated.then((number) =>{
                     setBlackEliminated(number);
+                    console.log("setWhiteEliminated" + number);
             });
     }
 
@@ -81,29 +82,35 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             //console.log("DiceValues");
             setDiceValues(r);
 
-            if((isWhiteCheckers && whiteEliminated > 0) || (!isWhiteCheckers && blackEliminated > 0)){
+            // if((isWhiteCheckers && whiteEliminated > 0) || (!isWhiteCheckers && blackEliminated > 0)){
                 
-                handleTriangleClick(25)
-            }
+            //     handleTriangleClick(25)
+            // }
 
          })
     }
 
-    const handleTriangleClick= (index)=>{
+    const handleTriangleClick= async (index)=>{
         if(isMyTurn){
+            console.log(canDragToGoalField)
+            console.log(isWhiteCheckers)
             setCurrentTriangleIdx(index)
-            // const res = GetPossibleMoves(index)
-            // const turn = GetIsMovesLeft()
-            //         turn.then((t) => {
-            //             if(!t){
-            //                 resetBoardState();
-            //                 ChangeTurn();
-            //                 return
-            //             }
-            //         });
+            const res = GetPossibleMoves(index)
             setPossibleMoves([]);
-            res.then((r) => {
+            await res.then((r) => {
+                console.log(r)
                     setPossibleMoves(r);
+                    const turn = GetIsMovesLeft()
+                    turn.then((t) => {
+                        if(!t){
+                            const winner = CheckForWinner();
+                            winner.then((isWinner)=>{
+                                setIsWinner(isWinner)
+                            })
+                            resetBoardState();
+                            ChangeTurn();
+                        }
+                    })
                     console.log(possibleMoves)
                     for(let i =0; i<possibleMoves.length;i++){
                         if(possibleMoves[i]===27 || possibleMoves[i]===26){
@@ -115,10 +122,12 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
     }
 
     const handleMove= (to)=>{
+        console.log("handleMove " +currentTriangleIdx + to)
         if(currentTriangleIdx !== undefined){
-            console.log("isWhiteCheckers " +isWhiteCheckers)
-            console.log("whiteEliminated " +whiteEliminated)
-            console.log("blackEliminated " +blackEliminated)
+            // console.log("isWhiteCheckers " +isWhiteCheckers)
+            // console.log("whiteEliminated " +whiteEliminated)
+            // console.log("blackEliminated " +blackEliminated)
+            console.log("handleMove " +currentTriangleIdx + to)
             Move(currentTriangleIdx, to)
             UpdatePossibleMoves();
             //updateEliminated(jsonBoard);
@@ -136,10 +145,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
                     const turn = GetIsMovesLeft()
                     turn.then((t) => {
                         if(!t){
-                            const winner = CheckForWinner();
-                            winner.then((isWinner)=>{
-                                setIsWinner(isWinner)
-                            })
+                            CheckForWinner();
                             resetBoardState();
                             ChangeTurn();
                         }
@@ -154,10 +160,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
                     const turn = GetIsMovesLeft()
                     turn.then((t) => {
                         if(!t){
-                            const winner = CheckForWinner();
-                            winner.then((isWinner)=>{
-                                setIsWinner(isWinner)
-                            })
+                            CheckForWinner();
                             resetBoardState();
                             ChangeTurn();
                         }
@@ -282,8 +285,12 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
                 <div className="container-out" id="black">
                     {renderBlackEaten()}
                     {renderWhiteEaten()}
-                    <div style={{width:"100px" , height:"100px",background:canDragToGoalField? "green" : "red"}} onClick={canDragToGoalField? isWhiteCheckers?()=>handleMove(27):()=>handleMove(26):{}}>
-                    </div>
+                    <button style={{width:"100px" , height:"100px", marginTop:"100px",background:canDragToGoalField? "green" : "red", cursor:canDragToGoalField? "pointer" : "grab", zIndex:"5"}} onClick={canDragToGoalField? 
+                                                                                                                                isWhiteCheckers?
+                                                                                                                                    ()=>handleMove(27):
+                                                                                                                                    ()=>handleMove(26)
+                                                                                                                            :{}}>
+                    </button>
                 </div>
                 <div id="leftSide" className="row">
                     <div className={isWhiteCheckers ? "blocksUpWhite" : "blocksDownBlack"}>
@@ -311,10 +318,17 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
         )
     }
     else if(!isWinner){
-        return(<h1>You Lost the Game ...</h1>)
+        return(
+            <>
+                <h1>You Lost the Game ...</h1>
+                <button onClick={closeConnection}>Back to Chat</button>
+            </>)
     }
     else{
-        return(<h1>Winner Winner Chicken Dinner</h1>)
+        return(<>
+                <h1>Winner Winner Chicken Dinner</h1>
+                <button onClick={closeConnection}>Back to Chat</button>
+            </>)
     }
 }
 

@@ -6,6 +6,7 @@ import { IsMyTurnContext } from "../../Context/IsMyTurnContext";
 import Board from './Board/Board'
 import Grid from '@material-ui/core/Grid';
 import { WinnerContext } from '../../Context/WinnerContext';
+import { GameOnContext } from '../../Context/GameOnContext';
 
 const GameManager = ({user}) => {
 
@@ -13,6 +14,7 @@ const GameManager = ({user}) => {
   const [board,setBoard] = useState()
   const {roomName, setRoomName} = useContext(RoomContext);
   const {isMyTurn, setIsMyTurn} = useContext(IsMyTurnContext);
+  const {isGameOn, setIsGameOn} = useContext(GameOnContext);
 
   const [isWinner,setIsWinner] = useState(null)
   const winnerValue = useMemo(()=>({isWinner,setIsWinner}),[isWinner,setIsWinner])
@@ -62,6 +64,7 @@ const GameManager = ({user}) => {
 
           connection.onclose(e => {
             setConnection();
+            setIsGameOn(false);
           })
     
           await connection.start();
@@ -88,7 +91,7 @@ const GameManager = ({user}) => {
 
       const CheckForWinner=async()=>{
         try{
-          return await connection.invoke("CheckForWinner")
+          await connection.invoke("CheckForWinner")
         }catch(err){
           console.log(err)
         }
@@ -157,6 +160,15 @@ const GameManager = ({user}) => {
           console.log(e);
         }
       }
+
+      
+      const closeConnection = async () => {
+        try{
+          await connection.stop();
+        } catch(e){
+          console.log(e);
+        }
+      }
       
 
     return (
@@ -180,7 +192,8 @@ const GameManager = ({user}) => {
                 CheckForWinner={CheckForWinner}
                 GetIsMovesLeft={GetIsMovesLeft}
                 ChangeTurn={ChangeTurn}
-                GetEliminatedCheckers={GetEliminatedCheckers}/>}
+                GetEliminatedCheckers={GetEliminatedCheckers}
+                closeConnection={closeConnection}/>}
           </div>
         </BoardContext.Provider>
       </WinnerContext.Provider>
