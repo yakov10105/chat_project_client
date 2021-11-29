@@ -9,7 +9,6 @@ import {RoomContext} from '../../Context/RoomContext';
 import {IsMyTurnContext} from '../../Context/IsMyTurnContext';
 import {ChatConnection} from '../../ConnectionContext/ChatConnection';
 import {AccountConnection} from '../../ConnectionContext/AccountConnection';
-import LogoutButton from '../Logout/LogoutButton';
 
 const AppManager = (props) => {
     const user = props.location.state.user;
@@ -36,7 +35,6 @@ const AppManager = (props) => {
                         <RoomContext.Provider value={roomValue}>
                             <ReciverContext.Provider value={reciver}>
                                 <GameOnContext.Provider value={value}>
-                                    <LogoutButton/>
                                     <Grid item>
                                         <ChatManager user={user}/>
                                     </Grid>
@@ -60,7 +58,6 @@ const AppManager = (props) => {
                         <RoomContext.Provider value={roomValue}>
                             <ReciverContext.Provider value={reciver}>
                                 <GameOnContext.Provider value={value}>
-                                    <LogoutButton/>
                                     <ChatManager user={user}></ChatManager>
                                 </GameOnContext.Provider>
                             </ReciverContext.Provider>

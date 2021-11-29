@@ -82,3 +82,8 @@ h4 {
     margin-bottom: 3px;
     margin-right: 5px;
 } */
+
+.chat_manager{
+    margin-left: 200px;
+    min-width: 500px;
+}

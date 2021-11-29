@@ -1,7 +1,8 @@
-import React,{useState,useEffect,useContext} from "react";
-import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Snackbar, Drawer, Badge  } from '@mui/material'
+import React,{useState,useEffect,useContext, Component} from "react";
+import {Grid , Divider , TextField , List,ListItem,ListItemIcon , ListItemText,Avatar,Button, Snackbar, Drawer, CssBaseline , Badge, AppBar,Box, Toolbar, Hidden, Typography } from '@mui/material'
 import MailIcon from '@mui/icons-material/Mail'
 import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/signalr";
+import LogoutButton from '../../Logout/LogoutButton';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Switch from '@mui/material/Switch';
@@ -18,13 +19,15 @@ import {AccountConnection} from '../../../ConnectionContext/AccountConnection';
 import {ChatConnection} from '../../../ConnectionContext/ChatConnection';
 import {ReciverContext} from '../../../Context/ReciverUserContext';
 import TypingBubble from '../../../layout/typingBubble/typingBubble'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'; 
+import MenuIcon from '@mui/icons-material/Menu'; 
 import useSound from 'use-sound';
 import notificationSound from '../../../sounds/Notification.mp3'
 import newMessageSound from '../../../sounds/NewMessage.mp3'
 import gameInvitationSound from '../../../sounds/GameInvitation.mp3'
 import {useDocumentTitle} from "../../../hooks/setDocumentTitle"
 import { green } from '@mui/material/colors';
+import Logo from'../../../assets/GameIcon.svg'
 
 
 const INITIAL_STATE = {
@@ -33,6 +36,7 @@ const INITIAL_STATE = {
 
 const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
+    const drawerWidth = 240;
     const [playNewMessage] = useSound(newMessageSound)
     const [playGameInvitation] = useSound(gameInvitationSound)
     const [users,setUsers] = useState([])
@@ -51,13 +55,14 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const {accountConnection, setAccountConnection} = useContext(AccountConnection);
     const {chatConnection, setChatConnection} = useContext(AccountConnection);
     const [document_title, setDoucmentTitle] = useDocumentTitle("Shesh");
+    const [mobileOpen, setMobileOpen] = useState(false);
     const [values, setValues] = useState(INITIAL_STATE)
     const classes = Style();
 
     const connectToServer = async () => {
         try{
           const connection = new HubConnectionBuilder()
-          .withUrl(`https://chatappbackgammon.azurewebsites.net/login`)
+          .withUrl(`http://localhost:8082/login`)
           .configureLogging(LogLevel.Information)
           .build();
           
@@ -198,7 +203,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const getUsers = async () =>{
         if(!usersFlag){
-            axios.get('https://chatappbackgammon.azurewebsites.net/api/users/all',{
+            axios.get('http://localhost:8082/api/users/all',{
                 headers:{
                     "Authorization":localStorage.getItem('key')
                 }
@@ -293,16 +298,16 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                         </Badge>)
             }
     }
+      
+        const handleDrawerToggle = () => {
+          setMobileOpen(!mobileOpen);
+        };
 
-    return(
-            <Grid item xs={3} className={classes.root}>
-                <Drawer 
-                    className={classes.drawer}
-                    variant="permanent"
-                    anchor="left"
-                    classes={{ paper: classes.drawerPaper}}
-                >
-                <List>
+        const drawer = (
+            <div>
+              <Toolbar />
+              <Divider />
+              <List>
                     <ListItem button key="RemySharp">
                         <ListItemIcon>
                         <Avatar sx={{ bgcolor: green[700] }} alt={user.userName} src="https://material-ui.com/static/images/avatar/1.jpg" />
@@ -355,15 +360,78 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                         })         
                    }
                 </List>
-                </Drawer>
-                <Snackbar
+              <Divider />
+            </div>
+          );
+    
+
+    return(
+        <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          sx={{
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
+          }}
+        >
+          <Toolbar style={{display:"flex", alignContent:"center"}}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <img src={Logo} width="25" alt="Shesh Logo" />
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            Shesh
+            </Typography>
+            <LogoutButton/>
+          </Toolbar>
+        </AppBar>
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label="mailbox folders"
+        >
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+          <Toolbar />
+          <Snackbar
                 open={open}
                 autoHideDuration={20000}
                 onClose={handleClose}
                 message={gameRequestSender}
                 action={action}
                 />
-            </Grid>
+      </Box>
     )
 }
 export default ConnectedUsers;

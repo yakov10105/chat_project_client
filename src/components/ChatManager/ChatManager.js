@@ -23,7 +23,7 @@ const ChatManager = (props) => {
   const user = props.user;
 
   const getMessagesHistory = (senderUserName,recieverUserName)=>{
-    axios.get(`https://chatappbackgammon.azurewebsites.net/api/messages/get-messages?senderUserName=${senderUserName}&recieverUserName=${recieverUserName}`,{
+    axios.get(`http://localhost:8082/api/messages/get-messages?senderUserName=${senderUserName}&recieverUserName=${recieverUserName}`,{
       headers:{
         "Authorization":localStorage.getItem('key')
       }
@@ -49,7 +49,7 @@ const ChatManager = (props) => {
     }
     try{
       const connection = new HubConnectionBuilder()
-      .withUrl(`https://chatappbackgammon.azurewebsites.net/chat`,{accessTokenFactory: ()=> localStorage.getItem('key')})
+      .withUrl(`http://localhost:8082/chat`,{accessTokenFactory: ()=> localStorage.getItem('key')})
       .configureLogging(LogLevel.Information)
       .build();
 

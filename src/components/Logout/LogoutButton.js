@@ -20,10 +20,7 @@ const LogoutButton = () => {
       }
     return (
         <div className='logout'>
-            <Button  onClick={closeConnection}  variant='contained' style={{
-                                borderRadius: 35,
-                                background: "linear-gradient(60deg,  #5E9C2F,#5E9C2F)",
-                                padding: "11px 22px" }}>Logout</Button>
+            <Button  onClick={closeConnection} color="inherit" >Logout</Button>
             {(!isLoggedIn) &&
                 <Redirect to="/"/>
             }

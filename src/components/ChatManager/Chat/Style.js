@@ -4,7 +4,6 @@ const Style = makeStyles({
     
     chatSection: {
         width: '70vw',
-        marginLeft:"240px",
         backgroundColor: '#ffffff'
       }
   });
