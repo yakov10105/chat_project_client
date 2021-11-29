@@ -28,11 +28,11 @@
   }
   
   .diceRow {
-    height: 25%;
+    height: 35%;
   }
   
   .diceColum {
-    width: 20.3%;
+    width: 30.3%;
     height: 100%;
     float: left;
     padding: 5%;

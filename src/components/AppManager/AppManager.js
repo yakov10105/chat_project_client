@@ -3,6 +3,7 @@ import Line from "../../layouts/Line";
 import {Grid} from '@mui/material';
 import ChatManager from '../ChatManager/ChatManager';
 import GameManager from '../GameManager/GameManager';
+import {useStickyState} from '../../hooks/useStickyState';
 import {GameOnContext} from '../../Context/GameOnContext';
 import {ReciverContext} from '../../Context/ReciverUserContext';
 import {RoomContext} from '../../Context/RoomContext';
@@ -18,7 +19,7 @@ const AppManager = (props) => {
     const [isMyTurn, setIsMyTurn] = useState(true);
     const [chatConnection, setChatConnection] = useState();
     const [accountConnection, setAccountConnection] = useState();
-
+    //const [isGameOn, setIsGameOn] = useStickyState(false, "isGameOn");
     
   const value = useMemo(() => ({isGameOn, setIsGameOn}), [isGameOn, setIsGameOn])
   const reciver = useMemo(() => ({reciverUser, setReciverUser}), [reciverUser, setReciverUser])

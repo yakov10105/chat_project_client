@@ -62,7 +62,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const connectToServer = async () => {
         try{
           const connection = new HubConnectionBuilder()
-          .withUrl(`http://localhost:8082/login`)
+          .withUrl(`https://chat-project-server.azurewebsites.net/login`)
           .configureLogging(LogLevel.Information)
           .build();
           
@@ -114,9 +114,10 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
       
 
-    const setGameOn = async (currentUserName) => {
+    const setGameOn = async () => {
         try{
-            await accountConnection.invoke("SetGameOn",{SenderUserName:user.userName, ReciverUserName:reciverUser.userName} );
+          let reciverUserName = gameRequestSender.replace(" Invite you to play BackGammon", "")
+            await accountConnection.invoke("SetGameOn",{SenderUserName:user.userName, ReciverUserName:reciverUserName} );
         } catch(e){
         console.log(e);
         }
@@ -203,7 +204,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const getUsers = async () =>{
         if(!usersFlag){
-            axios.get('http://localhost:8082/api/users/all',{
+            axios.get('https://chat-project-server.azurewebsites.net/api/users/all',{
                 headers:{
                     "Authorization":localStorage.getItem('key')
                 }
@@ -243,8 +244,10 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
         if (reason === 'clickaway') {
           return;
         }
+
         let userName = gameRequestSender.replace(" Invite you to play BackGammon", "")
-        setGameOn(accountConnection, userName)
+        setReciverUser({ userName: userName})
+        setGameOn(accountConnection, userName);
         setOpen(false);
         setIsMyTurn(false);
         setIsGameOn(true);
@@ -327,7 +330,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
                     </Line>
                     <Tooltip title="Invite to play">
                     <Button onClick={sendGameRequest}>
-                        <Avatar src={icon}/>
+                        <Avatar src={Logo}/>
                     </Button>
                     </Tooltip>
                 </Line>

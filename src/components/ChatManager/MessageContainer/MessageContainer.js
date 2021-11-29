@@ -60,11 +60,17 @@ const MessageContainer = ({ messages, user }) => {
                                     aria-readonly />} >
                                 </ListItemText>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Line justify='between'>
-                                    <ListItemText align='left' secondary={m.user}></ListItemText>
-                                    <ListItemText align='right' secondary={m.date}></ListItemText>
-                                </Line>
+                            <Grid container xs={12} 
+                                  justifyContent="space-between"
+                                  alignItems="center">
+
+                                <Grid item>
+                                    <ListItemText secondary={m.user}></ListItemText>
+                                </Grid>
+                                
+                                <Grid item>
+                                    <ListItemText secondary={m.date}></ListItemText>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </ListItem>

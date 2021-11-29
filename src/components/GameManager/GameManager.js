@@ -3,6 +3,7 @@ import {  HubConnectionBuilder, JsonHubProtocol, LogLevel } from "@microsoft/sig
 import { RoomContext } from "../../Context/RoomContext";
 import { BoardContext } from "../../Context/BoardContext";
 import { IsMyTurnContext } from "../../Context/IsMyTurnContext";
+import { ReciverContext } from "../../Context/ReciverUserContext";
 import Board from './Board/Board'
 import Grid from '@material-ui/core/Grid';
 import { WinnerContext } from '../../Context/WinnerContext';
@@ -16,6 +17,7 @@ const GameManager = ({user}) => {
   const {roomName, setRoomName} = useContext(RoomContext);
   const {isMyTurn, setIsMyTurn} = useContext(IsMyTurnContext);
   const {isGameOn, setIsGameOn} = useContext(GameOnContext);
+  const {reciverUser, setReciverUser} = useContext(ReciverContext);
 
   const [isWinner,setIsWinner] = useState(null)
   const winnerValue = useMemo(()=>({isWinner,setIsWinner}),[isWinner,setIsWinner])
@@ -32,7 +34,7 @@ const GameManager = ({user}) => {
         //closeConnection(senderUserName);
         try{
           const connection = new HubConnectionBuilder()
-          .withUrl(`http://localhost:8082/game`,{accessTokenFactory: ()=> localStorage.getItem('key')})
+          .withUrl(`https://chat-project-server.azurewebsites.net/game`,{accessTokenFactory: ()=> localStorage.getItem('key')})
           .configureLogging(LogLevel.Information)
           .build();
 
@@ -67,9 +69,10 @@ const GameManager = ({user}) => {
             setConnection();
             setIsGameOn(false);
           })
-    
+          
+          let reciver = reciverUser.userName;
           await connection.start();
-          await connection.invoke("JoinGameAsync",{UserName:userName,RoomName:roomName,IsMyTurn:isMyTurn});
+          await connection.invoke("JoinGameAsync",{SenderUserName:userName, ReciverUserName:reciver, IsMyTurn:isMyTurn});
           setConnection(connection);
           await connection.invoke("GetBoard").then((res)=>{
             setBoard(res)

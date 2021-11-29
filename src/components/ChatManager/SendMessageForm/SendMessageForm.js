@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
+import Chip from '@material-ui/core/Chip';
 import {UserTyping} from '../../../Context/UserTyping';
 import {RoomContext} from '../../../Context/RoomContext';
 import {ChatConnection} from '../../../ConnectionContext/ChatConnection';
@@ -66,16 +67,56 @@ const SendMessageForm = ({user}) => {
         sendMessage(message);
         setMessage('');
     }
+
+    const handleChipClick = (e, msg)=>{
+        e.preventDefault();
+        sendMessage(msg);
+    }
     return(
         <Form
          onSubmit={handleSubmit}>
         <Grid container style={{padding: '20px'}}>
-            <Grid item xs={11}>
-                <TextField id="outlined-basic-email" label="Message" fullWidth 
-                onChange={handleOnChange} value={message}/>
+            <Grid container spacing={1}>
+                <Grid item>
+                    <Chip variant="outlined"
+                        color="primary"
+                        label="Let's Play!"
+                        onClick={() => sendMessage("Let's Play!")} />
+                </Grid>
+
+                <Grid item>
+                    <Chip variant="outlined"
+                          color="primary"
+                          label="Whats Up?"
+                          onClick={() => sendMessage("Whats Up?")} />
+                </Grid>
+
+                <Grid item>
+                    <Chip variant="outlined"
+                          color="primary"
+                          label={"My User Name Is " + user}
+                          onClick={() => sendMessage("My User Name Is " + user)} />
+                </Grid>
             </Grid>
-            <Grid xs={1} align="right">
-                <Fab color="primary" type='submit' aria-label="add" disabled={roomName==="room"}><SendIcon /></Fab>
+            <Grid container xs={12} 
+                  justifyContent="space-between"
+                  alignItems="center">
+
+                <Grid item xs={10}>
+                    <TextField id="outlined-basic-email" label="Message" fullWidth 
+                    onChange={handleOnChange} value={message}/>
+                </Grid>
+
+                <Grid xs={2} align="right">
+                    <Fab size="medium"
+                        color="primary"
+                        type='submit'
+                        aria-label="send"
+                        disabled={message === '' && chatConnection}>
+                        <SendIcon />
+                    </Fab>
+                </Grid>
+
             </Grid>
         </Grid>
         </Form>

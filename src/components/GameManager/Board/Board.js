@@ -7,6 +7,7 @@ import DiceArea from '../DiceArea/DiceArea'
 import { BoardContext } from "../../../Context/BoardContext";
 import { IsMyTurnContext } from "../../../Context/IsMyTurnContext";
 import { WinnerContext } from '../../../Context/WinnerContext'
+import  EndGamePage  from '../EndGamePage/EndGamePage'
 import './Board.css'
 import axios from 'axios'
 import useEnhancedEffect from '@mui/utils/useEnhancedEffect'
@@ -39,18 +40,21 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
     useEffect(()=>{
 
     },[isWinner])
+
     useEffect(()=>{
-            const JsonBoard = JSON.parse(board);
-            console.log(JsonBoard);
-            setJsonBoard(JsonBoard);
-            setLeftDownList(JsonBoard.BoardFields.filter((f)=>f.position<=5))
-            setRightDownList(JsonBoard.BoardFields.filter((f)=>f.position>5 && f.position<=11))
-            setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
-            setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
-            updateEliminated();
+        const JsonBoard = JSON.parse(board);
+        console.log(JsonBoard);
+        setJsonBoard(JsonBoard);
+        setLeftDownList(JsonBoard.BoardFields.filter((f)=>f.position<=5))
+        setRightDownList(JsonBoard.BoardFields.filter((f)=>f.position>5 && f.position<=11))
+        setRightUpList(JsonBoard.BoardFields.filter((f)=>f.position>11 && f.position<=17))
+        setLeftUpList(JsonBoard.BoardFields.filter((f)=>f.position >17))
+        SetBlackOutOffBoard(JsonBoard.GoalFieldPlayer2.checkers.length)
+        SetWhiteOutOffBoard(JsonBoard.GoalFieldPlayer1.checkers.length)
+        updateEliminated();
 
 
-    },[board])
+},[board])
 
     const updateEliminated= async () => {
         console.log("updateEliminated");
@@ -78,14 +82,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
         RollDices();
         const res = GetDicesValue();
         res.then((r) => {
-            //console.log("DiceValues");
             setDiceValues(r);
-
-            // if((isWhiteCheckers && whiteEliminated > 0) || (!isWhiteCheckers && blackEliminated > 0)){
-                
-            //     handleTriangleClick(25)
-            // }
-
          })
     }
 
@@ -120,13 +117,9 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
     const handleMove= (to)=>{
         console.log("handleMove " +currentTriangleIdx + to)
         if(currentTriangleIdx !== undefined){
-            // console.log("isWhiteCheckers " +isWhiteCheckers)
-            // console.log("whiteEliminated " +whiteEliminated)
-            // console.log("blackEliminated " +blackEliminated)
             console.log("handleMove " +currentTriangleIdx + to)
             Move(currentTriangleIdx, to)
             UpdatePossibleMoves();
-            //updateEliminated(jsonBoard);
             const val = GetDicesValue();
             val.then((v) => {
             setDiceValues(v);
@@ -134,8 +127,6 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             if(to !== 25){
                 const res = GetPossibleMoves(to)
                 res.then((r) => {
-                    // console.log("setCurrentTriangleIdx " +to);
-                    // console.log("handleTriangleClick " +to);
                     setPossibleMoves(r);
                     setCurrentTriangleIdx(to)
                     const turn = GetIsMovesLeft()
@@ -245,21 +236,17 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             <div className="Container-elimenited" id="white-elimenited">
                 <Checker player={1}/>
                 <div>Eaten white: {whiteEliminated}</div>
-                {/* <div>Out Of Board: {numberOfOut}</div> */}
+                <div>Out Of Board: {whiteOutOffBoard}</div>
         </div>
         )
     }
 
     const renderBlackEaten = () => {
         return(
-            // <div>
-            //     <Checker/>
-            //     <div>Eaten: {numberOfBlackEliminated}</div>
-            // </div>
         <div className="Container-elimenited" id="black-elimenited">
             <Checker/>
             <div>Eaten black: {blackEliminated}</div>
-            {/* <div style={{paddingBottom:"30vh"}}>Out Of Board: {numberOfOut}</div> */}
+            <div>Out Of Board: {blackOutOffBoard}</div>
         </div>
         )
     }
@@ -318,18 +305,8 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             </div>
         )
     }
-    else if(!isWinner){
-        return(
-            <>
-                <h1>You Lost the Game ...</h1>
-                <button onClick={closeConnection}>Back to Chat</button>
-            </>)
-    }
-    else{
-        return(<>
-                <h1>Winner Winner Chicken Dinner</h1>
-                <button onClick={closeConnection}>Back to Chat</button>
-            </>)
+    else {
+        return <EndGamePage isWinner={isWinner} closeConnection={closeConnection}/>
     }
 }
 

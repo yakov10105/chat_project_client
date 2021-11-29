@@ -41,7 +41,7 @@ const SignUp = () => {
         handleSubmit(registerUser)();
     }
     const loginAfterRegistering = ()=>{
-        axios.post('https://chatappbackgammon.azurewebsites.net/api/auth/login',{
+        axios.post('https://chat-project-server.azurewebsites.net/api/auth/login',{
             UserName: userDetails.userName,
             Password: userDetails.password
         }).then((res)=>{
@@ -53,7 +53,7 @@ const SignUp = () => {
         })
     }
     const registerUser=()=>{
-        axios.post('https://chatappbackgammon.azurewebsites.net/api/auth/register',userDetails)
+        axios.post('https://chat-project-server.azurewebsites.net/api/auth/register',userDetails)
         .then((res)=>{
             console.log(res.data)
             loginAfterRegistering();
