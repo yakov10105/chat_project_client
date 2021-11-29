@@ -7,6 +7,7 @@ import Board from './Board/Board'
 import Grid from '@material-ui/core/Grid';
 import { WinnerContext } from '../../Context/WinnerContext';
 import { GameOnContext } from '../../Context/GameOnContext';
+import  './GameManager.css';
 
 const GameManager = ({user}) => {
 
@@ -178,7 +179,8 @@ const GameManager = ({user}) => {
           <div className='game_manager' 
               style={{
                   'height': '70vh',
-                  'width': '70vw', 'marginLeft': '290px'
+                  'width': '70vw',
+                  'marginLeft': '290px'
               }}>
               {board && <Board
                 user = {user}

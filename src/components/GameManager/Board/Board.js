@@ -242,7 +242,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
 
     const renderWhiteEaten = () => {
         return(
-            <div>
+            <div className="Container-elimenited" id="white-elimenited">
                 <Checker player={1}/>
                 <div>Eaten white: {whiteEliminated}</div>
                 {/* <div>Out Of Board: {numberOfOut}</div> */}
@@ -256,7 +256,7 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
             //     <Checker/>
             //     <div>Eaten: {numberOfBlackEliminated}</div>
             // </div>
-        <div>
+        <div className="Container-elimenited" id="black-elimenited">
             <Checker/>
             <div>Eaten black: {blackEliminated}</div>
             {/* <div style={{paddingBottom:"30vh"}}>Out Of Board: {numberOfOut}</div> */}
@@ -278,14 +278,19 @@ const Board = ({user, GetBoardForUser,CheckForWinner, RollDices, GetDicesValue, 
     if(isWinner===null){
         return (
             <div id="game_board" className="container-fluid">
-                <div className="container-out" id="black">
                     {renderBlackEaten()}
                     {renderWhiteEaten()}
-                    <button style={{width:"100px" , height:"100px", marginTop:"100px",background:canDragToGoalField? "green" : "red", cursor:canDragToGoalField? "pointer" : "grab", zIndex:"5"}} onClick={canDragToGoalField? 
-                                                                                                                                isWhiteCheckers?
-                                                                                                                                    ()=>handleMove(27):
-                                                                                                                                    ()=>handleMove(26)
-                                                                                                                            :{}}>
+                <div className="container-out">
+                    <button style={{width:"100%" ,
+                                    height:"100%",
+                                    marginTop:"100px",
+                                    background:canDragToGoalField? "green" : "red",
+                                    cursor:canDragToGoalField? "pointer" : ""}}
+                                    onClick={canDragToGoalField? 
+                                                                isWhiteCheckers?
+                                                                    ()=>handleMove(27):
+                                                                    ()=>handleMove(26)
+                                                            :{}}>
                     </button>
                 </div>
                 <div id="leftSide" className="row">

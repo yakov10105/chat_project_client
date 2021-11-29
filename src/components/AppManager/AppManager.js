@@ -35,7 +35,7 @@ const AppManager = (props) => {
                         <RoomContext.Provider value={roomValue}>
                             <ReciverContext.Provider value={reciver}>
                                 <GameOnContext.Provider value={value}>
-                                    <Grid item>
+                                    <Grid item sx={12}>
                                         <ChatManager user={user}/>
                                     </Grid>
                                     <Grid item sx={12}>
