@@ -62,7 +62,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
     const connectToServer = async () => {
         try{
           const connection = new HubConnectionBuilder()
-          .withUrl(`https://chat-project-server.azurewebsites.net/login`)
+          .withUrl(`http://localhost:8082/login`)
           .configureLogging(LogLevel.Information)
           .build();
           
@@ -204,7 +204,7 @@ const ConnectedUsers = ({ user,joinRoom,closeConnection}) => {
 
     const getUsers = async () =>{
         if(!usersFlag){
-            axios.get('https://chat-project-server.azurewebsites.net/api/users/all',{
+            axios.get('http://localhost:8082/api/users/all',{
                 headers:{
                     "Authorization":localStorage.getItem('key')
                 }

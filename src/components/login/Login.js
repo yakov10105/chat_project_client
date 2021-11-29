@@ -30,7 +30,7 @@ const Login = () => {
         handleSubmit(sendRequest)();
     }
     const sendRequest = () =>{
-        axios.post('https://chat-project-server.azurewebsites.net/api/auth/login',{
+        axios.post('http://localhost:8082/api/auth/login',{
             UserName: userName,
             Password: password
         }).then((res)=>{
